@@ -104,7 +104,7 @@ Route::get('/transaction/return/material/{code}', [\App\Http\Controllers\Transac
         ->middleware('permission:master_data.view')
         ->name('master-data.bin.qrcode');
     
-    // User Routes
+    // User Route
     Route::post('/master-data/user', [MasterDataController::class, 'storeUser'])
         ->middleware('permission:master_data.manage')
         ->name('master-data.user.store');
