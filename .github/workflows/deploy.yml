@@ -1,46 +1,39 @@
-name: Deploy to Hostinger
+name: Deploy via SSH
 
 on:
   push:
-    branches: [ master ] # atau master
+    branches: [ master ]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.3'
-
-    - name: Install Composer Dependencies
-      run: composer install --no-dev --optimize-autoloader
-
-    - name: Install Node.js & Build Assets
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
-    - run: npm install
-    - run: npm run build
-
-    - name: Deploy to Server via Rsync
-        uses: Smaskell/rsync-github-action@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          env:
-            SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-            SSH_IP: ${{ secrets.SSH_HOST }}
-            SSH_USER: ${{ secrets.SSH_USER }}
-            SSH_PORT: "65002"
-          remote_path: domains/warehouse.gondowangi.com/laravel-core/
-          local_path: ./
-          flags: -avzr --delete
-          exclude: |
-            .git/
-            .github/
-            node_modules/
-            storage/
-            .env
+          php-version: '8.3'
+
+      - name: Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Install Node & Build Assets
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - run: npm install
+      - run: npm run build
+
+      - name: Deploy to Server via SSH
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          ARGS: "-avzr --delete"
+          SOURCE: "./"
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          REMOTE_PORT: "65002"
+          TARGET: "domains/warehouse.gondowangi.com/laravel-core/"
+          EXCLUDE: "/dist/, /node_modules/, /.git/, /.github/, /storage/, /vendor/, .env"
