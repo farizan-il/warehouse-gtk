@@ -1,0 +1,1052 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Imports\InitialStockImport;
+use App\Models\InventoryStock;
+use App\Models\Material;
+use App\Models\Role;
+use App\Models\Supplier;
+use App\Models\User;
+use App\Models\WarehouseBin;
+use App\Models\WarehouseZone;
+use App\Traits\ActivityLogger;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
+
+class MasterDataController extends Controller
+{
+    use ActivityLogger;
+
+    private const PER_PAGE = 20; 
+
+    public function getAllBins()
+    {
+        return WarehouseBin::all();
+    }
+
+    public function index()
+{
+    // Get search and filter parameters
+    $search = request()->query('search', '');
+    $status = request()->query('status', '');
+    $activeTab = request()->query('activeTab', 'sku');
+
+    // SKU Query with Search and Filter
+    $skuQuery = Material::query();
+    if ($search) {
+        $skuQuery->where(function($q) use ($search) {
+            $q->where('kode_item', 'like', '%' . $search . '%')
+              ->orWhere('nama_material', 'like', '%' . $search . '%');
+        });
+    }
+    if ($status) {
+        $skuQuery->where('status', strtolower($status));
+    }
+    $skuPaginator = $skuQuery->paginate(self::PER_PAGE);
+
+    // Supplier Query with Search and Filter
+    $supplierQuery = Supplier::query();
+    if ($search) {
+        $supplierQuery->where(function($q) use ($search) {
+            $q->where('kode_supplier', 'like', '%' . $search . '%')
+              ->orWhere('nama_supplier', 'like', '%' . $search . '%');
+        });
+    }
+    if ($status) {
+        $supplierQuery->where('status', strtolower($status));
+    }
+    $supplierPaginator = $supplierQuery->paginate(self::PER_PAGE);
+
+    // Bin Location Query with Search and Filter
+    $binQuery = WarehouseBin::with('zone');
+    if ($search) {
+        $binQuery->where(function($q) use ($search) {
+            $q->where('bin_code', 'like', '%' . $search . '%')
+              ->orWhereHas('zone', function($zq) use ($search) {
+                  $zq->where('zone_name', 'like', '%' . $search . '%');
+              });
+        });
+    }
+    if ($status) {
+        $binQuery->where('status', strtolower($status));
+    }
+    $binPaginator = $binQuery->paginate(self::PER_PAGE);
+
+    // User Query with Search and Filter
+    $userQuery = User::with('role');
+    if ($search) {
+        $userQuery->where(function($q) use ($search) {
+            $q->where('jabatan', 'like', '%' . $search . '%')
+              ->orWhere('name', 'like', '%' . $search . '%');
+        });
+    }
+    if ($status) {
+        $userQuery->where('status', strtolower($status));
+    }
+    $userPaginator = $userQuery->paginate(self::PER_PAGE);
+
+    // Map data di setiap Paginator
+    $mapPaginator = function ($paginator, $callback) {
+        return $paginator->through($callback);
+    };
+    
+    $skuCallback = fn($item) => [
+        'id' => $item->id,
+        'code' => $item->kode_item,
+        'name' => $item->nama_material,
+        'uom' => strtoupper($item->satuan),
+        'category' => ucwords($item->kategori),
+        'subCategory' => $item->subkategori,
+        'halalStatus' => $item->halal_status,
+        'qcRequired' => (bool)$item->qc_required,
+        'expiry' => (bool)$item->expiry_required,
+        'status' => $item->status === 'active' ? 'Active' : 'Inactive'
+    ];
+
+    $supplierCallback = fn($item) => [
+        'id' => $item->id,
+        'code' => $item->kode_supplier,
+        'name' => $item->nama_supplier,
+        'address' => $item->alamat,
+        'contactPerson' => $item->contact_person,
+        'phone' => $item->telepon,
+        'status' => $item->status === 'active' ? 'Active' : 'Inactive'
+    ];
+
+    $binCallback = fn($item) => [
+        'id' => $item->id,
+        'code' => $item->bin_code,
+        'zone' => $item->zone ? $item->zone->zone_name : 'N/A',
+        'capacity' => $item->capacity,
+        'type' => $item->bin_type,
+        'qrCode' => $item->qr_code_path ? asset('storage/' . $item->qr_code_path) : null,
+        'status' => ucfirst($item->status),
+        'current_items_count' => InventoryStock::where('bin_id', $item->id)->count(),
+    ];
+
+    $userCallback = fn($item) => [
+        'id' => $item->id,
+        'jabatan' => $item->jabatan,
+        'fullName' => $item->name ?? 'N/A',
+        'role' => $item->role->role_name ?? 'N/A',
+        'department' => $item->departement,
+        'status' => $item->status === 'active' ? 'Active' : 'Inactive'
+    ];
+
+    return Inertia::render('MasterData', [
+        'skuData' => $mapPaginator($skuPaginator, $skuCallback),
+        'supplierData' => $mapPaginator($supplierPaginator, $supplierCallback),
+        'binData' => $mapPaginator($binPaginator, $binCallback),
+        'userData' => $mapPaginator($userPaginator, $userCallback),
+
+        'supplierList' => Supplier::where('status', 'active')->get()->map(fn($s) => [
+            'id' => $s->id,
+            'name' => $s->nama_supplier
+        ]),
+        'zoneList' => WarehouseZone::where('status', 'active')->get()->map(fn($z) => [
+            'id' => $z->id,
+            'name' => $z->zone_name
+        ]),
+        'roleList' => Role::all()->map(fn($r) => [
+            'id' => $r->id,
+            'name' => $r->role_name
+        ]),
+        'activeTab' => $activeTab,
+        'search' => $search,
+        'status' => $status
+    ]);
+}
+    public function getBinStockDetails($binId)
+    {
+        // Ambil stok yang tersedia di Bin ini
+        $stocks = InventoryStock::with('material')
+            ->where('bin_id', $binId)
+            ->where('qty_on_hand', '>', 0)
+            ->get();
+
+        $bin = WarehouseBin::findOrFail($binId);
+
+        $materialDetails = $stocks->map(function ($stock) {
+            return [
+                'id' => $stock->id,
+                'material_code' => $stock->material->kode_item ?? 'N/A',
+                'material_name' => $stock->material->nama_material ?? 'N/A',
+                'batch_lot' => $stock->batch_lot,
+                'qty_on_hand' => (float)$stock->qty_on_hand,
+                'qty_available' => (float)$stock->qty_available,
+                'uom' => $stock->uom,
+                'exp_date' => $stock->exp_date ? $stock->exp_date->format('Y-m-d') : 'N/A',
+                'status' => ucfirst($stock->status),
+            ];
+        });
+
+        return response()->json([
+            'bin_code' => $bin->bin_code,
+            'details' => $materialDetails
+        ]);
+    }
+
+    // ========== SKU/MATERIAL ==========
+    public function storeSku(Request $request)
+    {
+        $validated = $request->validate([
+            'code' => 'required|unique:materials,kode_item',
+            'name' => 'required|string',
+            'uom' => 'required|string',
+            'category' => 'required|string',
+            'subCategory' => 'nullable|string',
+            'qcRequired' => 'boolean',
+            'expiry' => 'boolean',
+            'halalStatus' => 'nullable|in:Halal,Non Halal',
+            'status' => 'required|in:Active,Inactive'
+        ]);
+
+        try {
+            $material = Material::create([
+                'kode_item' => $validated['code'],
+                'nama_material' => $validated['name'],
+                'satuan' => $validated['uom'],
+                'kategori' => $validated['category'],
+                'subkategori' => $validated['subCategory'] ?? null,
+                'halal_status' => $validated['halalStatus'] ?? null,
+                'qc_required' => $validated['qcRequired'] ?? false,
+                'expiry_required' => $validated['expiry'] ?? false,
+                'status' => strtolower($validated['status'])
+            ]);
+
+            $this->logActivity($material, 'Create', [
+                'description' => "Menambahkan Material baru: {$material->nama_material} ({$material->kode_item})",
+                'new_value' => json_encode($material),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'SKU berhasil ditambahkan',
+                'data' => $material
+            ], 201);
+
+        } catch (\Exception $e) {
+            \Log::error('Error storing SKU: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateSku(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'code' => 'required|unique:materials,kode_item,' . $id,
+            'name' => 'required|string',
+            'uom' => 'required|string',
+            'category' => 'required|string',
+            'subCategory' => 'nullable|string',
+            'qcRequired' => 'boolean',
+            'expiry' => 'boolean',
+            'halalStatus' => 'nullable|in:Halal,Non Halal',
+            'status' => 'required|in:Active,Inactive'
+        ]);
+
+        try {
+            $material = Material::findOrFail($id);
+            $oldValue = $material->replicate();
+
+            $material->update([
+                'kode_item' => $validated['code'],
+                'nama_material' => $validated['name'],
+                'satuan' => $validated['uom'],
+                'kategori' => $validated['category'],
+                'subkategori' => $validated['subCategory'] ?? null,
+                'halal_status' => $validated['halalStatus'] ?? null,
+                'qc_required' => $validated['qcRequired'] ?? false,
+                'expiry_required' => $validated['expiry'] ?? false,
+                'status' => strtolower($validated['status'])
+            ]);
+
+            $this->logActivity($material, 'Update', [
+                'description' => "Memperbarui Material: {$material->nama_material} ({$material->kode_item})",
+                'old_value' => json_encode($oldValue),
+                'new_value' => json_encode($material),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'SKU berhasil diupdate',
+                'data' => $material
+            ], 200);
+
+        } catch (\Exception $e) {
+            \Log::error('Error updating SKU: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deleteSku($id)
+    {
+        try {
+            $material = Material::findOrFail($id);
+            $oldValue = $material->replicate();
+            $material->delete();
+
+            $this->logActivity($oldValue, 'Delete', [
+                'description' => "Menghapus Material: {$oldValue->nama_material} ({$oldValue->kode_item})",
+                'old_value' => json_encode($oldValue),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'SKU berhasil dihapus'
+            ], 200);
+
+        } catch (\Exception $e) {
+            \Log::error('Error deleting SKU: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function bulkUpdateSku(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'ids' => 'required|array|min:1',
+                'ids.*' => 'required|exists:materials,id',
+                'category' => 'nullable|string',
+                'subCategory' => 'nullable|string',
+                'halalStatus' => 'nullable|string',
+                'status' => 'nullable|string|in:Active,Inactive',
+                'qcRequired' => 'nullable|boolean',
+                'expiry' => 'nullable|boolean',
+            ]);
+
+            $updateCount = 0;
+            $materials = Material::whereIn('id', $validated['ids'])->get();
+
+            foreach ($materials as $material) {
+                $oldValue = $material->replicate();
+                $updated = false;
+
+                // Update only fields that are provided
+                if (isset($validated['category'])) {
+                    $material->kategori = $validated['category'];
+                    $updated = true;
+                }
+                if (isset($validated['subCategory'])) {
+                    $material->subkategori = $validated['subCategory'];
+                    $updated = true;
+                }
+                if (isset($validated['halalStatus'])) {
+                    $material->halal_status = $validated['halalStatus'];
+                    $updated = true;
+                }
+                if (isset($validated['status'])) {
+                    $material->status = strtolower($validated['status']);
+                    $updated = true;
+                }
+                if (isset($validated['qcRequired'])) {
+                    $material->qc_required = $validated['qcRequired'];
+                    $updated = true;
+                }
+                if (isset($validated['expiry'])) {
+                    $material->expiry_required = $validated['expiry'];
+                    $updated = true;
+                }
+
+                if ($updated) {
+                    $material->save();
+                    $updateCount++;
+
+                    // Log activity for each updated item
+                    $this->logActivity($material, 'Bulk Update', [
+                        'description' => "Bulk Update Material: {$material->nama_material} ({$material->kode_item})",
+                        'old_value' => json_encode($oldValue),
+                        'new_value' => json_encode($material),
+                    ]);
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "{$updateCount} SKU berhasil diupdate"
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error validasi: ' . json_encode($e->errors())
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Error bulk updating SKU: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // ========== SUPPLIER ==========
+    public function storeSupplier(Request $request)
+    {
+        $validated = $request->validate([
+            'code' => 'required|unique:suppliers,kode_supplier',
+            'name' => 'required|string',
+            'address' => 'required|string',
+            'contactPerson' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'status' => 'required|in:Active,Inactive'
+        ]);
+
+        try {
+            $supplier = Supplier::create([
+                'kode_supplier' => $validated['code'],
+                'nama_supplier' => $validated['name'],
+                'alamat' => $validated['address'],
+                'contact_person' => $validated['contactPerson'],
+                'telepon' => $validated['phone'],
+                'status' => strtolower($validated['status'])
+            ]);
+
+            $this->logActivity($supplier, 'Create', [
+                'description' => "Menambahkan Supplier baru: {$supplier->nama_supplier}",
+                'new_value' => json_encode($supplier),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Supplier berhasil ditambahkan',
+                'data' => $supplier
+            ], 201);
+
+        } catch (\Exception $e) {
+            \Log::error('Error storing Supplier: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateSupplier(Request $request, $id)
+    {
+        $supplier = Supplier::findOrFail($id);
+        $oldValue = $supplier->replicate();
+
+        $validated = $request->validate([
+            'code' => 'required|unique:suppliers,kode_supplier,' . $id,
+            'name' => 'required|string',
+            'address' => 'required|string',
+            'contactPerson' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'status' => 'required|in:Active,Inactive'
+        ]);
+
+        try {
+            $supplier->update([
+                'kode_supplier' => $validated['code'],
+                'nama_supplier' => $validated['name'],
+                'alamat' => $validated['address'],
+                'contact_person' => $validated['contactPerson'],
+                'telepon' => $validated['phone'],
+                'status' => strtolower($validated['status'])
+            ]);
+
+            $this->logActivity($supplier, 'Update', [
+                'description' => "Memperbarui Supplier: {$supplier->nama_supplier}",
+                'old_value' => json_encode($oldValue),
+                'new_value' => json_encode($supplier),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Supplier berhasil diupdate',
+                'data' => $supplier
+            ], 200);
+
+        } catch (\Exception $e) {
+            \Log::error('Error updating Supplier: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deleteSupplier($id)
+    {
+        try {
+            $supplier = Supplier::findOrFail($id);
+            $oldValue = $supplier->replicate();
+            $supplier->delete();
+
+            $this->logActivity($oldValue, 'Delete', [
+                'description' => "Menghapus Supplier: {$oldValue->nama_supplier}",
+                'old_value' => json_encode($oldValue),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Supplier berhasil dihapus'
+            ], 200);
+
+        } catch (\Exception $e) {
+            \Log::error('Error deleting Supplier: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // ========== BIN LOCATION ==========
+    public function storeBin(Request $request)
+    {
+        $validated = $request->validate([
+            'code' => 'required|unique:warehouse_bins,bin_code',
+            'zone' => 'required|integer|exists:warehouse_zones,id',
+            'capacity' => 'nullable|numeric',
+            'type' => 'required|string',
+            'status' => 'required|in:Active,Inactive'
+        ]);
+
+        try {
+            // Get zone untuk mendapatkan warehouse_id
+            $zone = WarehouseZone::findOrFail($validated['zone']);
+            
+            // Logic Kapasitas: QRT-* unlimited (0), selain itu max 4
+            $capacity = $validated['capacity'] ?? 0;
+            if (stripos($validated['code'], 'qrt-') === 0) {
+                $capacity = 0; // Unlimited
+            } else {
+                if ($capacity > 4) {
+                    $capacity = 4;
+                }
+            }
+
+            $bin = WarehouseBin::create([
+                'bin_code' => $validated['code'],
+                'bin_name' => $validated['code'],
+                'zone_id' => $validated['zone'],
+                'warehouse_id' => $zone->warehouse_id ?? 1,
+                'bin_type' => $validated['type'],
+                'capacity' => $capacity,
+                'current_items' => 0,
+                'status' => strtolower($validated['status'] === 'Active' ? 'available' : 'inactive')
+            ]);
+
+            // Generate QR Code
+            $qrGenerated = $this->generateQRCode($bin);
+            
+            if (!$qrGenerated) {
+                Log::warning('QR Code generation failed for bin: ' . $bin->id);
+            }
+
+            // Refresh bin untuk mendapatkan data terbaru
+            $bin->refresh();
+
+            $this->logActivity($bin, 'Create', [
+                'description' => "Menambahkan Bin baru: {$bin->bin_code}",
+                'new_value' => json_encode($bin),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => $qrGenerated 
+                    ? 'Bin berhasil ditambahkan dengan QR Code' 
+                    : 'Bin berhasil ditambahkan tapi QR Code gagal digenerate',
+                'data' => [
+                    'id' => $bin->id,
+                    'code' => $bin->bin_code,
+                    'zone' => $bin->zone->zone_name ?? 'N/A',
+                    'capacity' => $bin->capacity,
+                    'type' => $bin->bin_type,
+                    'qrCode' => $bin->qr_code_path ? asset('storage/' . $bin->qr_code_path) : null,
+                    'status' => ucfirst($bin->status)
+                ]
+            ], 201);
+
+        } catch (\Exception $e) {
+            Log::error('Error storing Bin: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateBin(Request $request, $id)
+    {
+        $bin = WarehouseBin::findOrFail($id);
+        $oldValue = $bin->replicate();
+
+        $validated = $request->validate([
+            'code' => 'required|unique:warehouse_bins,bin_code,' . $id,
+            'zone' => 'required|integer|exists:warehouse_zones,id',
+            'capacity' => 'nullable|numeric',
+            'type' => 'required|string',
+            'status' => 'required|in:Active,Inactive'
+        ]);
+
+        try {
+            $oldCode = $bin->bin_code;
+            $zone = WarehouseZone::findOrFail($validated['zone']);
+            
+            // Logic Kapasitas: QRT-* unlimited (0), selain itu max 4
+            $capacity = $validated['capacity'] ?? 0;
+            if (stripos($validated['code'], 'qrt-') === 0) {
+                $capacity = 0; // Unlimited
+            } else {
+                if ($capacity > 4) {
+                    $capacity = 4;
+                }
+            }
+            
+            $bin->update([
+                'bin_code' => $validated['code'],
+                'bin_name' => $validated['code'],
+                'zone_id' => $validated['zone'],
+                'warehouse_id' => $zone->warehouse_id ?? $bin->warehouse_id,
+                'bin_type' => $validated['type'],
+                'capacity' => $capacity,
+                'status' => strtolower($validated['status'] === 'Active' ? 'available' : 'inactive')
+            ]);
+
+            // Regenerate QR Code if bin code changed
+            if ($oldCode !== $validated['code']) {
+                // Delete old QR code
+                if ($bin->qr_code_path && Storage::disk('public')->exists($bin->qr_code_path)) {
+                    Storage::disk('public')->delete($bin->qr_code_path);
+                }
+                
+                // Generate new QR code
+                $this->generateQRCode($bin);
+            }
+
+            $bin->refresh();
+            $this->logActivity($bin, 'Update', [
+                'description' => "Memperbarui Bin: {$bin->bin_code}",
+                'old_value' => json_encode($oldValue),
+                'new_value' => json_encode($bin),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Bin berhasil diupdate',
+                'data' => [
+                    'id' => $bin->id,
+                    'code' => $bin->bin_code,
+                    'zone' => $bin->zone->zone_name ?? 'N/A',
+                    'capacity' => $bin->capacity,
+                    'type' => $bin->bin_type,
+                    'qrCode' => $bin->qr_code_path ? asset('storage/' . $bin->qr_code_path) : null,
+                    'status' => ucfirst($bin->status)
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error updating Bin: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deleteBin($id)
+    {
+        try {
+            $bin = WarehouseBin::findOrFail($id);
+            $oldValue = $bin->replicate();
+            
+            // Delete QR code file
+            if ($bin->qr_code_path && Storage::disk('public')->exists($bin->qr_code_path)) {
+                Storage::disk('public')->delete($bin->qr_code_path);
+            }
+            
+            $bin->delete();
+
+            $this->logActivity($oldValue, 'Delete', [
+                'description' => "Menghapus Bin: {$oldValue->bin_code}",
+                'old_value' => json_encode($oldValue),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Bin berhasil dihapus'
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error deleting Bin: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function previewBinQRCode($id)
+    {
+        try {
+            $bin = WarehouseBin::with('zone')->findOrFail($id);
+            
+            // Generate QR Code jika belum ada
+            if (!$bin->qr_code_path || !Storage::disk('public')->exists($bin->qr_code_path)) {
+                $qrGenerated = $this->generateQRCode($bin);
+                if (!$qrGenerated) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Gagal generate QR Code'
+                    ], 500);
+                }
+                $bin->refresh();
+            }
+
+            $filePath = storage_path('app/public/' . $bin->qr_code_path);
+            
+            if (!file_exists($filePath)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'QR Code file tidak ditemukan'
+                ], 404);
+            }
+
+            // Return base64 encoded image untuk preview
+            $imageData = base64_encode(file_get_contents($filePath));
+            $imageSrc = 'data:image/png;base64,' . $imageData;
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'image' => $imageSrc,
+                    'bin_code' => $bin->bin_code,
+                    'bin_name' => $bin->bin_name,
+                    'zone_name' => $bin->zone ? $bin->zone->zone_name : 'N/A',
+                    'bin_type' => $bin->bin_type,
+                    'capacity' => $bin->capacity,
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error previewing QR Code: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Download QR Code
+    public function downloadBinQRCode($id)
+    {
+        try {
+            $bin = WarehouseBin::findOrFail($id);
+            
+            if (!$bin->qr_code_path || !Storage::disk('public')->exists($bin->qr_code_path)) {
+                $this->generateQRCode($bin);
+                $bin->refresh();
+            }
+
+            $filePath = storage_path('app/public/' . $bin->qr_code_path);
+            
+            if (!file_exists($filePath)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'QR Code file tidak ditemukan'
+                ], 404);
+            }
+
+            return response()->download($filePath, 'QR_' . $bin->bin_code . '.png');
+
+        } catch (\Exception $e) {
+            Log::error('Error downloading QR Code: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    private function generateQRCode($bin)
+    {
+        try {
+            Log::info('=== START QR Code Generation (Endroid v4) ===');
+            Log::info('Bin ID: ' . $bin->id);
+            Log::info('Bin Code: ' . $bin->bin_code);
+            
+            $directory = 'qrcodes/bins';
+            $fullPath = storage_path('app/public/' . $directory);
+            
+            Log::info('Full Path: ' . $fullPath);
+            
+            if (!file_exists($fullPath)) {
+                $created = mkdir($fullPath, 0755, true);
+                Log::info('Directory created: ' . ($created ? 'YES' : 'NO'));
+            } else {
+                Log::info('Directory already exists');
+            }
+
+            // QR Data
+            $qrData = json_encode([
+                'type' => 'warehouse_bin',
+                'bin_id' => $bin->id,
+                'bin_code' => $bin->bin_code,
+                'zone_id' => $bin->zone_id,
+                'timestamp' => now()->toIso8601String()
+            ]);
+            
+            Log::info('QR Data: ' . $qrData);
+
+            // Generate QR Code (Endroid v4 syntax)
+            $qrCode = new QrCode($qrData);
+            $qrCode->setSize(300);
+            $qrCode->setMargin(10);
+
+            $writer = new PngWriter();
+            $result = $writer->write($qrCode);
+
+            Log::info('QR Code generated successfully');
+
+            // Filename
+            $cleanCode = preg_replace('/[^A-Za-z0-9\-]/', '_', $bin->bin_code);
+            $filename = 'bin_' . $cleanCode . '_' . time() . '.png';
+            $relativePath = $directory . '/' . $filename;
+            $absolutePath = $fullPath . '/' . $filename;
+
+            Log::info('Saving to: ' . $absolutePath);
+
+            // Save file
+            $bytesWritten = file_put_contents($absolutePath, $result->getString());
+            
+            Log::info('Bytes written: ' . $bytesWritten);
+
+            if ($bytesWritten === false) {
+                Log::error('Failed to write file');
+                return false;
+            }
+
+            // Verify file exists
+            if (!file_exists($absolutePath)) {
+                Log::error('File does not exist after save!');
+                return false;
+            }
+
+            Log::info('File exists: YES, size: ' . filesize($absolutePath) . ' bytes');
+
+            // Update database
+            $updated = $bin->update(['qr_code_path' => $relativePath]);
+            
+            Log::info('Database updated: ' . ($updated ? 'YES' : 'NO'));
+
+            if (!$updated) {
+                Log::error('Failed to update database');
+                return false;
+            }
+
+            Log::info('=== QR Code Generation SUCCESS ===');
+            return true;
+            
+        } catch (\Exception $e) {
+            Log::error('=== QR Code Generation FAILED ===');
+            Log::error('Exception: ' . $e->getMessage());
+            Log::error('File: ' . $e->getFile());
+            Log::error('Line: ' . $e->getLine());
+            Log::error('Trace: ' . $e->getTraceAsString());
+            return false;
+        }
+    }
+
+    // Get QR Code for download/print
+    public function generateBinQRCode($id)
+    {
+        try {
+            $bin = WarehouseBin::findOrFail($id);
+            
+            if (!$bin->qr_code_path || !Storage::disk('public')->exists($bin->qr_code_path)) {
+                $this->generateQRCode($bin);
+                $bin->refresh();
+            }
+
+            $filePath = storage_path('app/public/' . $bin->qr_code_path);
+            
+            if (!file_exists($filePath)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'QR Code file not found'
+                ], 404);
+            }
+
+            return response()->download($filePath, 'QR_' . $bin->bin_code . '.png');
+
+        } catch (\Exception $e) {
+            Log::error('Error downloading QR Code: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // ========== USER ==========
+    public function storeUser(Request $request)
+    {
+        $validated = $request->validate([
+            'jabatan' => 'required|string',
+            'fullName' => 'required|string',
+            'password' => 'required|string|min:6',
+            'role' => 'required|string',
+            'department' => 'required|string',
+            'status' => 'required|in:Active,Inactive'
+        ]);
+
+        try {
+            $user = User::create([
+                'name' => $validated['fullName'],
+                'email' => strtolower(str_replace(' ', '.', $validated['fullName'])) . '@company.com',
+                'nik' => 'NIK-' . time(),
+                'password' => bcrypt($validated['password']),
+                'jabatan' => $validated['jabatan'],
+                'departement' => $validated['department'],
+                'status' => strtolower($validated['status']),
+                'role_id' => $this->getRoleId($validated['role'])
+            ]);
+
+            $this->logActivity($user, 'Create', [
+                'description' => "Menambahkan User baru: {$user->nama_lengkap} ({$user->jabatan})",
+                'new_value' => json_encode($user),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User berhasil ditambahkan',
+                'data' => $user
+            ], 201);
+
+        } catch (\Exception $e) {
+            \Log::error('Error storing User: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $oldValue = $user->replicate();
+
+        $validated = $request->validate([
+            'jabatan' => 'required|string',
+            'fullName' => 'required|string',
+            'role' => 'required|string',
+            'department' => 'required|string',
+            'status' => 'required|in:Active,Inactive'
+        ]);
+
+        try {
+            $user->update([
+                'nama_lengkap' => $validated['fullName'],
+                'jabatan' => $validated['jabatan'],
+                'departement' => $validated['department'],
+                'status' => strtolower($validated['status']),
+                'role_id' => $this->getRoleId($validated['role'])
+            ]);
+
+            $this->logActivity($user, 'Update', [
+                'description' => "Memperbarui User: {$user->nama_lengkap}",
+                'old_value' => json_encode($oldValue),
+                'new_value' => json_encode($user),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User berhasil diupdate',
+                'data' => $user
+            ], 200);
+
+        } catch (\Exception $e) {
+            \Log::error('Error updating User: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deleteUser($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $oldValue = $user->replicate();
+            $user->delete();
+
+            $this->logActivity($oldValue, 'Delete', [
+                'description' => "Menghapus User: {$oldValue->nama_lengkap}",
+                'old_value' => json_encode($oldValue),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User berhasil dihapus'
+            ], 200);
+
+        } catch (\Exception $e) {
+            \Log::error('Error deleting User: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    private function getRoleId($roleName)
+    {
+        $role = Role::where('role_name', $roleName)->first();
+        return $role->id ?? 1;
+    }
+
+    public function importStock(Request $request)
+    {
+        set_time_limit(300);
+        ini_set('memory_limit', '512M');
+
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:10240', // Max 10MB
+        ]);
+
+        try {
+            $importer = new InitialStockImport;
+            Excel::import($importer, $request->file('file'));
+            
+            if (count($importer->errors) > 0) {
+                return redirect()->back()->with([
+                    'error' => 'Terdapat beberapa kesalahan saat import data.',
+                    'import_errors' => $importer->errors
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Data stok berhasil diimport!');
+        } catch (\Exception $e) {
+            Log::error('Import Error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal mengimport data: ' . $e->getMessage());
+        }
+    }
+}
