@@ -28,12 +28,12 @@ jobs:
 
       - name: Deploy to Server via SSH
         uses: easingthemes/ssh-deploy@main
-        env:
+        with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-          ARGS: "-avzr --delete"
-          SOURCE: "./"
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
           REMOTE_PORT: "65002"
+          ARGS: "-avzr --delete"
+          SOURCE: "./"
           TARGET: "domains/warehouse.gondowangi.com/laravel-core/"
           EXCLUDE: "/dist/, /node_modules/, /.git/, /.github/, /storage/, /vendor/, .env"
