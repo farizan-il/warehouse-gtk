@@ -127,7 +127,7 @@ class MasterDataController extends Controller
         'capacity' => $item->capacity,
         'type' => $item->bin_type,
         'qrCode' => $item->qr_code_path ? asset('storage/' . $item->qr_code_path) : null,
-        'status' => ucfirst($item->status),
+        'status' => $item->status === 'available' ? 'Active' : 'Inactive',
         'current_items_count' => InventoryStock::where('bin_id', $item->id)->count(),
     ];
 
@@ -537,7 +537,6 @@ class MasterDataController extends Controller
 
             $bin = WarehouseBin::create([
                 'bin_code' => $validated['code'],
-                'bin_name' => $validated['code'],
                 'zone_id' => $validated['zone'],
                 'warehouse_id' => $zone->warehouse_id ?? 1,
                 'bin_type' => $validated['type'],
@@ -573,7 +572,7 @@ class MasterDataController extends Controller
                     'capacity' => $bin->capacity,
                     'type' => $bin->bin_type,
                     'qrCode' => $bin->qr_code_path ? asset('storage/' . $bin->qr_code_path) : null,
-                    'status' => ucfirst($bin->status)
+                    'status' => $bin->status === 'available' ? 'Active' : 'Inactive'
                 ]
             ], 201);
 
@@ -617,7 +616,6 @@ class MasterDataController extends Controller
             
             $bin->update([
                 'bin_code' => $validated['code'],
-                'bin_name' => $validated['code'],
                 'zone_id' => $validated['zone'],
                 'warehouse_id' => $zone->warehouse_id ?? $bin->warehouse_id,
                 'bin_type' => $validated['type'],
@@ -653,7 +651,7 @@ class MasterDataController extends Controller
                     'capacity' => $bin->capacity,
                     'type' => $bin->bin_type,
                     'qrCode' => $bin->qr_code_path ? asset('storage/' . $bin->qr_code_path) : null,
-                    'status' => ucfirst($bin->status)
+                    'status' => $bin->status === 'available' ? 'Active' : 'Inactive'
                 ]
             ], 200);
 
@@ -733,7 +731,6 @@ class MasterDataController extends Controller
                 'data' => [
                     'image' => $imageSrc,
                     'bin_code' => $bin->bin_code,
-                    'bin_name' => $bin->bin_name,
                     'zone_name' => $bin->zone ? $bin->zone->zone_name : 'N/A',
                     'bin_type' => $bin->bin_type,
                     'capacity' => $bin->capacity,

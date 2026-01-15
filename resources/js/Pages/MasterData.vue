@@ -13,6 +13,19 @@
           </div>
           <h3 class="text-xl font-bold text-gray-800">{{ loadingTitle || 'Processing...' }}</h3>
           <p class="text-gray-500 mt-2">{{ loadingSubtitle || 'Please wait while we process your request.' }}</p>
+          
+          <!-- Progress Bar -->
+          <div v-if="loadingProgress > 0" class="w-full mt-6">
+            <div class="flex justify-between mb-1">
+              <span class="text-xs font-medium text-blue-700">Proses: {{ loadingProgress }}%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div 
+                class="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out" 
+                :style="{ width: loadingProgress + '%' }"
+              ></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -137,7 +150,7 @@
               Bulk Edit ({{ selectedSkuIds.length }} selected)
             </button>
             
-            <button 
+            <!-- <button 
               @click="exportData"
               class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
             >
@@ -145,7 +158,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
               Export Excel
-            </button>
+            </button> -->
             
             <button 
               v-if="activeTab === 'bin'"
@@ -736,11 +749,9 @@
                   class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Pilih Zone</option>
-                  <option value="1">Zone A</option>
-                  <option value="2">Zone B</option>
-                  <option value="3">Zone C</option>
-                  <option value="4">Cold Storage</option>
-                  <option value="5">Reject</option>
+                  <option v-for="zone in zoneList" :key="zone.id" :value="zone.id">
+                    {{ zone.name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -877,6 +888,40 @@
             >
               {{ showEditModal ? 'Update' : 'Simpan' }}
             </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Print Confirmation -->
+      <div v-if="showPrintConfirmModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[999]" style="background-color: rgba(43, 51, 63, 0.67);">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md border border-gray-200 shadow-2xl scale-in-center">
+          <div class="flex flex-col items-center text-center">
+            <div class="bg-orange-100 p-4 rounded-full mb-4">
+              <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Konfirmasi Print</h3>
+            <p class="text-gray-600 mb-6">
+              Sistem akan meng-generate QR Code untuk <span class="font-bold text-orange-600">{{ totalBinsToPrint }}</span> lokasi bin.
+              <br>
+              Perkiraan waktu: <span class="font-bold text-gray-900">{{ estimatedDuration }}</span>
+            </p>
+            
+            <div class="w-full flex gap-3">
+              <button 
+                @click="showPrintConfirmModal = false"
+                class="flex-1 px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Batal
+              </button>
+              <button 
+                @click="startPrintingProcess"
+                class="flex-1 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors font-semibold"
+              >
+                Lanjut Print
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1311,7 +1356,8 @@ const getCurrentTabLabel = () => {
 }
 
 const getStatusClass = (status: string) => {
-  return status === 'Active' 
+  const normStatus = status?.toLowerCase()
+  return normStatus === 'active' || normStatus === 'available'
     ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
     : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
 }
@@ -1615,7 +1661,7 @@ const printQRCode = () => {
     <body>
       <div class="print-container">
         <img src="${qrCodeData.value.image}" alt="QR Code" class="qr-image">
-        <div class="info">Bin Name: ${qrCodeData.value.bin_name}</div>
+        <div class="info">Bin Name: ${qrCodeData.value.bin_code}</div>
         <div class="info">Zone: ${qrCodeData.value.zone_name}</div>
       </div>
       <script>
@@ -1631,63 +1677,116 @@ const printQRCode = () => {
   printWindow.document.close()
 }
 
+// Simpan list bin secara global untuk proses printing
+const binsToPrint = ref<any[]>([])
+
 const printAllQRCodes = async () => {
   try {
     isLoading.value = true
-    loadingTitle.value = 'Preparing QR Codes...'
-    loadingSubtitle.value = 'Generating printable QR codes for all bins. This may take a moment.'
+    loadingTitle.value = 'Menyiapkan Data...'
+    loadingSubtitle.value = 'Mohon tunggu sebentar, sedang mengambil data lokasi bin.'
+    loadingProgress.value = 0
     
-    // Fetch ALL bin locations from backend (not just current page)
-    const binsResponse = await fetch('/master-data/bins', {
+    const response = await fetch('/master-data/bins', {
       method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
+      headers: { 'Accept': 'application/json' }
     })
     
-    if (!binsResponse.ok) {
+    if (!response.ok) {
       showMessage('error', 'Gagal memuat bin locations')
+      isLoading.value = false
       return
     }
     
-    const bins = await binsResponse.json()
-    
+    const bins = await response.json()
     if (!bins || bins.length === 0) {
       showMessage('error', 'Tidak ada bin location untuk di-print')
+      isLoading.value = false
       return
     }
     
-    // Fetch QR code data for all bins
-    const qrPromises = bins.map(bin => 
-      fetch(`/master-data/bin/${bin.id}/qr-code/preview`)
-        .then(res => {
-          if (!res.ok) {
-            console.error(`HTTP error for bin ${bin.code}: ${res.status}`)
-            return null
-          }
-          return res.json()
-        })
-        .then(data => {
-          if (!data || !data.success) {
-            console.error(`Invalid data for bin ${bin.code}`)
-            return null
-          }
-          return data.data
-        })
-        .catch(err => {
-          console.error(`Error fetching QR for bin ${bin.code}:`, err)
-          return null
-        })
-    )
+    binsToPrint.value = bins
+    totalBinsToPrint.value = bins.length
     
-    const qrDataList = await Promise.all(qrPromises)
-    const validQRData = qrDataList.filter(qr => qr !== null)
+    // Estimasi 0.5 detik per QR + overhead
+    const totalSeconds = Math.ceil(bins.length * 0.5)
+    if (totalSeconds < 60) {
+      estimatedDuration.value = `~${totalSeconds} detik`
+    } else {
+      estimatedDuration.value = `~${Math.ceil(totalSeconds / 60)} menit`
+    }
     
-    if (validQRData.length === 0) {
+    isLoading.value = false
+    showPrintConfirmModal.value = true
+    
+  } catch (error) {
+    console.error('Print prepare error:', error)
+    showMessage('error', 'Gagal menyiapkan proses print')
+    isLoading.value = false
+  }
+}
+
+const startPrintingProcess = async () => {
+  showPrintConfirmModal.value = false
+  
+  if (binsToPrint.value.length === 0) return
+  
+  try {
+    isLoading.value = true
+    loadingTitle.value = 'Generating QR Codes...'
+    loadingSubtitle.value = 'Kami sedang memproses data untuk siap di-print.'
+    
+    const qrDataList: any[] = []
+    const total = binsToPrint.value.length
+    
+    // Proses satu per satu untuk update progress bar
+    for (let i = 0; i < binsToPrint.value.length; i++) {
+      const bin = binsToPrint.value[i]
+      
+      // Update loading status
+      loadingProgress.value = Math.round(((i + 1) / total) * 100) // +1 to show 100% at the end of loop
+      loadingSubtitle.value = `Memproses item ${i + 1} dari ${total}...`
+      
+      try {
+        const res = await fetch(`/master-data/bin/${bin.id}/qr-code/preview`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data && data.success) {
+            qrDataList.push(data.data)
+          }
+        } else {
+          console.error(`HTTP error for bin ${bin.code}: ${res.status}`)
+        }
+      } catch (err) {
+        console.error(`Error fetching QR for bin ${bin.code}:`, err)
+      }
+    }
+    
+    loadingProgress.value = 100
+    loadingSubtitle.value = 'Menyiapkan layout printing...'
+    
+    if (qrDataList.length === 0) {
       showMessage('error', 'Gagal memuat QR Codes')
+      isLoading.value = false
       return
     }
     
+    renderAndPrint(qrDataList)
+    
+    // Selesai
+    isLoading.value = false
+    loadingProgress.value = 0
+    
+  } catch (error) {
+    console.error('Generation error:', error)
+    showMessage('error', 'Terjadi kesalahan saat generate QR Codes')
+    isLoading.value = false
+    loadingProgress.value = 0
+  }
+}
+
+const renderAndPrint = (validQRData: any[]) => {
+  try { 
     const printWindow = window.open('', '_blank')
     if (!printWindow) {
       showMessage('error', 'Gagal membuka window print. Mohon izinkan popup.')
@@ -1718,7 +1817,8 @@ const printAllQRCodes = async () => {
         </div>
       `
     }
-         const htmlContent = `
+    
+    const htmlContent = `
       <!DOCTYPE html>
       <html>
       <head>
@@ -1882,6 +1982,10 @@ const triggerImport = () => {
 const isLoading = ref(false)
 const loadingTitle = ref('')
 const loadingSubtitle = ref('')
+const loadingProgress = ref(0) // 0 - 100
+const showPrintConfirmModal = ref(false)
+const totalBinsToPrint = ref(0)
+const estimatedDuration = ref('')
 const showErrorModal = ref(false)
 const importErrors = ref([])
 
@@ -2225,6 +2329,21 @@ onMounted(() => {
 @keyframes lift {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-30px); }
+}
+
+.scale-in-center {
+  animation: scale-in-center 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes scale-in-center {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 </style>
 
