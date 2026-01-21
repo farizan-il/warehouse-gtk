@@ -1,12 +1,12 @@
 <template>
   <AppLayout pageTitle="Dashboard" pageDescription="Ringkasan sistem warehouse management">
-    <div class="min-h-screen bg-gray-50 p-6">
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-950 p-6">
       <!-- Header -->
       <div class="mb-6">
         <div class="flex justify-between items-center mb-4">
           <div>
-            <h1 class="text-3xl font-bold text-gray-900">Central Data WMS</h1>
-            <p class="text-gray-600 mt-1">Kelola semua material di gudang</p>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ t('dashboard.title') }}</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-1">{{ t('dashboard.subtitle') }}</p>
           </div>
         </div>
 
@@ -59,7 +59,7 @@
         <div v-if="showExpiredModal"
           class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999]"
           @click.self="closeExpiredModal">
-          <div class="bg-white rounded-lg max-w-6xl w-full mx-4 max-h-[80vh] overflow-hidden">
+          <div class="bg-white dark:bg-gray-900 rounded-lg max-w-6xl w-full mx-4 max-h-[80vh] overflow-hidden border border-gray-200 dark:border-gray-800 shadow-2xl">
             <div class="p-6">
               <!-- Header -->
               <div class="flex justify-between items-center mb-6">
@@ -78,8 +78,8 @@
 
               <!-- Table -->
               <div class="overflow-y-auto max-h-[60vh]">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50 sticky top-0">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+                  <thead class="bg-gray-50 dark:bg-gray-800 sticky top-0">
                     <tr>
                       <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kode</th>
                       <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Material</th>
@@ -90,9 +90,9 @@
                       <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                     </tr>
                   </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="material in expiredMaterials" :key="material.id" class="hover:bg-gray-50">
-                      <td class="px-4 py-3 text-sm text-gray-900">{{ material.kode }}</td>
+                  <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
+                    <tr v-for="material in expiredMaterials" :key="material.id" class="hover:bg-gray-50 dark:hover:bg-gray-800">
+                      <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ material.kode }}</td>
                       <td class="px-4 py-3 text-sm text-gray-900">{{ material.nama }}</td>
                       <td class="px-4 py-3 text-sm text-gray-900">{{ material.lot }}</td>
                       <td class="px-4 py-3 text-sm">
@@ -101,7 +101,7 @@
                       <td class="px-4 py-3 text-sm text-gray-900">{{ material.qty }} {{ material.uom }}</td>
                       <td class="px-4 py-3 text-sm">
                         <div class="flex flex-col gap-1">
-                          <span :class="getExpiredClass(material.expiredDate)">{{ formatDate(material.expiredDate) }}</span>
+                          <span :class="getExpiredClass(material.expiredDate)">{{ formatDateGlobal(material.expiredDate) }}</span>
                           <span :class="getExpiredBadgeClass(material.expiredDate)" class="px-2 py-0.5 text-xs font-semibold rounded-full inline-flex items-center gap-1 w-fit">
                             <svg v-if="getDaysUntilExpired(material.expiredDate) < 0" class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
@@ -122,7 +122,7 @@
               </div>
 
               <!-- Footer -->
-              <div class="flex justify-end mt-6 pt-4 border-t border-gray-200">
+              <div class="flex justify-end mt-6 pt-4 border-t border-gray-200 dark:border-gray-800">
                 <button @click="closeExpiredModal"
                   class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
                   Tutup
@@ -196,7 +196,7 @@
                         </span>
                       </div>
                       <div class="text-red-100 text-xs mt-0.5">
-                        Exp: {{ formatDate(material.expiredDate) }} • {{ material.lokasi }} • {{ material.lot }}
+                        Exp: {{ formatDateGlobal(material.expiredDate) }} • {{ material.lokasi }} • {{ material.lot }}
                       </div>
                       <div v-if="!isInQrtBin(material.lokasi)" class="text-orange-200 text-[10px] mt-1">
                         <a href="/transaction/bin-to-bin" class="underline hover:text-white">Bin-to-Bin dulu →</a>
@@ -213,7 +213,7 @@
         </div>
 
         <!-- Toolbar -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 p-4">
           <div class="flex flex-wrap gap-4 items-center justify-between">
             <!-- Left Side - Search & Filters -->
             <div class="flex flex-wrap gap-4 items-center flex-1">
@@ -224,36 +224,36 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <input v-model="searchQuery" type="text" placeholder="Cari kode, nama material, atau lot..."
-                  class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full md:w-80 bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <input v-model="searchQuery" type="text" :placeholder="t('dashboard.search_placeholder')"
+                  class="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg w-full md:w-80 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               </div>
 
               <!-- Filters -->
-              <select v-model="filterStatus" class="px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900">
-                <option value="">Semua Status</option>
+              <select v-model="filterStatus" class="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+                <option value="">{{ t('dashboard.filter_all_status') }}</option>
                 <option value="KARANTINA">Karantina</option>
                 <option value="RELEASED">Released</option>
                 <!-- <option value="HOLD">Hold</option> -->
                 <option value="REJECTED">Rejected</option>
               </select>
 
-              <select v-model="filterType" class="px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900">
-                <option value="">Semua Tipe</option>
+              <select v-model="filterType" class="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+                <option value="">{{ t('dashboard.filter_all_type') }}</option>
                 <option value="Raw Material">Raw Material</option>
                 <option value="Packaging">Packaging Material</option>
               </select>
 
               <select v-model="filterLocation"
-                class="px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900">
-                <option value="">Semua Lokasi</option>
+                class="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+                <option value="">{{ t('dashboard.filter_all_location') }}</option>
                 <option v-for="location in uniqueLocations" :key="location" :value="location">{{ location }}</option>
               </select>
 
               <!-- Sort Filter -->
-              <select v-model="sortOption" class="px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900">
-                 <option value="default">Default Sort (Kode)</option>
-                 <option value="newest">Terbaru (Newest)</option>
-                 <option value="oldest">Terlama (Oldest)</option>
+              <select v-model="sortOption" class="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+                 <option value="default">{{ t('dashboard.sort_default') }}</option>
+                 <option value="newest">{{ t('dashboard.sort_newest') }}</option>
+                 <option value="oldest">{{ t('dashboard.sort_oldest') }}</option>
               </select>
             </div>
 
@@ -291,13 +291,13 @@
       </div>
 
       <!-- Main Table (Desktop Only) -->
-      <div class="hidden md:block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div class="hidden md:block bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full">
-            <thead class="bg-gray-50">
+            <thead class="bg-gray-50 dark:bg-gray-800">
               <tr>
                 <th v-for="column in tableColumns" :key="column.key" @click="sortBy(column.key)"
-                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <div class="flex items-center space-x-1">
                     <span>{{ column.label }}</span>
                     <svg v-if="sortColumn === column.key" class="w-4 h-4"
@@ -307,27 +307,27 @@
                     </svg>
                   </div>
                 </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
               <tr v-for="item in filteredItems" :key="item.id" @click="openDetailPanel(item)" :class="getRowClass(item)"
-                class="hover:bg-gray-50 cursor-pointer transition-colors">
+                class="hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors">
                 <td class="px-4 py-3 whitespace-nowrap">
                   <span :class="item.type === 'Raw Material' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'"
                     class="px-2 py-1 text-xs font-semibold rounded-full">
                     {{ item.type }}
                   </span>
                 </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ item.subkategori || '-' }}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ item.kode }}</td>
-                <td class="px-4 py-3 text-sm text-gray-900">{{ item.nama }}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ item.lot }}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ item.lokasi }}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ formatQty(item.qty, item.type) }}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ item.uom }}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.subkategori || '-' }}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ item.kode }}</td>
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ item.nama }}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.lot }}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.lokasi }}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ formatQty(item.qty, item.type) }}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.uom }}</td>
                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                  <span :class="getExpiredClass(item.expiredDate)">{{ formatDate(item.expiredDate) }}</span>
+                  <span :class="getExpiredClass(item.expiredDate)">{{ formatDateGlobal(item.expiredDate) }}</span>
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap">
                   <span :class="getStatusClass(item.qr_type)" class="px-2 py-1 text-xs font-semibold rounded-full border">
@@ -384,15 +384,15 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-4.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 009.586 13H7" />
           </svg>
-          <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak ada data</h3>
-          <p class="mt-1 text-sm text-gray-500">Data material tidak ditemukan atau filter terlalu spesifik</p>
+          <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ t('dashboard.no_data') }}</h3>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Data material tidak ditemukan atau filter terlalu spesifik</p>
         </div>
       </div>
 
       <!-- Mobile Card View (Mobile Only) -->
       <div class="md:hidden space-y-4">
         <div v-for="item in filteredItems" :key="item.id" @click="openDetailPanel(item)" 
-             class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 active:scale-[0.98] transition-transform">
+             class="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-4 border border-gray-200 dark:border-gray-800 active:scale-[0.98] transition-transform">
             
             <!-- Header -->
             <div class="flex justify-between items-start mb-3">
@@ -407,23 +407,23 @@
 
             <!-- Content -->
             <div class="mb-3">
-                <h4 class="font-bold text-gray-900 text-base mb-1">{{ item.nama }}</h4>
-                <div class="text-sm text-gray-500 font-mono">{{ item.kode }} • {{ item.lot }}</div>
+                <h4 class="font-bold text-gray-900 dark:text-gray-100 text-base mb-1">{{ item.nama }}</h4>
+                <div class="text-sm text-gray-500 dark:text-gray-400 font-mono">{{ item.kode }} • {{ item.lot }}</div>
             </div>
 
             <!-- Details Grid -->
-            <div class="grid grid-cols-2 gap-y-2 gap-x-4 text-sm text-gray-600 mb-4 bg-gray-50 p-2 rounded">
+            <div class="grid grid-cols-2 gap-y-2 gap-x-4 text-sm text-gray-600 dark:text-gray-400 mb-4 bg-gray-50 dark:bg-gray-800 p-2 rounded">
                 <div>
-                    <span class="text-xs text-gray-500 block">Lokasi</span>
-                    <span class="font-medium text-gray-900">{{ item.lokasi }}</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-500 block">Lokasi</span>
+                    <span class="font-medium text-gray-900 dark:text-gray-100">{{ item.lokasi }}</span>
                 </div>
                 <div>
-                    <span class="text-xs text-gray-500 block">Qty</span>
-                    <span class="font-medium text-gray-900">{{ formatQty(item.qty, item.type) }} {{ item.uom }}</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-500 block">Qty</span>
+                    <span class="font-medium text-gray-900 dark:text-gray-100">{{ formatQty(item.qty, item.type) }} {{ item.uom }}</span>
                 </div>
                 <div class="col-span-2">
                     <span class="text-xs text-gray-500 block">Expired</span>
-                    <span :class="getExpiredClass(item.expiredDate)">{{ formatDate(item.expiredDate) }}</span>
+                    <span :class="getExpiredClass(item.expiredDate)">{{ formatDateGlobal(item.expiredDate) }}</span>
                 </div>
             </div>
 
@@ -450,11 +450,11 @@
         </div>
 
         <!-- Empty State Mobile -->
-        <div v-if="filteredItems.length === 0" class="text-center py-8 bg-white rounded-lg shadow-sm border border-gray-200">
+        <div v-if="filteredItems.length === 0" class="text-center py-8 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800">
              <svg class="mx-auto h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-4.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 009.586 13H7" />
              </svg>
-             <p class="mt-2 text-sm text-gray-500">Tidak ada data ditemukan</p>
+             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Tidak ada data ditemukan</p>
         </div>
       </div>
 
@@ -462,10 +462,10 @@
       <!-- Bin to Bin Transfer Modal -->
       <div v-if="showBinToBinModal"
         class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999]">
-        <div class="bg-white rounded-lg p-6 w-full max-w-3xl max-h-screen overflow-y-auto">
+        <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-3xl max-h-screen overflow-y-auto border border-gray-200 dark:border-gray-800 shadow-2xl">
           <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-semibold text-gray-900">Bin to Bin Transfer</h3>
-            <button @click="closeBinToBinModal" class="text-gray-400 hover:text-gray-600">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Bin to Bin Transfer</h3>
+            <button @click="closeBinToBinModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -588,16 +588,16 @@
             </div>
 
             <!-- Approval Section (Admin/Manager) -->
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div class="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
               <div class="flex items-start space-x-2">
-                <svg class="w-5 h-5 text-yellow-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd"
                     d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
                     clip-rule="evenodd" />
                 </svg>
                 <div class="flex-1">
-                  <h5 class="text-sm font-medium text-yellow-900">Persetujuan Manager</h5>
-                  <p class="text-xs text-yellow-800 mt-1">
+                  <h5 class="text-sm font-medium text-yellow-900 dark:text-yellow-100">Persetujuan Manager</h5>
+                  <p class="text-xs text-yellow-800 dark:text-yellow-300 mt-1">
                     Transfer Order Bin to Bin akan dibuat dan memerlukan approval dari manager/admin sebelum dapat
                     dieksekusi.
                   </p>
@@ -626,14 +626,14 @@
 
       <!-- Detail Panel -->
       <div v-if="selectedItem"
-        class="fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-xl z-[998] transform transition-transform duration-300 border-l border-gray-200"
+        class="fixed inset-y-0 right-0 w-full md:w-96 bg-white dark:bg-gray-900 shadow-xl z-[998] transform transition-transform duration-300 border-l border-gray-200 dark:border-gray-800"
         :class="showDetailPanel ? 'translate-x-0' : 'translate-x-full'" style="max-height: 100vh; overflow: hidden;">
         <div class="h-full flex flex-col">
           <!-- Panel Header -->
-          <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+          <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
             <div class="flex items-center justify-between">
-              <h3 class="text-lg font-medium text-gray-900">Detail Material</h3>
-              <button @click="closeDetailPanel" class="text-gray-400 hover:text-gray-600">
+              <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Detail Material</h3>
+              <button @click="closeDetailPanel" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -646,40 +646,40 @@
             <div class="p-6 space-y-6">
               <!-- Basic Info -->
               <div>
-                <h4 class="text-sm font-medium text-gray-900 mb-3">Informasi Material</h4>
+                <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">Informasi Material</h4>
                 <div class="space-y-2 text-sm">
                   <div class="flex justify-between">
-                    <span class="text-gray-600">Tipe:</span>
+                    <span class="text-gray-600 dark:text-gray-400">Tipe:</span>
                     <span :class="selectedItem.type === 'RM' ? 'text-blue-600' : 'text-green-600'"
                       class="font-medium">{{ selectedItem.type }}</span>
                   </div>
                   <div class="flex justify-between">
-                    <span class="text-gray-600">Kode:</span>
-                    <span class="font-medium text-gray-900">{{ selectedItem.kode }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">Kode:</span>
+                    <span class="font-medium text-gray-900 dark:text-gray-100">{{ selectedItem.kode }}</span>
                   </div>
                   <div class="flex justify-between">
-                    <span class="text-gray-600">Nama:</span>
-                    <span class="font-medium text-gray-900 text-right">{{ selectedItem.nama }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">Nama:</span>
+                    <span class="font-medium text-gray-900 dark:text-gray-100 text-right">{{ selectedItem.nama }}</span>
                   </div>
                   <div class="flex justify-between">
-                    <span class="text-gray-600">Lot/Serial:</span>
-                    <span class="font-medium text-gray-900">{{ selectedItem.lot }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">Lot/Serial:</span>
+                    <span class="font-medium text-gray-900 dark:text-gray-100">{{ selectedItem.lot }}</span>
                   </div>
                   <div class="flex justify-between">
-                    <span class="text-gray-600">Lokasi:</span>
-                    <span class="font-medium text-gray-900">{{ selectedItem.lokasi }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">Lokasi:</span>
+                    <span class="font-medium text-gray-900 dark:text-gray-100">{{ selectedItem.lokasi }}</span>
                   </div>
                   <div class="flex justify-between">
-                    <span class="text-gray-600">Qty:</span>
-                    <span class="font-medium text-gray-900">{{ selectedItem.qty }} {{ selectedItem.uom }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">Qty:</span>
+                    <span class="font-medium text-gray-900 dark:text-gray-100">{{ selectedItem.qty }} {{ selectedItem.uom }}</span>
                   </div>
                   <div class="flex justify-between">
-                    <span class="text-gray-600">Expired:</span>
+                    <span class="text-gray-600 dark:text-gray-400">Expired:</span>
                     <span :class="getExpiredClass(selectedItem.expiredDate)" class="font-medium">{{
                       formatDate(selectedItem.expiredDate) }}</span>
                   </div>
                   <div class="flex justify-between">
-                    <span class="text-gray-600">Status:</span>
+                    <span class="text-gray-600 dark:text-gray-400">Status:</span>
                     <span :class="getStatusClass(selectedItem.status)"
                       class="px-2 py-1 text-xs font-semibold rounded-full">{{ selectedItem.status }}</span>
                   </div>
@@ -702,15 +702,15 @@
                 </div>
                 <div class="mt-3 space-y-1 text-sm">
                   <div class="flex justify-between">
-                    <span class="text-gray-600">No PO:</span>
+                    <span class="text-gray-600 dark:text-gray-400">No PO:</span>
                     <span class="text-blue-600 font-medium">{{ selectedItem.no_po || '-' }}</span>
                   </div>
                   <div class="flex justify-between">
-                    <span class="text-gray-600">No Surat Jalan:</span>
+                    <span class="text-gray-600 dark:text-gray-400">No Surat Jalan:</span>
                     <span class="text-blue-600 font-medium">{{ selectedItem.no_surat_jalan || '-' }}</span>
                   </div>
                   <div class="flex justify-between">
-                    <span class="text-gray-600">No Incoming:</span>
+                    <span class="text-gray-600 dark:text-gray-400">No Incoming:</span>
                     <span class="text-blue-600 font-medium">{{ selectedItem.no_incoming || '-' }}</span>
                   </div>
                 </div>
@@ -718,7 +718,7 @@
 
               <!-- Movement History -->
               <div>
-                <h4 class="text-sm font-medium text-gray-900 mb-3">Riwayat Pergerakan</h4>
+                <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">Riwayat Pergerakan</h4>
                 <div v-if="selectedItem.history.length > 0" class="space-y-3">
                   <div v-for="history in selectedItem.history" :key="history.id" class="flex items-start space-x-3">
                     <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
@@ -746,14 +746,14 @@
       </div>
       <div v-if="showQRDetailModal && qrItem"
         class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000]">
-        <div class="bg-white rounded-lg p-6 w-full max-w-sm">
-          <div class="flex justify-between items-center mb-6 border-b pb-4">
-            <h3 class="text-xl font-semibold text-gray-900">
+        <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-sm border border-gray-200 dark:border-gray-800 shadow-2xl">
+          <div class="flex justify-between items-center mb-6 border-b dark:border-gray-800 pb-4">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
               QR Code: <span :class="qrItem.qr_type === 'Karantina' ? 'text-orange-600' : 'text-green-600'">
                 {{ qrItem.qr_type }}
               </span>
             </h3>
-            <button @click="closeQRDetailModal" class="text-gray-400 hover:text-gray-600">
+            <button @click="closeQRDetailModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -768,8 +768,8 @@
                 </div>
                 </div>
             
-            <p class="text-sm font-medium text-gray-700">Kode: **{{ qrItem.kode }}-{{ qrItem.lot }}**</p>
-            <p class="text-xs text-gray-500">
+            <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Kode: **{{ qrItem.kode }}-{{ qrItem.lot }}**</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
               Data Terenkripsi: `{{ qrItem.qr_data.substring(0, 40) }}...`
             </p>
 
@@ -954,6 +954,96 @@
           </div>
         </div>
       </div>
+
+      <!-- Export Settings Modal -->
+      <div v-if="showExportModal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-hidden border border-gray-200 dark:border-gray-800 shadow-2xl flex flex-col">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Pengaturan Export Excel
+            </h3>
+            <button @click="showExportModal = false" class="text-gray-400 hover:text-gray-600">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex-1 overflow-y-auto space-y-6 pr-2">
+            <!-- Filter & Search Info -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter Status</label>
+                <select v-model="exportFilterStatus" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800">
+                  <option value="">{{ t('dashboard.filter_all_status') }}</option>
+                  <option value="KARANTINA">Karantina</option>
+                  <option value="RELEASED">Released</option>
+                  <option value="REJECTED">Rejected</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cari Keyword</label>
+                <input v-model="exportSearchQuery" type="text" placeholder="Cari kode/nama/lot..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800">
+              </div>
+            </div>
+
+            <!-- Field Selection & Ordering -->
+            <div>
+              <div class="flex justify-between items-center mb-3">
+                <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider">Pilih & Urutkan Kolom</h4>
+                <div class="space-x-2">
+                    <button @click="selectAllExportFields(true)" class="text-xs text-blue-600 hover:underline">Pilih Semua</button>
+                    <button @click="selectAllExportFields(false)" class="text-xs text-gray-500 hover:underline">Reset</button>
+                </div>
+              </div>
+              
+              <div class="space-y-2">
+                <div v-for="(field, index) in exportFields" :key="field.key" 
+                     class="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 group transition-colors">
+                  <div class="flex items-center gap-3">
+                    <input type="checkbox" v-model="field.checked" class="w-4 h-4 rounded text-purple-600">
+                    <span :class="{'text-gray-400': !field.checked}" class="text-sm font-medium dark:text-gray-100">{{ field.label }}</span>
+                  </div>
+                  <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button @click="moveField(index, -1)" :disabled="index === 0" class="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-30">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                      </svg>
+                    </button>
+                    <button @click="moveField(index, 1)" :disabled="index === exportFields.length - 1" class="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-30">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-800 flex justify-end gap-3">
+            <button @click="showExportModal = false" class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+              Batal
+            </button>
+            <button @click="confirmExport" :disabled="isDownloadingExcel || !hasSelectedFields" 
+                    class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all flex items-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+              <svg v-if="!isDownloadingExcel" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0L8 8m4-4v12" />
+              </svg>
+              <svg v-else class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              {{ isDownloadingExcel ? 'Memproses...' : 'Download Excel' }}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </AppLayout>
 </template>
@@ -964,6 +1054,9 @@ import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { router } from '@inertiajs/vue3'
 import axios from 'axios'
 import QRCode from 'qrcode'
+import { useSettings } from '@/Composables/useSettings';
+
+const { settings, t, formatDateGlobal, formatDateTimeGlobal } = useSettings();
 
 const activeAlertFilter = ref<string>('');
 
@@ -1051,6 +1144,29 @@ const showPrintAllProgress = ref(false)
 const printAllProgress = ref(0)
 const printAllStatusText = ref('')
 const allMaterialsData = ref<any[]>([])
+
+// Export States
+const showExportModal = ref(false)
+const isDownloadingExcel = ref(false)
+const exportFilterStatus = ref('')
+const exportSearchQuery = ref('')
+const exportFields = ref([
+    { key: 'type', label: 'Kategori', checked: true },
+    { key: 'subkategori', label: 'Sub Kategori', checked: true },
+    { key: 'kode', label: 'Kode Material', checked: true },
+    { key: 'nama', label: 'Nama Material', checked: true },
+    { key: 'lot', label: 'Lot / Serial', checked: true },
+    { key: 'lokasi', label: 'Lokasi', checked: true },
+    { key: 'qty', label: 'Qty On Hand', checked: true },
+    { key: 'uom', label: 'UoM', checked: true },
+    { key: 'expiredDate', label: 'Expired Date', checked: true },
+    { key: 'status', label: 'Status', checked: true },
+    { key: 'no_po', label: 'No PO', checked: true },
+    { key: 'no_surat_jalan', label: 'No Surat Jalan', checked: true },
+    { key: 'no_incoming', label: 'No Incoming', checked: true },
+])
+
+const hasSelectedFields = computed(() => exportFields.value.some(f => f.checked))
 
 // Watch Sort Option
 watch(sortOption, (newVal) => {
@@ -1392,22 +1508,12 @@ const getBinCapacityText = (bin: BinLocation | undefined) => {
   return 'Tersedia'
 }
 
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString('id-ID', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  })
+const formatDateTime = (date: string) => {
+  return formatDateTimeGlobal(date);
 }
 
-const formatDateTime = (date: string) => {
-  return new Date(date).toLocaleDateString('id-ID', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+const formatDate = (date: string) => {
+  return formatDateGlobal(date);
 }
 
 // Helper untuk menghitung hari sampai expired
@@ -1670,14 +1776,54 @@ const openImportModal = () => {
 }
 
 const exportData = () => {
-  const dataStr = JSON.stringify(filteredItems.value, null, 2)
-  const dataBlob = new Blob([dataStr], { type: 'application/json' })
-  const url = URL.createObjectURL(dataBlob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = `wms_central_data_${new Date().toISOString().split('T')[0]}.json`
-  link.click()
-  URL.revokeObjectURL(url)
+    exportFilterStatus.value = filterStatus.value
+    exportSearchQuery.value = searchQuery.value
+    showExportModal.value = true
+}
+
+const selectAllExportFields = (val: boolean) => {
+    exportFields.value.forEach(f => f.checked = val)
+}
+
+const moveField = (index: number, direction: number) => {
+    const newIndex = index + direction
+    if (newIndex < 0 || newIndex >= exportFields.value.length) return
+    const temp = exportFields.value[index]
+    exportFields.value[index] = exportFields.value[newIndex]
+    exportFields.value[newIndex] = temp
+}
+
+const confirmExport = async () => {
+    if (isDownloadingExcel.value) return
+    isDownloadingExcel.value = true
+
+    try {
+        const selectedFields = exportFields.value.filter(f => f.checked)
+        
+        const response = await axios.post('/dashboard/export', {
+            fields: selectedFields,
+            status: exportFilterStatus.value,
+            search: exportSearchQuery.value
+        }, {
+            responseType: 'blob'
+        })
+
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', `WMS_Export_${new Date().toISOString().split('T')[0]}.xlsx`)
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+        window.URL.revokeObjectURL(url)
+
+        showExportModal.value = false
+    } catch (error) {
+        console.error('Export failed:', error)
+        alert('Gagal mengekspor data. Silakan coba lagi.')
+    } finally {
+        isDownloadingExcel.value = false
+    }
 }
 
 const printQR = (item: MaterialItem) => {

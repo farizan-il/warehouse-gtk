@@ -1,9 +1,9 @@
 <template>
     <AppLayout title="Role & Permission Management">
-        <div class="role-permission-management">
+        <div class="role-permission-management min-h-screen bg-transparent p-4 transition-colors">
             <!-- Header -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                <h1 class="text-2xl font-bold text-gray-800">Role & Permission Management</h1>
+                <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 transition-colors">Role & Permission Management</h1>
                 <div class="flex gap-2">
                     <button 
                         @click="showManagePermissionsModal = true"
@@ -28,54 +28,54 @@
             </div>
 
             <!-- Success/Error Message -->
-            <div v-if="$page.props.flash?.success" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            <div v-if="$page.props.flash?.success" class="bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-800 text-green-700 dark:text-green-400 px-4 py-3 rounded mb-4 transition-colors">
                 {{ $page.props.flash.success }}
             </div>
-            <div v-if="$page.props.flash?.error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div v-if="$page.props.flash?.error" class="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded mb-4 transition-colors">
                 {{ $page.props.flash.error }}
             </div>
 
             <!-- Tabel Daftar Role -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+            <div class="bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-gray-800 transition-colors">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
+                    <thead class="bg-gray-50 dark:bg-gray-800 transition-colors">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deskripsi</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ringkasan Permissions</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah User</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Role</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Deskripsi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ringkasan Permissions</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Jumlah User</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="role in roles" :key="role.id" class="hover:bg-gray-50 transition-colors">
+                    <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
+                        <tr v-for="role in roles" :key="role.id" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ role.name }}</div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ role.name }}</div>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm text-gray-600">{{ role.description }}</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">{{ role.description }}</div>
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-500">
+                            <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                                 <span v-if="role.permissions && role.permissions.length > 0">
-                                    Total **{{ role.permissions.length }}** permissions di **{{ getModuleCount(role.permissions) }}** modul.
+                                    Total <span class="font-bold text-gray-900 dark:text-gray-200">{{ role.permissions.length }}</span> permissions di <span class="font-bold text-gray-900 dark:text-gray-200">{{ getModuleCount(role.permissions) }}</span> modul.
                                 </span>
-                                <span v-else class="text-red-500">Tidak ada Permission</span>
+                                <span v-else class="text-red-500 dark:text-red-400 font-medium">Tidak ada Permission</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 transition-colors">
                                     {{ role.userCount }} users
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                 <button 
                                     @click="openPermissionModal(role)"
-                                    class="text-indigo-600 hover:text-indigo-900 transition-colors"
+                                    class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 transition-colors"
                                 >
                                     Atur Permission
                                 </button>
                                 <button 
                                     @click="deleteRole(role.id)"
-                                    class="text-red-600 hover:text-red-900 transition-colors"
+                                    class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors"
                                 >
                                     Hapus
                                 </button>
@@ -88,11 +88,11 @@
             <div v-if="showAddRoleModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]" style="background-color: rgba(43, 51, 63, 0.67);"></div>
 
             <!-- Modal Tambah Role -->
-            <div v-if="showAddRoleModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]" style="background-color: rgba(43, 51, 63, 0.67);">
-                <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+            <div v-if="showAddRoleModal" class="fixed inset-0 bg-opacity-50 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[9999]" style="background-color: rgba(43, 51, 63, 0.67);">
+                <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-md shadow-xl border border-gray-200 dark:border-gray-800 transition-colors">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold text-gray-900">Tambah Role Baru</h3>
-                        <button @click="closeAddRoleModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Tambah Role Baru</h3>
+                        <button @click="closeAddRoleModal" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -101,23 +101,23 @@
                     
                     <form @submit.prevent="addRole">
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Role</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nama Role</label>
                             <input 
                                 v-model="newRole.name"
                                 type="text" 
                                 required
                                 placeholder="Contoh: QC, Supervisor, Operator Gudang"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 placeholder-gray-400"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 transition-colors"
                             >
                         </div>
                         
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Role (Opsional)</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deskripsi Role (Opsional)</label>
                             <textarea 
                                 v-model="newRole.description"
                                 rows="3"
                                 placeholder="Role untuk tim QC yang memeriksa barang masuk"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 placeholder-gray-400"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 transition-colors"
                             ></textarea>
                         </div>
                         
@@ -125,7 +125,7 @@
                             <button 
                                 type="button"
                                 @click="closeAddRoleModal"
-                                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
+                                class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
                             >
                                 Batal
                             </button>
@@ -141,15 +141,15 @@
             </div>
 
             <!-- Modal Atur Permission -->
-            <div v-if="showPermissionModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]" style="background-color: rgba(43, 51, 63, 0.67);">
-                <div class="bg-white rounded-xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl">
+            <div v-if="showPermissionModal" class="fixed inset-0 bg-opacity-50 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[9999]" style="background-color: rgba(43, 51, 63, 0.67);">
+                <div class="bg-white dark:bg-gray-900 rounded-xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl border border-gray-200 dark:border-gray-800 transition-colors">
                     <!-- Modal Header -->
-                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50 rounded-t-xl">
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-800 rounded-t-xl transition-colors">
                         <div>
-                            <h3 class="text-xl font-bold text-gray-900">Atur Otorisasi Role</h3>
-                            <p class="text-sm text-gray-600 mt-1">Mengatur hak akses untuk role: <span class="font-bold text-blue-600">{{ selectedRole?.name }}</span></p>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">Atur Otorisasi Role</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Mengatur hak akses untuk role: <span class="font-bold text-blue-600 dark:text-blue-400">{{ selectedRole?.name }}</span></p>
                         </div>
-                        <button @click="closePermissionModal" class="text-gray-400 hover:text-gray-600 transition p-2 hover:bg-gray-200 rounded-full">
+                        <button @click="closePermissionModal" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -157,27 +157,27 @@
                     </div>
 
                     <!-- Modal Body (Scrollable) -->
-                    <div class="flex-1 overflow-y-auto p-6 bg-gray-100">
+                    <div class="flex-1 overflow-y-auto p-6 bg-gray-100 dark:bg-gray-800/50 transition-colors">
                         <div class="grid grid-cols-1 gap-6">
                             <div 
                                 v-for="moduleData in allPermissions" 
                                 :key="moduleData.module_key" 
-                                class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden"
+                                class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden transition-colors"
                             >
                                 <!-- Module Header -->
-                                <div class="bg-blue-50 px-4 py-3 border-b border-blue-100 flex justify-between items-center">
-                                    <h4 class="font-bold text-blue-800 flex items-center text-lg">
+                                <div class="bg-blue-50 dark:bg-blue-900/30 px-4 py-3 border-b border-blue-100 dark:border-blue-800/50 flex justify-between items-center transition-colors">
+                                    <h4 class="font-bold text-blue-800 dark:text-blue-300 flex items-center text-lg">
                                         <span v-html="moduleData.module_name" class="mr-2"></span>
-                                        <span class="text-xs bg-blue-200 text-blue-800 px-2 py-0.5 rounded-full">{{ moduleData.permissions.length }}</span>
+                                        <span class="text-xs bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded-full">{{ moduleData.permissions.length }}</span>
                                     </h4>
-                                    <label class="flex items-center space-x-2 cursor-pointer bg-white px-3 py-1.5 rounded-md border border-blue-200 hover:bg-blue-50 transition">
+                                    <label class="flex items-center space-x-2 cursor-pointer bg-white dark:bg-gray-800 px-3 py-1.5 rounded-md border border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-900/40 transition">
                                         <input
                                             type="checkbox"
                                             :checked="isModuleAllSelected(moduleData.module_key)"
                                             @change="toggleSelectAllModule(moduleData.module_key, $event)"
-                                            class="rounded text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer"
+                                            class="rounded text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600"
                                         >
-                                        <span class="text-sm font-semibold text-blue-700 select-none">Pilih Semua</span>
+                                        <span class="text-sm font-semibold text-blue-700 dark:text-blue-300 select-none">Pilih Semua</span>
                                     </label>
                                 </div>
                                 
@@ -189,8 +189,8 @@
                                         :class="[
                                             'flex items-start p-3 rounded-lg border cursor-pointer transition-all hover:shadow-md',
                                             hasPermission(permission.name) 
-                                                ? 'bg-blue-50 border-blue-300 ring-1 ring-blue-300' 
-                                                : 'bg-white border-gray-200 hover:border-blue-300'
+                                                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-700 ring-1 ring-blue-300 dark:ring-blue-800' 
+                                                : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700'
                                         ]"
                                     >
                                         <div class="flex items-center h-5">
@@ -198,14 +198,14 @@
                                                 type="checkbox" 
                                                 :checked="hasPermission(permission.name)"
                                                 @change="togglePermission(permission.name, $event)"
-                                                class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 border-gray-300 cursor-pointer"
+                                                class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 cursor-pointer"
                                             >
                                         </div>
                                         <div class="ml-3 text-sm">
-                                            <span class="font-semibold text-gray-900 block mb-0.5">
+                                            <span class="font-semibold text-gray-900 dark:text-gray-100 block mb-0.5">
                                                 {{ permission.display_name }}
                                             </span>
-                                            <span class="text-gray-500 text-xs block leading-tight">
+                                            <span class="text-gray-500 dark:text-gray-400 text-xs block leading-tight">
                                                 {{ permission.description || 'Tidak ada deskripsi' }}
                                             </span>
                                         </div>
@@ -216,21 +216,21 @@
                     </div>
 
                     <!-- Modal Footer -->
-                    <div class="px-6 py-4 border-t border-gray-200 bg-white rounded-b-xl flex justify-between items-center">
-                        <div class="text-sm text-gray-500">
-                            Terpilih: <span class="font-bold text-blue-600 text-lg">{{ selectedPermissionCount }}</span> permission
+                    <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 rounded-b-xl flex justify-between items-center transition-colors">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                            Terpilih: <span class="font-bold text-blue-600 dark:text-blue-400 text-lg">{{ selectedPermissionCount }}</span> permission
                         </div>
                         <div class="flex space-x-3">
                             <button 
                                 @click="closePermissionModal"
-                                class="px-5 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition focus:ring-2 focus:ring-offset-2 focus:ring-gray-200"
+                                class="px-5 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 dark:focus:ring-gray-800"
                             >
                                 Batal
                             </button>
                             <button 
                                 @click="savePermissions"
                                 :disabled="isSaving"
-                                class="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition shadow-lg shadow-blue-200 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                                class="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition shadow-lg shadow-blue-200 dark:shadow-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                             >
                                 <svg v-if="isSaving" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -244,11 +244,11 @@
             </div>
 
             <!-- Modal Kelola Permission (CRUD) -->
-            <div v-if="showManagePermissionsModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]" style="background-color: rgba(43, 51, 63, 0.67);">
-                <div class="bg-white rounded-lg p-6 w-full max-w-5xl max-h-[90vh] overflow-y-auto shadow-xl">
+            <div v-if="showManagePermissionsModal" class="fixed inset-0 bg-opacity-50 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[9999]" style="background-color: rgba(43, 51, 63, 0.67);">
+                <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-5xl max-h-[90vh] overflow-y-auto shadow-xl border border-gray-200 dark:border-gray-800 transition-colors">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold text-gray-900">Kelola Daftar Permission</h3>
-                        <button @click="showManagePermissionsModal = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Kelola Daftar Permission</h3>
+                        <button @click="showManagePermissionsModal = false" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -256,36 +256,36 @@
                     </div>
 
                     <!-- Add Permission Form -->
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                        <h4 class="text-md font-semibold text-blue-800 mb-3">Tambah Permission Baru</h4>
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6 transition-colors">
+                        <h4 class="text-md font-semibold text-blue-800 dark:text-blue-300 mb-3">Tambah Permission Baru</h4>
                         <form @submit.prevent="addPermission" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Module</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Module</label>
                                 <input 
                                     v-model="newPermission.module"
                                     type="text" 
                                     required
                                     placeholder="cycle_count"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm transition-colors"
                                 >
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Action</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Action</label>
                                 <input 
                                     v-model="newPermission.action"
                                     type="text" 
                                     required
                                     placeholder="approve"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm transition-colors"
                                 >
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Deskripsi</label>
                                 <input 
                                     v-model="newPermission.description"
                                     type="text" 
                                     placeholder="Approve Cycle Count"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm transition-colors"
                                 >
                             </div>
                             <div class="flex items-end">
@@ -297,8 +297,8 @@
                                 </button>
                             </div>
                         </form>
-                        <p class="text-xs text-gray-500 mt-2">
-                            Permission name akan dibuat otomatis: <code class="bg-gray-100 px-1 rounded">{{ newPermission.module || 'module' }}.{{ newPermission.action || 'action' }}</code>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                            Permission name akan dibuat otomatis: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded dark:text-blue-400">{{ newPermission.module || 'module' }}.{{ newPermission.action || 'action' }}</code>
                         </p>
                     </div>
 
@@ -307,36 +307,36 @@
                         <div 
                             v-for="moduleData in allPermissions" 
                             :key="moduleData.module_key" 
-                            class="border border-gray-200 rounded-lg overflow-hidden"
+                            class="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden transition-colors"
                         >
-                            <div class="bg-gray-100 px-4 py-2 font-semibold text-gray-800 flex items-center">
+                            <div class="bg-gray-100 dark:bg-gray-800 px-4 py-2 font-semibold text-gray-800 dark:text-gray-200 flex items-center transition-colors">
                                 <span v-html="moduleData.module_name"></span>
-                                <span class="ml-2 text-xs text-gray-500">({{ moduleData.permissions.length }} permissions)</span>
+                                <span class="ml-2 text-xs text-gray-500 dark:text-gray-400">({{ moduleData.permissions.length }} permissions)</span>
                             </div>
                             <table class="w-full">
-                                <thead class="bg-gray-50">
+                                <thead class="bg-gray-50 dark:bg-gray-900 transition-colors">
                                     <tr>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Permission Name</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Deskripsi</th>
-                                        <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Permission Name</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Action</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Deskripsi</th>
+                                        <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-200">
-                                    <tr v-for="permission in moduleData.permissions" :key="permission.id" class="hover:bg-gray-50">
-                                        <td class="px-4 py-2 text-sm text-gray-900 font-mono">{{ permission.name }}</td>
-                                        <td class="px-4 py-2 text-sm text-gray-600">{{ permission.display_name }}</td>
-                                        <td class="px-4 py-2 text-sm text-gray-500">{{ permission.description || '-' }}</td>
+                                <tbody class="divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
+                                    <tr v-for="permission in moduleData.permissions" :key="permission.id" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                        <td class="px-4 py-2 text-sm text-gray-900 dark:text-gray-100 font-mono">{{ permission.name }}</td>
+                                        <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">{{ permission.display_name }}</td>
+                                        <td class="px-4 py-2 text-sm text-gray-500 dark:text-gray-500">{{ permission.description || '-' }}</td>
                                         <td class="px-4 py-2 text-right space-x-2">
                                             <button 
                                                 @click="openEditPermissionModal(permission, moduleData.module_key)"
-                                                class="text-indigo-600 hover:text-indigo-900 text-sm"
+                                                class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 text-sm transition-colors"
                                             >
                                                 Edit
                                             </button>
                                             <button 
                                                 @click="deletePermission(permission.id, permission.name)"
-                                                class="text-red-600 hover:text-red-900 text-sm"
+                                                class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 text-sm transition-colors"
                                             >
                                                 Hapus
                                             </button>
@@ -347,10 +347,10 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-end mt-6 pt-4 border-t border-gray-200">
+                    <div class="flex justify-end mt-6 pt-4 border-t border-gray-200 dark:border-gray-800 transition-colors">
                         <button 
                             @click="showManagePermissionsModal = false"
-                            class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+                            class="px-4 py-2 bg-gray-600 dark:bg-gray-800 text-white rounded-md hover:bg-gray-700 dark:hover:bg-gray-700 transition-colors"
                         >
                             Tutup
                         </button>
@@ -359,11 +359,11 @@
             </div>
 
             <!-- Modal Edit Permission -->
-            <div v-if="showEditPermissionModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[10000]" style="background-color: rgba(43, 51, 63, 0.67);">
-                <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+            <div v-if="showEditPermissionModal" class="fixed inset-0 bg-opacity-50 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[10000]" style="background-color: rgba(43, 51, 63, 0.67);">
+                <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-md shadow-xl border border-gray-200 dark:border-gray-800 transition-colors">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold text-gray-900">Edit Permission</h3>
-                        <button @click="showEditPermissionModal = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Edit Permission</h3>
+                        <button @click="showEditPermissionModal = false" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -372,40 +372,40 @@
                     
                     <form @submit.prevent="updatePermission">
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Module</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Module</label>
                             <input 
                                 v-model="editingPermission.module"
                                 type="text" 
                                 required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"
                             >
                         </div>
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Action</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Action</label>
                             <input 
                                 v-model="editingPermission.action"
                                 type="text" 
                                 required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"
                             >
                         </div>
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Deskripsi</label>
                             <input 
                                 v-model="editingPermission.description"
                                 type="text" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"
                             >
                         </div>
-                        <p class="text-xs text-gray-500 mb-4">
-                            Permission name akan menjadi: <code class="bg-gray-100 px-1 rounded">{{ editingPermission.module || 'module' }}.{{ editingPermission.action || 'action' }}</code>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                            Permission name akan menjadi: <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded dark:text-blue-400">{{ editingPermission.module || 'module' }}.{{ editingPermission.action || 'action' }}</code>
                         </p>
                         
                         <div class="flex justify-end space-x-3">
                             <button 
                                 type="button"
                                 @click="showEditPermissionModal = false"
-                                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
+                                class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
                             >
                                 Batal
                             </button>

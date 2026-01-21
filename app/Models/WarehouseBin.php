@@ -13,7 +13,6 @@ class WarehouseBin extends Model
         'zone_id',
         'warehouse_id', //default = 1
         'bin_code',
-        'bin_name',
         'bin_type',
         'capacity',
         'current_items',
@@ -25,7 +24,7 @@ class WarehouseBin extends Model
         'capacity' => 'integer',
         'current_items' => 'integer',
     ];
-
+    
     public function zone()
     {
         return $this->belongsTo(WarehouseZone::class);

@@ -38,6 +38,10 @@ class MasterDataController extends Controller
     $status = request()->query('status', '');
     $activeTab = request()->query('activeTab', 'sku');
 
+    // Get user settings for pagination
+    $userSettings = auth()->user()->getSettings();
+    $perPage = $userSettings['display']['rows_per_page'] ?? self::PER_PAGE;
+
     // SKU Query with Search and Filter
     $skuQuery = Material::query();
     if ($search) {
@@ -49,7 +53,7 @@ class MasterDataController extends Controller
     if ($status) {
         $skuQuery->where('status', strtolower($status));
     }
-    $skuPaginator = $skuQuery->paginate(self::PER_PAGE);
+    $skuPaginator = $skuQuery->paginate($perPage)->withQueryString();
 
     // Supplier Query with Search and Filter
     $supplierQuery = Supplier::query();
@@ -62,7 +66,7 @@ class MasterDataController extends Controller
     if ($status) {
         $supplierQuery->where('status', strtolower($status));
     }
-    $supplierPaginator = $supplierQuery->paginate(self::PER_PAGE);
+    $supplierPaginator = $supplierQuery->paginate($perPage)->withQueryString();
 
     // Bin Location Query with Search and Filter
     $binQuery = WarehouseBin::with('zone');
@@ -77,7 +81,7 @@ class MasterDataController extends Controller
     if ($status) {
         $binQuery->where('status', strtolower($status));
     }
-    $binPaginator = $binQuery->paginate(self::PER_PAGE);
+    $binPaginator = $binQuery->paginate($perPage)->withQueryString();
 
     // User Query with Search and Filter
     $userQuery = User::with('role');
@@ -90,7 +94,7 @@ class MasterDataController extends Controller
     if ($status) {
         $userQuery->where('status', strtolower($status));
     }
-    $userPaginator = $userQuery->paginate(self::PER_PAGE);
+    $userPaginator = $userQuery->paginate($perPage)->withQueryString();
 
     // Map data di setiap Paginator
     $mapPaginator = function ($paginator, $callback) {

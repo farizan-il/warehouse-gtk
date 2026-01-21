@@ -1,25 +1,25 @@
 <template>
     <AppLayout pageTitle="Master Data" pageDescription="Kelola data master sistem WMS">
         <div class="min-h-screen transition-colors duration-300">
-    <div class="min-h-screen bg-gray-50 p-6 relative">
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-950 p-6 relative transition-colors">
       <!-- Loading Overlay -->
-      <div v-if="isLoading" class="fixed inset-0 bg-white/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
-        <div class="bg-white p-8 rounded-xl shadow-2xl flex flex-col items-center border border-gray-100">
+      <div v-if="isLoading" class="fixed inset-0 bg-white/90 dark:bg-gray-950/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center transition-colors">
+        <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl flex flex-col items-center border border-gray-100 dark:border-gray-800 transition-colors">
           <div class="warehouse-loader mb-4">
             <div class="forklift">
               <div class="forks"></div>
             </div>
             <div class="box"></div>
           </div>
-          <h3 class="text-xl font-bold text-gray-800">{{ loadingTitle || 'Processing...' }}</h3>
-          <p class="text-gray-500 mt-2">{{ loadingSubtitle || 'Please wait while we process your request.' }}</p>
+          <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">{{ loadingTitle || 'Processing...' }}</h3>
+          <p class="text-gray-500 dark:text-gray-400 mt-2">{{ loadingSubtitle || 'Please wait while we process your request.' }}</p>
           
           <!-- Progress Bar -->
           <div v-if="loadingProgress > 0" class="w-full mt-6">
             <div class="flex justify-between mb-1">
-              <span class="text-xs font-medium text-blue-700">Proses: {{ loadingProgress }}%</span>
+              <span class="text-xs font-medium text-blue-700 dark:text-blue-400">Proses: {{ loadingProgress }}%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2.5">
               <div 
                 class="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out" 
                 :style="{ width: loadingProgress + '%' }"
@@ -31,20 +31,20 @@
 
       <!-- Error Modal -->
       <div v-if="showErrorModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
-          <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-red-50 rounded-t-xl">
+        <div class="bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col border border-gray-200 dark:border-gray-800 transition-colors">
+          <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-red-50 dark:bg-red-900/20 rounded-t-xl transition-colors">
             <div class="flex items-center gap-3">
-              <div class="bg-red-100 p-2 rounded-full">
-                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="bg-red-100 dark:bg-red-900/40 p-2 rounded-full">
+                <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
               <div>
-                <h3 class="text-lg font-bold text-gray-900">Import Errors</h3>
-                <p class="text-sm text-red-600">Terjadi kesalahan pada beberapa baris data</p>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Import Errors</h3>
+                <p class="text-sm text-red-600 dark:text-red-400">Terjadi kesalahan pada beberapa baris data</p>
               </div>
             </div>
-            <button @click="closeErrorModal" class="text-gray-400 hover:text-gray-600">
+            <button @click="closeErrorModal" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -53,14 +53,14 @@
           
           <div class="p-6 overflow-y-auto">
             <div class="space-y-4">
-              <div v-for="(error, index) in importErrors" :key="index" class="bg-red-50 border border-red-100 rounded-lg p-4">
+              <div v-for="(error, index) in importErrors" :key="index" class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/30 rounded-lg p-4 transition-colors">
                 <div class="flex items-start gap-3">
-                  <span class="bg-red-200 text-red-800 text-xs font-bold px-2 py-1 rounded">Row {{ error.row }}</span>
+                  <span class="bg-red-200 dark:bg-red-900/40 text-red-800 dark:text-red-300 text-xs font-bold px-2 py-1 rounded">Row {{ error.row }}</span>
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-red-900">{{ error.message }}</p>
-                    <details class="mt-2">
-                      <summary class="text-xs text-red-600 cursor-pointer hover:underline">View Row Data</summary>
-                      <pre class="mt-2 text-xs bg-white p-2 rounded border border-red-100 overflow-x-auto">{{ error.data }}</pre>
+                    <p class="text-sm font-medium text-red-900 dark:text-red-100">{{ error.message }}</p>
+                    <details class="mt-2 text-gray-800 dark:text-gray-200">
+                      <summary class="text-xs text-red-600 dark:text-red-400 cursor-pointer hover:underline">View Row Data</summary>
+                      <pre class="mt-2 text-xs bg-white dark:bg-gray-800 p-2 rounded border border-red-100 dark:border-red-900/30 overflow-x-auto transition-colors">{{ error.data }}</pre>
                     </details>
                   </div>
                 </div>
@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <div class="p-6 border-t border-gray-100 bg-gray-50 rounded-b-xl flex justify-end">
+          <div class="p-6 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 rounded-b-xl flex justify-end transition-colors">
             <button 
               @click="closeErrorModal"
               class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg transition-colors"
@@ -82,8 +82,8 @@
       <div class="mb-6">
         <div class="flex justify-between items-center">
           <div>
-            <h1 class="text-3xl font-bold text-gray-900">Master Data</h1>
-            <p class="text-gray-600 mt-1">Kelola data master untuk seluruh sistem WMS</p>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Master Data</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-1">Kelola data master untuk seluruh sistem WMS</p>
           </div>
           <div>
             <button 
@@ -107,16 +107,16 @@
       </div>
 
       <!-- Tab Navigation -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
-        <div class="border-b border-gray-200">
+      <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 mb-6 transition-colors">
+        <div class="border-b border-gray-200 dark:border-gray-800">
           <nav class="-mb-px flex space-x-8 px-6">
             <button
               v-for="tab in tabs"
               :key="tab.id"
               @click="setActiveTab(tab.id)" 
               :class="activeTab === tab.id
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700'"
               class="py-4 px-1 border-b-2 font-medium text-sm transition-colors"
             >
               {{ tab.label }}
@@ -180,7 +180,7 @@
                 @keyup.enter="performSearch"
                 type="text" 
                 :placeholder="'Cari ' + getCurrentTabLabel() + '...'"
-                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
               >
               <button 
                 @click="performSearch"
@@ -191,7 +191,7 @@
                 </svg>
               </button>
             </div>
-            <select v-model="statusFilter" @change="performSearch" class="px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500">
+            <select v-model="statusFilter" @change="performSearch" class="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors">
               <option value="">Semua Status</option>
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
@@ -200,7 +200,7 @@
 
           <!-- SKU Tab -->
           <div v-show="activeTab === 'sku'">
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
+            <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-800 transition-colors">
               <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                   <thead class="bg-gray-50">
@@ -210,51 +210,51 @@
                           type="checkbox" 
                           :checked="isAllSelected"
                           @change="toggleSelectAll"
-                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          class="rounded border-gray-300 dark:border-gray-700 text-blue-600 focus:ring-blue-500 bg-white dark:bg-gray-800 transition-colors"
                         >
                       </th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kode Item</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Material</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UoM</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sub Kategori</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Kode Item</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Nama Material</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">UoM</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Kategori</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Sub Kategori</th>
 
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Halal</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">QC Required</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expiry</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Halal</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">QC Required</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Expiry</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="item in activeSkuData.data" :key="item.id" class="hover:bg-gray-50">
+                  <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
+                    <tr v-for="item in activeSkuData.data" :key="item.id" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                       <td class="px-4 py-4 text-center">
                         <input 
                           type="checkbox" 
                           :checked="selectedSkuIds.includes(item.id)"
                           @change="toggleSelectSku(item.id)"
-                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          class="rounded border-gray-300 dark:border-gray-700 text-blue-600 focus:ring-blue-500 bg-white dark:bg-gray-800 transition-colors"
                         >
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-mono text-gray-900">{{ item.code }}</div>
+                        <div class="text-sm font-mono text-gray-900 dark:text-gray-100">{{ item.code }}</div>
                       </td>
                       <td class="px-6 py-4">
-                        <div class="text-sm text-gray-900">{{ item.name }}</div>
+                        <div class="text-sm text-gray-900 dark:text-gray-100">{{ item.name }}</div>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">{{ item.uom }}</div>
+                        <div class="text-sm text-gray-900 dark:text-gray-100">{{ item.uom }}</div>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 transition-colors">
                           {{ item.category }}
                         </span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">{{ item.subCategory || '-' }}</div>
+                        <div class="text-sm text-gray-900 dark:text-gray-100">{{ item.subCategory || '-' }}</div>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                         <span :class="item.halalStatus === 'Halal' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                         <span :class="item.halalStatus === 'Halal' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-400'" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full transition-colors">
                            {{ item.halalStatus || '-' }}
                          </span>
                       </td>
@@ -274,14 +274,14 @@
                         </span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                        <button @click="editItem(item)" class="text-blue-600 hover:text-blue-900">Edit</button>
-                        <button @click="deleteItem(item.id)" class="text-red-600 hover:text-red-900">Hapus</button>
+                        <button @click="editItem(item)" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition-colors">Edit</button>
+                        <button @click="deleteItem(item.id)" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors">Hapus</button>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div class="p-4 border-t">
+              <div class="p-4 border-t border-gray-200 dark:border-gray-800 transition-colors">
                   <Pagination :links="activeSkuData.links" />
               </div>
             </div>
@@ -289,36 +289,36 @@
 
           <!-- Supplier Tab -->
           <div v-show="activeTab === 'supplier'">
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
+            <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-800 transition-colors">
               <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
+                  <thead class="bg-gray-50 dark:bg-gray-800 transition-colors">
                     <tr>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier Code</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier Name</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact Person</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Supplier Code</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Supplier Name</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Address</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Contact Person</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Phone</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="supplier in activeSupplierData.data" :key="supplier.id" class="hover:bg-gray-50">
+                  <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
+                    <tr v-for="supplier in activeSupplierData.data" :key="supplier.id" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-mono text-gray-900">{{ supplier.code }}</div>
+                        <div class="text-sm font-mono text-gray-900 dark:text-gray-100">{{ supplier.code }}</div>
                       </td>
                       <td class="px-6 py-4">
-                        <div class="text-sm font-medium text-gray-900">{{ supplier.name }}</div>
+                        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ supplier.name }}</div>
                       </td>
                       <td class="px-6 py-4">
-                        <div class="text-sm text-gray-900">{{ supplier.address }}</div>
+                        <div class="text-sm text-gray-900 dark:text-gray-100">{{ supplier.address }}</div>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">{{ supplier.contactPerson }}</div>
+                        <div class="text-sm text-gray-900 dark:text-gray-100">{{ supplier.contactPerson }}</div>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">{{ supplier.phone }}</div>
+                        <div class="text-sm text-gray-900 dark:text-gray-100">{{ supplier.phone }}</div>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
                         <span :class="getStatusClass(supplier.status)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
@@ -326,14 +326,14 @@
                         </span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                        <button @click="editItem(supplier)" class="text-blue-600 hover:text-blue-900">Edit</button>
-                        <button @click="deleteItem(supplier.id)" class="text-red-600 hover:text-red-900">Hapus</button>
+                        <button @click="editItem(supplier)" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition-colors">Edit</button>
+                        <button @click="deleteItem(supplier.id)" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors">Hapus</button>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div class="p-4 border-t">
+              <div class="p-4 border-t border-gray-200 dark:border-gray-800 transition-colors">
                 <Pagination :links="activeSupplierData.links" />
               </div>
             </div>
@@ -341,27 +341,27 @@
 
           <!-- Bin Location Tab -->
           <div v-show="activeTab === 'bin'">
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
+            <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-800 transition-colors">
               <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
+                  <thead class="bg-gray-50 dark:bg-gray-800 transition-colors">
                     <tr>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bin Code</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Zone</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Material Count</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">QR Code</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Bin Code</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Zone</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Material Count</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">QR Code</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="bin in activeBinData.data" :key="bin.id" class="hover:bg-gray-50">
+                  <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
+                    <tr v-for="bin in activeBinData.data" :key="bin.id" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-mono text-gray-900">{{ bin.code }}</div>
+                        <div class="text-sm font-mono text-gray-900 dark:text-gray-100">{{ bin.code }}</div>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 transition-colors">
                           {{ bin.zone }}
                         </span>
                       </td>
@@ -378,17 +378,17 @@
                       <td class="px-6 py-4 whitespace-nowrap">
                         <div v-if="bin.current_items_count > 0">
                             <button @click="loadBinDetails(bin.id, bin.code)" 
-                                    class="text-sm font-semibold text-blue-600 hover:text-blue-800 underline">
+                                    class="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline transition-colors">
                                 {{ bin.current_items_count }} Item
                             </button>
                         </div>
-                        <span v-else class="text-sm text-gray-400">Kosong</span>
+                        <span v-else class="text-sm text-gray-400 dark:text-gray-500">Kosong</span>
                     </td>
                       <td class="px-6 py-4 whitespace-nowrap">
                         <button 
                           v-if="bin.qrCode || bin.id"
                           @click="previewQRCode(bin.id)" 
-                          class="text-blue-600 hover:text-blue-900 flex items-center gap-1"
+                          class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 flex items-center gap-1 transition-colors"
                           title="Preview QR Code"
                         >
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -400,14 +400,14 @@
                         <span v-else class="text-gray-400 text-xs">No QR</span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                        <button @click="editItem(bin)" class="text-blue-600 hover:text-blue-900">Edit</button>
-                        <button @click="deleteItem(bin.id)" class="text-red-600 hover:text-red-900">Hapus</button>
+                        <button @click="editItem(bin)" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition-colors">Edit</button>
+                        <button @click="deleteItem(bin.id)" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors">Hapus</button>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div class="p-4 border-t">
+              <div class="p-4 border-t border-gray-200 dark:border-gray-800 transition-colors">
                 <Pagination :links="activeBinData.links" />
               </div>
             </div>
@@ -415,26 +415,26 @@
 
           <!-- User & Role Tab -->
           <div v-show="activeTab === 'user'">
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
+            <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-800 transition-colors">
               <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
+                  <thead class="bg-gray-50 dark:bg-gray-800 transition-colors">
                     <tr>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">jabatan</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Full Name</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">jabatan</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Full Name</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Role</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Department</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="user in activeUserData.data" :key="user.id" class="hover:bg-gray-50">
+                  <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
+                    <tr v-for="user in activeUserData.data" :key="user.id" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">{{ user.jabatan }}</div>
+                        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ user.jabatan }}</div>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">{{ user.fullName }}</div>
+                        <div class="text-sm text-gray-900 dark:text-gray-100">{{ user.fullName }}</div>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
                         <span :class="getRoleClass(user.role)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
@@ -442,7 +442,7 @@
                         </span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">{{ user.department }}</div>
+                        <div class="text-sm text-gray-900 dark:text-gray-100">{{ user.department }}</div>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
                         <span :class="getStatusClass(user.status)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
@@ -450,14 +450,14 @@
                         </span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                        <button @click="editItem(user)" class="text-blue-600 hover:text-blue-900">Edit</button>
-                        <button @click="deleteItem(user.id)" class="text-red-600 hover:text-red-900">Hapus</button>
+                        <button @click="editItem(user)" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition-colors">Edit</button>
+                        <button @click="deleteItem(user.id)" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors">Hapus</button>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div class="p-4 border-t">
+              <div class="p-4 border-t border-gray-200 dark:border-gray-800 transition-colors">
                 <Pagination :links="activeUserData.links" />
               </div>
             </div>
@@ -481,31 +481,31 @@
           </div>
 
           <!-- QR Code Image -->
-          <div class="flex justify-center mb-6 bg-gray-50 p-6 rounded-lg">
-            <img :src="qrCodeData.image" alt="QR Code" class="w-64 h-64 border-2 border-gray-200 rounded-lg shadow-sm">
+          <div class="flex justify-center mb-6 bg-gray-50 dark:bg-gray-800 p-6 rounded-lg transition-colors">
+            <img :src="qrCodeData.image" alt="QR Code" class="w-64 h-64 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
           </div>
 
           <!-- Bin Information -->
-          <div class="bg-blue-50 rounded-lg p-4 mb-6 space-y-2">
+          <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 mb-6 space-y-2 transition-colors">
             <div class="flex justify-between">
-              <span class="text-sm font-medium text-gray-600">Bin Code:</span>
-              <span class="text-sm font-bold text-gray-900">{{ qrCodeData.bin_code }}</span>
+              <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Bin Code:</span>
+              <span class="text-sm font-bold text-gray-900 dark:text-gray-100">{{ qrCodeData.bin_code }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm font-medium text-gray-600">Bin Name:</span>
-              <span class="text-sm text-gray-900">{{ qrCodeData.bin_name }}</span>
+              <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Bin Name:</span>
+              <span class="text-sm text-gray-900 dark:text-gray-200">{{ qrCodeData.bin_name }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm font-medium text-gray-600">Zone:</span>
-              <span class="text-sm text-gray-900">{{ qrCodeData.zone_name }}</span>
+              <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Zone:</span>
+              <span class="text-sm text-gray-900 dark:text-gray-200">{{ qrCodeData.zone_name }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm font-medium text-gray-600">Type:</span>
-              <span class="text-sm text-gray-900">{{ qrCodeData.bin_type }}</span>
+              <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Type:</span>
+              <span class="text-sm text-gray-900 dark:text-gray-200">{{ qrCodeData.bin_type }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm font-medium text-gray-600">Capacity:</span>
-              <span class="text-sm text-gray-900">{{ qrCodeData.capacity }}</span>
+              <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Capacity:</span>
+              <span class="text-sm text-gray-900 dark:text-gray-200">{{ qrCodeData.capacity }}</span>
             </div>
           </div>
 
@@ -531,7 +531,7 @@
             </button>
             <button 
               @click="closeQRModal"
-              class="px-4 py-3 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              class="px-4 py-3 text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
               Tutup
             </button>
@@ -539,16 +539,15 @@
         </div>
       </div>
 
-      <!-- Modal Add/Edit -->
-      <div v-if="showAddModal || showEditModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[999]" style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg p-6 w-full max-w-2xl max-h-screen overflow-y-auto border border-gray-200">
+      <div v-if="showAddModal || showEditModal" class="fixed inset-0 bg-opacity-50 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[999]" style="background-color: rgba(43, 51, 63, 0.67);">
+        <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-2xl max-h-screen overflow-y-auto border border-gray-200 dark:border-gray-800 shadow-2xl transition-colors">
           <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-semibold text-gray-900">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
               {{ showEditModal ? 'Edit' : 'Tambah' }} {{ getCurrentTabLabel() }}
             </h3>
             <button 
               @click="closeModal"
-              class="text-gray-400 hover:text-gray-600"
+              class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -556,23 +555,22 @@
             </button>
           </div>
 
-          <!-- SKU Form -->
           <div v-if="activeTab === 'sku'" class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Kode Item *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kode Item *</label>
                 <input 
                   v-model="formData.code"
                   type="text" 
                   placeholder="ITM001"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 >
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">UoM *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">UoM *</label>
                 <select 
                   v-model="formData.uom" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="">Pilih UoM</option>
                   <option value="PCS">PCS</option>
@@ -585,21 +583,21 @@
             </div>
             
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Nama Material *</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Material *</label>
               <input 
                 v-model="formData.name"
                 type="text" 
                 placeholder="Nama material lengkap"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
               >
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Kategori *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kategori *</label>
                 <select 
                   v-model="formData.category" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="">Pilih Kategori</option>
                   <option value="Raw Material">Raw Material</option>
@@ -609,12 +607,12 @@
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Sub Kategori</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sub Kategori</label>
                 <input 
                   v-model="formData.subCategory"
                   type="text" 
                   placeholder="e.g. Botol, Karton, Chemical, etc"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 >
               </div>
 
@@ -622,10 +620,10 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Halal Status</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Halal Status</label>
                 <select 
                   v-model="formData.halalStatus" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="">Pilih Status</option>
                   <option value="Halal">Halal</option>
@@ -633,10 +631,10 @@
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
                 <select 
                   v-model="formData.status" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
@@ -649,38 +647,37 @@
                 <input 
                   v-model="formData.qcRequired" 
                   type="checkbox"
-                  class="text-blue-600 focus:ring-blue-500 rounded"
+                  class="text-blue-600 focus:ring-blue-500 rounded bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
                 >
-                <span class="ml-2 text-gray-900">QC Required</span>
+                <span class="ml-2 text-gray-900 dark:text-gray-100">QC Required</span>
               </label>
               <label class="flex items-center">
                 <input 
                   v-model="formData.expiry" 
                   type="checkbox"
-                  class="text-blue-600 focus:ring-blue-500 rounded"
+                  class="text-blue-600 focus:ring-blue-500 rounded bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
                 >
-                <span class="ml-2 text-gray-900">Expiry Date Required</span>
+                <span class="ml-2 text-gray-900 dark:text-gray-100">Expiry Date Required</span>
               </label>
             </div>
           </div>
 
-          <!-- Supplier Form -->
           <div v-if="activeTab === 'supplier'" class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Supplier Code *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Supplier Code *</label>
                 <input 
                   v-model="formData.code"
                   type="text" 
                   placeholder="SUP001"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 >
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
                 <select 
                   v-model="formData.status" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
@@ -689,64 +686,63 @@
             </div>
             
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Supplier Name *</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Supplier Name *</label>
               <input 
                 v-model="formData.name"
                 type="text" 
                 placeholder="PT. Nama Supplier"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
               >
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address</label>
               <textarea 
                 v-model="formData.address"
                 placeholder="Alamat lengkap supplier"
                 rows="3"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
               ></textarea>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Contact Person</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Contact Person</label>
                 <input 
                   v-model="formData.contactPerson"
                   type="text" 
                   placeholder="Nama PIC"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 >
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
                 <input 
                   v-model="formData.phone"
                   type="text" 
                   placeholder="0812-3456-7890"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 >
               </div>
             </div>
           </div>
 
-          <!-- Bin Location Form -->
           <div v-if="activeTab === 'bin'" class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Bin Code *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bin Code *</label>
                 <input 
                   v-model="formData.code"
                   type="text" 
                   placeholder="A1-001"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 >
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Zone *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Zone *</label>
                 <select 
                   v-model="formData.zone" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="">Pilih Zone</option>
                   <option v-for="zone in zoneList" :key="zone.id" :value="zone.id">
@@ -758,19 +754,19 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Capacity</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Capacity</label>
                 <input 
                   v-model="formData.capacity"
                   type="number" 
                   placeholder="1000"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 >
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Type *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type *</label>
                 <select 
                   v-model="formData.type" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="">Pilih Type</option>
                   <option value="Normal">Normal</option>
@@ -783,10 +779,10 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
               <select 
                 v-model="formData.status" 
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
               >
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
@@ -794,16 +790,15 @@
             </div>
           </div>
 
-          <!-- User Form -->
           <div v-if="activeTab === 'user'" class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Jabatan *
                 </label>
                 <select
                   v-model="formData.jabatan"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 >
                   <option value="" disabled>Pilih jabatan</option>
                   <option value="Manager">Manager</option>
@@ -813,32 +808,32 @@
                 </select>
               </div>              
               <div v-if="!showEditModal">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Password *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password *</label>
                 <input 
                   v-model="formData.password"
                   type="password" 
                   placeholder="********"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 >
               </div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name *</label>
               <input 
                 v-model="formData.fullName"
                 type="text" 
                 placeholder="John Doe"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
               >
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Role *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Role *</label>
                 <select 
                   v-model="formData.role" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="">Pilih Role</option>
                   <option v-for="role in roleList" :key="role.id" :value="role.name">
@@ -847,10 +842,10 @@
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Department *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Department *</label>
                 <select 
                   v-model="formData.department" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="">Pilih Department</option>
                   <option value="Gudang">Gudang</option>
@@ -863,10 +858,10 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
               <select 
                 v-model="formData.status" 
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
               >
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
@@ -875,10 +870,10 @@
           </div>
 
           <!-- Actions -->
-          <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+          <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-800 transition-colors">
             <button 
               @click="closeModal"
-              class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              class="px-4 py-2 text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
               Batal
             </button>
@@ -893,25 +888,25 @@
       </div>
 
       <!-- Modal Print Confirmation -->
-      <div v-if="showPrintConfirmModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[999]" style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg p-6 w-full max-w-md border border-gray-200 shadow-2xl scale-in-center">
+      <div v-if="showPrintConfirmModal" class="fixed inset-0 bg-opacity-50 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[999]" style="background-color: rgba(43, 51, 63, 0.67);">
+        <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-md border border-gray-200 dark:border-gray-800 shadow-2xl scale-in-center transition-colors">
           <div class="flex flex-col items-center text-center">
-            <div class="bg-orange-100 p-4 rounded-full mb-4">
-              <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-orange-100 dark:bg-orange-900/30 p-4 rounded-full mb-4 transition-colors">
+              <svg class="w-8 h-8 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">Konfirmasi Print</h3>
-            <p class="text-gray-600 mb-6">
-              Sistem akan meng-generate QR Code untuk <span class="font-bold text-orange-600">{{ totalBinsToPrint }}</span> lokasi bin.
+            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Konfirmasi Print</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-6 font-medium">
+              Sistem akan meng-generate QR Code untuk <span class="font-bold text-orange-600 dark:text-orange-400">{{ totalBinsToPrint }}</span> lokasi bin.
               <br>
-              Perkiraan waktu: <span class="font-bold text-gray-900">{{ estimatedDuration }}</span>
+              Perkiraan waktu: <span class="font-bold text-gray-900 dark:text-gray-100">{{ estimatedDuration }}</span>
             </p>
             
             <div class="w-full flex gap-3">
               <button 
                 @click="showPrintConfirmModal = false"
-                class="flex-1 px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                class="flex-1 px-4 py-2 text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
                 Batal
               </button>
@@ -927,7 +922,10 @@
       </div>
 
       <!-- Success/Error Messages -->
-      <div v-if="message" :class="message.type === 'success' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'" class="fixed top-4 right-4 border rounded-lg p-4 shadow-lg" style="z-index: 99999;">
+      <div v-if="message" :class="message.type === 'success' 
+        ? 'bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800 text-green-800 dark:text-green-400' 
+        : 'bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-400'" 
+        class="fixed top-4 right-4 border rounded-lg p-4 shadow-lg transition-colors" style="z-index: 99999;">
         <div class="flex items-center gap-2">
           <svg v-if="message.type === 'success'" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
@@ -940,15 +938,15 @@
       </div>
 
       <!-- Bulk Edit Modal -->
-      <div v-if="showBulkEditModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[999]" style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg p-6 w-full max-w-2xl max-h-screen overflow-y-auto border border-gray-200">
+      <div v-if="showBulkEditModal" class="fixed inset-0 bg-opacity-50 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[999]" style="background-color: rgba(43, 51, 63, 0.67);">
+        <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-2xl max-h-screen overflow-y-auto border border-gray-200 dark:border-gray-800 shadow-2xl transition-colors">
           <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-semibold text-gray-900">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
               Bulk Edit SKU ({{ selectedSkuIds.length }} items)
             </h3>
             <button 
               @click="closeBulkEditModal"
-              class="text-gray-400 hover:text-gray-600"
+              class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -956,8 +954,8 @@
             </button>
           </div>
 
-          <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p class="text-sm text-blue-800">
+          <div class="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg transition-colors">
+            <p class="text-sm text-blue-800 dark:text-blue-400">
               <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
               </svg>
@@ -969,10 +967,10 @@
           <div class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kategori</label>
                 <select 
                   v-model="bulkEditData.category" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="">-- Tidak diubah --</option>
                   <option value="Raw Material">Raw Material</option>
@@ -983,10 +981,10 @@
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Halal Status</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Halal Status</label>
                 <select 
                   v-model="bulkEditData.halalStatus" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="">-- Tidak diubah --</option>
                   <option value="Halal">Halal</option>
@@ -997,10 +995,10 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
                 <select 
                   v-model="bulkEditData.status" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
                   <option value="">-- Tidak diubah --</option>
                   <option value="Active">Active</option>
@@ -1009,12 +1007,12 @@
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Sub Kategori</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sub Kategori</label>
                 <input 
                   v-model="bulkEditData.subCategory"
                   type="text" 
                   placeholder="Tidak diubah jika kosong"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 >
               </div>
             </div>
@@ -1026,9 +1024,9 @@
                   type="checkbox"
                   :indeterminate.prop="bulkEditData.qcRequired === null"
                   @click="toggleTriState('qcRequired')"
-                  class="text-blue-600 focus:ring-blue-500 rounded"
+                  class="text-blue-600 focus:ring-blue-500 rounded bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
                 >
-                <span class="ml-2 text-gray-900">QC Required {{ getTriStateLabel('qcRequired') }}</span>
+                <span class="ml-2 text-gray-900 dark:text-gray-100">QC Required {{ getTriStateLabel('qcRequired') }}</span>
               </label>
               <label class="flex items-center">
                 <input 
@@ -1036,18 +1034,18 @@
                   type="checkbox"
                   :indeterminate.prop="bulkEditData.expiry === null"
                   @click="toggleTriState('expiry')"
-                  class="text-blue-600 focus:ring-blue-500 rounded"
+                  class="text-blue-600 focus:ring-blue-500 rounded bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
                 >
-                <span class="ml-2 text-gray-900">Expiry Date Required {{ getTriStateLabel('expiry') }}</span>
+                <span class="ml-2 text-gray-900 dark:text-gray-100">Expiry Date Required {{ getTriStateLabel('expiry') }}</span>
               </label>
             </div>
           </div>
 
           <!-- Selected Items List -->
-          <div class="mt-6 p-4 bg-gray-50 rounded-lg">
-            <p class="text-sm font-medium text-gray-700 mb-2">Item yang akan diubah:</p>
+          <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors">
+            <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Item yang akan diubah:</p>
             <div class="max-h-40 overflow-y-auto">
-              <ul class="text-sm text-gray-600 space-y-1">
+              <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                 <li v-for="id in selectedSkuIds" :key="id" class="flex items-center gap-2">
                   <svg class="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -1793,10 +1791,6 @@ const renderAndPrint = (validQRData: any[]) => {
       return
     }
     
-    // Generate HTML content - Flow layout with tight packing
-    // A4 (210mm width) - 5mm margins = 200mm usable.
-    // 62mm item * 3 = 186mm. Gap 3mm * 2 = 6mm. Total 192mm. Fits comfortably.
-    
     let pagesHTML = ''
     const itemsPerPage = 9
     
@@ -1929,8 +1923,7 @@ const renderAndPrint = (validQRData: any[]) => {
         <\/script>
       </body>
       </html>
-    `
-    
+    ` 
     printWindow.document.write(htmlContent)
     printWindow.document.close()
     
@@ -1977,7 +1970,6 @@ const deleteItem = async (id: string) => {
 const triggerImport = () => {
   fileInput.value?.click()
 }
-
 
 const isLoading = ref(false)
 const loadingTitle = ref('')

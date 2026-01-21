@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Exports\InventoryCustomExport;
 use App\Models\InventoryStock;
 use App\Models\IncomingGood;
 use App\Models\IncomingGoodsItem;
@@ -8,6 +9,7 @@ use App\Models\QcReqcHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DashboardController extends Controller
 {
@@ -368,5 +370,72 @@ class DashboardController extends Controller
         $lastReqc = QcReqcHistory::whereDate('created_at', today())->latest()->first();
         $sequence = $lastReqc ? (intval(substr($lastReqc->reqc_number, -4)) + 1) : 1;
         return "REQC/{$date}/" . str_pad($sequence, 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Custom Export to Excel
+     */
+    public function exportCustom(Request $request)
+    {
+        $selectedFields = $request->input('fields', []);
+        $filterStatus = $request->input('status');
+        $searchQuery = $request->input('search');
+
+        // Reuse logic from index() but apply filters
+        $validStatuses = ['KARANTINA', 'RELEASED', 'HOLD', 'REJECTED'];
+        $query = InventoryStock::query()
+            ->where('qty_on_hand', '>', 0)
+            ->whereIn('status', $validStatuses);
+
+        if (auth()->user() && auth()->user()->hasRole('QAC')) {
+            $query->where('exp_date', '<=', now()->addDays(60));
+        }
+
+        if ($filterStatus) {
+            $query->where('status', $filterStatus);
+        }
+
+        if ($searchQuery) {
+            $query->where(function($q) use ($searchQuery) {
+                $q->whereHas('material', function($mq) use ($searchQuery) {
+                    $mq->where('kode_item', 'like', "%{$searchQuery}%")
+                       ->orWhere('nama_material', 'like', "%{$searchQuery}%");
+                })->orWhere('batch_lot', 'like', "%{$searchQuery}%");
+            });
+        }
+
+        $items = $query->with(['material', 'bin'])->get()->map(function($item) {
+            // Fetch incoming data for this batch (matching index logic)
+            $incomingItem = \App\Models\IncomingGoodsItem::where('material_id', $item->material_id)
+                ->where('batch_lot', $item->batch_lot)
+                ->with('incomingGood.purchaseOrder')
+                ->orderBy('created_at', 'desc')
+                ->first();
+            
+            return [
+                'type' => ucwords(strtolower($item->material->kategori ?? '-')),
+                'subkategori' => $item->material->subkategori,
+                'kode' => $item->material->kode_item,
+                'nama' => $item->material->nama_material,
+                'lot' => $item->batch_lot,
+                'lokasi' => $item->bin->bin_code ?? '-',
+                'qty' => max(0, $item->qty_on_hand - $item->qty_reserved),
+                'uom' => $item->uom,
+                'expiredDate' => $item->exp_date ? $item->exp_date->toDateString() : 'N/A',
+                'status' => $item->status,
+                'no_po' => $incomingItem && $incomingItem->incomingGood && $incomingItem->incomingGood->purchaseOrder 
+                    ? $incomingItem->incomingGood->purchaseOrder->no_po 
+                    : '-',
+                'no_surat_jalan' => $incomingItem && $incomingItem->incomingGood 
+                    ? $incomingItem->incomingGood->no_surat_jalan 
+                    : '-',
+                'no_incoming' => $incomingItem && $incomingItem->incomingGood 
+                    ? $incomingItem->incomingGood->incoming_number 
+                    : '-',
+            ];
+        });
+
+        $fileName = 'inventory_export_' . now()->format('Ymd_His') . '.xlsx';
+        return Excel::download(new InventoryCustomExport($items, $selectedFields), $fileName);
     }
 }

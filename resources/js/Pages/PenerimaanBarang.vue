@@ -3,7 +3,7 @@
     <div class="space-y-6">
       <!-- Header dengan tombol Buat Penerimaan -->
       <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-gray-900">Daftar Penerimaan</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Daftar Penerimaan</h2>
         <button @click="showModal = true"
           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -14,12 +14,12 @@
       </div>
 
       <!-- Filter Section -->
-      <div class="bg-white p-4 rounded-lg shadow">
+      <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow border border-gray-100 dark:border-gray-800">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
           <!-- Show Entries -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Show Entries</label>
-            <select v-model="limit" class="w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Show Entries</label>
+            <select v-model="limit" class="w-full px-3 py-2 border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
               <option value="10">Show 10</option>
               <option value="25">Show 25</option>
               <option value="50">Show 50</option>
@@ -30,85 +30,85 @@
           
           <!-- Unified Search -->
           <div class="md:col-span-2">
-            <label class="block text-xs font-medium text-gray-700 mb-1">Pencarian</label>
+            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Pencarian</label>
             <input 
               v-model="search" 
               type="text" 
               placeholder="Cari No PO, No Incoming, No Surat Jalan, Serial Number, atau Nama Driver..."
-              class="w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" 
+              class="w-full px-3 py-2 border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500" 
             />
           </div>
           
           <!-- Date Range Filters -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Tanggal Mulai - Tanggal Selesai</label>
+            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal Mulai - Tanggal Selesai</label>
             <div class="grid grid-cols-2 gap-2">
               <input 
                 v-model="dateStart" 
                 type="date" 
                 placeholder="Dari"
                 :lang="'id-ID'"
-                class="w-full px-2 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                class="w-full px-2 py-2 border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               >
               <input 
                 v-model="dateEnd" 
                 type="date" 
                 placeholder="Sampai"
                 :lang="'id-ID'"
-                class="w-full px-2 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                class="w-full px-2 py-2 border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               >
             </div>
           </div>
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden border border-gray-200 dark:border-gray-800">
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+            <thead class="bg-gray-50 dark:bg-gray-800/50">
               <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Terima</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No Incoming</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No PO</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Material</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Qty Diterima</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No Surat Jalan</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Serial Number</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tanggal Terima</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">No Incoming</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">No PO</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Material</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Qty Diterima</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">No Surat Jalan</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Supplier</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Serial Number</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="shipment in shipments.data" :key="shipment.id" class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatDate(shipment.tanggalTerima) }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span class="font-mono text-xs">{{ shipment.incomingNumber }}</span>
+            <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
+              <tr v-for="shipment in shipments.data" :key="shipment.id" class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ formatDate(shipment.tanggalTerima) }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                  <span class="font-mono text-xs dark:text-gray-300">{{ shipment.incomingNumber }}</span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ shipment.noPo }}</td>
-                <td class="px-6 py-4 text-sm text-gray-900">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ shipment.noPo }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                   <div v-if="shipment.items && shipment.items.length > 0" class="max-w-xs">
-                    <div class="font-mono text-xs text-gray-600 mb-1">[{{ shipment.items[0].kodeItem || '-' }}]</div>
+                    <div class="font-mono text-xs text-gray-600 dark:text-gray-400 mb-1">[{{ shipment.items[0].kodeItem || '-' }}]</div>
                     <div class="truncate font-medium" :title="shipment.items[0].namaMaterial">
                       {{ shipment.items[0].namaMaterial || '-' }}
                     </div>
-                    <span v-if="shipment.items.length > 1" class="text-xs text-gray-500 mt-1 inline-block">
+                    <span v-if="shipment.items.length > 1" class="text-xs text-gray-500 dark:text-gray-500 mt-1 inline-block">
                       (+{{ shipment.items.length - 1 }} lainnya)
                     </span>
                   </div>
-                  <span v-else class="text-gray-400">-</span>
+                  <span v-else class="text-gray-400 dark:text-gray-600">-</span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                   <div v-if="shipment.items && shipment.items.length > 0">
                     <span class="font-semibold">{{ formatNumber(calculateTotalQtyRaw(shipment.items[0])) }}</span>
-                    <span class="text-xs text-gray-600 ml-1">{{ shipment.items[0].uom || '-' }}</span>
+                    <span class="text-xs text-gray-600 dark:text-gray-400 ml-1">{{ shipment.items[0].uom || '-' }}</span>
                   </div>
-                  <span v-else class="text-gray-400">-</span>
+                  <span v-else class="text-gray-400 dark:text-gray-600">-</span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ shipment.noSuratJalan }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ shipment.supplier }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span class="font-mono text-xs">{{ shipment.items && shipment.items.length > 0 ? (shipment.items[0].batchLot || '-') : '-' }}</span>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ shipment.noSuratJalan }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ shipment.supplier }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                  <span class="font-mono text-xs dark:text-gray-300">{{ shipment.items && shipment.items.length > 0 ? (shipment.items[0].batchLot || '-') : '-' }}</span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span :class="getStatusClass(shipment.status)"
@@ -119,12 +119,12 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div class="flex space-x-2">
                     <button @click="viewDetail(shipment)"
-                      class="bg-indigo-100 text-indigo-700 hover:bg-indigo-200 px-2 py-1 rounded text-xs">Detail</button>
+                      class="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 hover:bg-indigo-200 dark:hover:bg-indigo-900/50 px-2 py-1 rounded text-xs transition-colors">Detail</button>
                     <button @click="printChecklist(shipment)"
-                      class="bg-green-100 text-green-700 hover:bg-green-200 px-2 py-1 rounded text-xs">Cetak
+                      class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50 px-2 py-1 rounded text-xs transition-colors">Cetak
                       Checklist</button>
                     <button @click="printFinanceSlip(shipment)"
-                      class="bg-purple-100 text-purple-700 hover:bg-purple-200 px-2 py-1 rounded text-xs">Cetak
+                      class="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 hover:bg-purple-200 dark:hover:bg-purple-900/50 px-2 py-1 rounded text-xs transition-colors">Cetak
                       Finance</button>
                     <button @click="handlePrintQRLabel(shipment)"
                       class="bg-blue-600 text-white hover:bg-blue-700 px-2 py-1 rounded text-xs">
@@ -139,16 +139,16 @@
         <!-- Pagnation was here -->
          <!-- Pagination -->
          <!-- Modified Pagination: Only showing totals, no links as per request "jangan ada pagination", but allowing limit selection above -->
-        <div class="bg-gray-50 px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+        <div class="bg-gray-50 dark:bg-gray-800/50 px-4 py-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-800 sm:px-6">
             <div class="flex-1 flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-700">
+                    <p class="text-sm text-gray-700 dark:text-gray-300">
                         Menampilkan
-                        <span class="font-medium">{{ shipments.from }}</span>
+                        <span class="font-medium text-gray-900 dark:text-gray-100">{{ shipments.from }}</span>
                         sampai
-                        <span class="font-medium">{{ shipments.to }}</span>
+                        <span class="font-medium text-gray-900 dark:text-gray-100">{{ shipments.to }}</span>
                         dari
-                        <span class="font-medium">{{ shipments.total }}</span>
+                        <span class="font-medium text-gray-900 dark:text-gray-100">{{ shipments.total }}</span>
                         hasil
                     </p>
                 </div>
@@ -158,52 +158,51 @@
 
 
       <div v-if="showDetailModal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-        style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-800">
           <div class="p-6">
             <div class="flex justify-between items-center mb-6">
-              <h3 class="text-lg font-semibold text-gray-900">Detail Penerimaan - {{ selectedShipment?.noSuratJalan }}
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Detail Penerimaan - {{ selectedShipment?.noSuratJalan }}
               </h3>
-              <button @click="closeDetailModal" class="text-gray-400 hover:text-gray-600">
+              <button @click="closeDetailModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            <div class="bg-gray-50 rounded-lg p-4 mb-6">
+            <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 mb-6 border border-gray-100 dark:border-gray-700">
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
                 <div>
-                  <span class="font-medium text-gray-700">No Incoming:</span>
-                  <span class="ml-2 text-gray-900">{{ selectedShipment?.incomingNumber }}</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">No Incoming:</span>
+                  <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.incomingNumber }}</span>
                 </div>
                 <div>
-                  <span class="font-medium text-gray-700">No PO:</span>
-                  <span class="ml-2 text-gray-900">{{ selectedShipment?.noPo }}</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">No PO:</span>
+                  <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.noPo }}</span>
                 </div>
                 <div>
-                  <span class="font-medium text-gray-700">Supplier:</span>
-                  <span class="ml-2 text-gray-900">{{ selectedShipment?.supplier }}</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">Supplier:</span>
+                  <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.supplier }}</span>
                 </div>
                 <div>
-                  <span class="font-medium text-gray-700">No Kendaraan:</span>
-                  <span class="ml-2 text-gray-900">{{ selectedShipment?.noKendaraan }}</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">No Kendaraan:</span>
+                  <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.noKendaraan }}</span>
                 </div>
                 <div>
-                  <span class="font-medium text-gray-700">Nama Driver:</span>
-                  <span class="ml-2 text-gray-900">{{ selectedShipment?.namaDriver }}</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">Nama Driver:</span>
+                  <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.namaDriver }}</span>
                 </div>
                 <div>
-                  <span class="font-medium text-gray-700">Tanggal Terima:</span>
-                  <span class="ml-2 text-gray-900">{{ formatDate(selectedShipment?.tanggalTerima) }}</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">Tanggal Terima:</span>
+                  <span class="ml-2 text-gray-900 dark:text-gray-100">{{ formatDate(selectedShipment?.tanggalTerima) }}</span>
                 </div>
                 <div>
-                  <span class="font-medium text-gray-700">Kategori:</span>
-                  <span class="ml-2 text-gray-900">{{ selectedShipment?.kategori }}</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">Kategori:</span>
+                  <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.kategori }}</span>
                 </div>
                 <div>
-                  <span class="font-medium text-gray-700">Status:</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">Status:</span>
                   <span :class="getStatusClass(selectedShipment?.status)"
                     class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
                     {{ selectedShipment?.status }}
@@ -212,45 +211,45 @@
               </div>
             </div>
 
-            <div class="border-t border-gray-200 pt-6">
-              <h4 class="text-lg font-medium text-gray-900 mb-4">Detail Material</h4>
+            <div class="border-t border-gray-200 dark:border-gray-800 pt-6">
+              <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Detail Material</h4>
 
               <div class="overflow-x-auto border border-gray-200 rounded-lg">
                 <table class="min-w-full divide-y divide-gray-200" style="min-width: 1400px;">
                   <thead class="bg-gray-50">
                     <tr>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Kode
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Kode
                         Item</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Nama
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Nama
                         Material</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Batch/Mfg Lot</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Exp
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Exp
                         Date</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Qty
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Qty
                         Wadah</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Qty
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Qty
                         Unit</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Kondisi</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">CoA
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">CoA
                       </th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Label Mfg</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Label & CoA Sesuai</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Pabrik Pembuat</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Status QC</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-gray-200 bg-white">
-                    <tr v-for="(item, index) in selectedShipment?.items" :key="index">
-                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ item.kodeItem }}</td>
-                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ item.namaMaterial }}</td>
-                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ item.batchLot }}</td>
-                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
+                  <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-gray-900">
+                    <tr v-for="(item, index) in selectedShipment?.items" :key="index" class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.kodeItem }}</td>
+                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.namaMaterial }}</td>
+                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.batchLot }}</td>
+                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                         <div class="font-semibold mb-1">
                           {{ formatDateOnly(item.expDate) }}
                         </div>
@@ -260,8 +259,8 @@
                           {{ getCountdown(item.expDate).text }}
                         </span>
                       </td>
-                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ parseInt(item.qtyWadah) }}</td>
-                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ formatNumber(item.qtyUnit) }}</td>
+                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ parseInt(item.qtyWadah) }}</td>
+                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ formatNumber(item.qtyUnit) }}</td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <div class="flex gap-1">
                           <span v-if="item.kondisiBaik"
@@ -293,7 +292,7 @@
                             class="bg-red-500 text-white px-2 py-1 text-xs rounded">Tidak Sesuai</span>
                         </div>
                       </td>
-                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ item.pabrikPembuat }}</td>
+                      <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.pabrikPembuat }}</td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <span
                           :class="item.statusQC === 'To QC' ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800'"
@@ -307,9 +306,9 @@
               </div>
             </div>
 
-            <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
+            <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
               <button @click="closeDetailModal"
-                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+                class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
                 Tutup
               </button>
               <button @click="printChecklist(selectedShipment)"
@@ -330,14 +329,13 @@
       </div>
 
       <div v-if="showQRCodeModal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-        style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+        class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto border border-gray-200 dark:border-gray-800">
           <div class="p-6">
             <div class="flex justify-between items-center mb-6">
-              <h3 class="text-lg font-semibold text-gray-900">Label QR Code - {{ selectedShipment?.noSuratJalan }}
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Label QR Code - {{ selectedShipment?.noSuratJalan }}
               </h3>
-              <button @click="closeQRModal" class="text-gray-400 hover:text-gray-600">
+              <button @click="closeQRModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -347,40 +345,40 @@
             <div class="bg-gray-50 rounded-lg p-4 mb-6">
               <div class="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span class="font-medium text-gray-700">No PO:</span>
-                  <span class="ml-2 text-gray-900">{{ selectedShipment?.noPo }}</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">No PO:</span>
+                  <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.noPo }}</span>
                 </div>
                 <div>
-                  <span class="font-medium text-gray-700">Supplier:</span>
-                  <span class="ml-2 text-gray-900">{{ selectedShipment?.supplier }}</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">Supplier:</span>
+                  <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.supplier }}</span>
                 </div>
                 <div>
-                  <span class="font-medium text-gray-700">No Kendaraan:</span>
-                  <span class="ml-2 text-gray-900">{{ selectedShipment?.noKendaraan }}</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">No Kendaraan:</span>
+                  <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.noKendaraan }}</span>
                 </div>
                 <div>
-                  <span class="font-medium text-gray-700">Tanggal:</span>
-                  <span class="ml-2 text-gray-900">{{ formatDate(selectedShipment?.tanggalTerima) }}</span>
+                  <span class="font-medium text-gray-700 dark:text-gray-400">Tanggal:</span>
+                  <span class="ml-2 text-gray-900 dark:text-gray-100">{{ formatDate(selectedShipment?.tanggalTerima) }}</span>
                 </div>
               </div>
             </div>
 
             <div class="space-y-4">
-              <h4 class="text-md font-medium text-gray-900">Daftar QR Code per Item:</h4>
+              <h4 class="text-md font-medium text-gray-900 dark:text-gray-100">Daftar QR Code per Item:</h4>
               <div v-if="selectedShipment?.qrCodeLabels && selectedShipment.qrCodeLabels.length > 0" class="space-y-4">
                 <div v-for="(labelData, index) in selectedShipment.qrCodeLabels" :key="index"
-                  class="border border-gray-200 rounded-lg p-4">
+                  class="border border-gray-200 dark:border-gray-800 rounded-lg p-4 bg-white dark:bg-gray-800/30">
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <div class="font-medium text-gray-900 mb-2">[{{ labelData.kodeItem }}] - {{ labelData.namaMaterial
+                      <div class="font-medium text-gray-900 dark:text-gray-100 mb-2">[{{ labelData.kodeItem }}] - {{ labelData.namaMaterial
                         }}</div>
-                      <div class="text-sm text-gray-600 space-y-1">
+                      <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                         <div>Batch: {{ labelData.batchLot }}</div>
                         <div>Wadah Ke: **{{ labelData.wadahKe }}** / {{ labelData.qtyWadah }}</div>
                         <div>Qty: {{ labelData.qtyUnit }}</div>
                         <div>Exp: {{ formatDateOnly(labelData.expDate) }}</div>
                       </div>
-                      <div class="bg-gray-100 p-2 rounded font-mono text-xs text-gray-800 mt-3">
+                      <div class="bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono text-xs text-gray-800 dark:text-gray-300 mt-3">
                         <strong>QR Content:</strong><br>{{ labelData.qrContent.split('|')[2] }}
                       </div>
                       <div class="flex space-x-2 mt-3">
@@ -392,10 +390,10 @@
                     </div>
 
                     <div class="flex flex-col items-center justify-center">
-                      <div class="bg-white p-4 rounded-lg border-2 border-gray-300 mb-2">
+                      <div class="bg-white dark:bg-gray-200 p-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 mb-2">
                         <canvas :data-qr-canvas="index" class="block"></canvas>
                       </div>
-                      <div class="text-xs text-gray-500 text-center">
+                      <div class="text-xs text-gray-500 dark:text-gray-400 text-center">
                         Preview QR Code
                       </div>
                     </div>
@@ -407,8 +405,8 @@
               </div>
             </div>
 
-            <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
-              <button @click="closeQRModal" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+            <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
+              <button @click="closeQRModal" class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
                 Tutup
               </button>
 
@@ -422,13 +420,12 @@
 
       <!-- Modal Status Selector untuk Cetak Label QR -->
       <div v-if="showStatusSelectorModal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-        style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg max-w-md w-full mx-4">
+        class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg max-w-md w-full mx-4 shadow-xl border border-gray-200 dark:border-gray-800">
           <div class="p-6">
             <div class="flex justify-between items-center mb-6">
-              <h3 class="text-lg font-semibold text-gray-900">Pilih Status Label QR</h3>
-              <button @click="closeStatusSelector" class="text-gray-400 hover:text-gray-600">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Pilih Status Label QR</h3>
+              <button @click="closeStatusSelector" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -436,7 +433,7 @@
             </div>
 
             <div class="mb-6">
-              <p class="text-sm text-gray-600 mb-4">
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
                 Material ini memiliki multiple status. Pilih status yang ingin dicetak:
               </p>
               <div class="space-y-3">
@@ -456,7 +453,7 @@
 
             <div class="flex justify-end">
               <button @click="closeStatusSelector" 
-                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+                class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
                 Batal
               </button>
             </div>
@@ -466,29 +463,27 @@
 
       <!-- Loading Overlay saat Generate QR Label -->
       <div v-if="isGeneratingLabel"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-        style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg p-8 max-w-sm mx-4 text-center">
+        class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg p-8 max-w-sm mx-4 text-center shadow-xl border border-gray-100 dark:border-gray-800">
           <div class="mb-4">
             <svg class="animate-spin h-12 w-12 mx-auto text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Generating Labels...</h3>
-          <p class="text-sm text-gray-600">Mohon tunggu, sedang membuat label QR</p>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Generating Labels...</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Mohon tunggu, sedang membuat label QR</p>
         </div>
       </div>
 
       <!-- Print All QR Modal  -->
       <div v-if="showPrintAllQRModal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-        style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto">
+        class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-800">
           <div class="p-6">
             <div class="flex justify-between items-center mb-6">
-              <h3 class="text-xl font-bold text-gray-900">Print All QR Codes</h3>
-              <button @click="closePrintAllModal" class="text-gray-400 hover:text-gray-600">
+              <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">Print All QR Codes</h3>
+              <button @click="closePrintAllModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -498,7 +493,8 @@
             <!-- Statistics Display -->
             <div v-if="inventoryStats" class="space-y-4 mb-6">
               <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h4 class="font-semibold text-blue-900 mb-3 flex items-center">
+                <h4 class="font-semibold text-blue-900 dark:text-blue-300 mb-3 flex items-center">
+...
                   <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
                     <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
@@ -506,48 +502,48 @@
                   Statistik Inventory On-Hand
                 </h4>
                 <div class="grid grid-cols-2 gap-3 text-sm">
-                  <div class="bg-white rounded p-3 border border-green-200">
-                    <div class="text-gray-600 text-xs font-medium">Released</div>
-                    <div class="text-green-700 text-2xl font-bold">{{ inventoryStats.released }}</div>
-                    <div class="text-gray-500 text-xs">SKU</div>
+                  <div class="bg-white dark:bg-gray-800 rounded p-3 border border-green-200 dark:border-green-900">
+                    <div class="text-gray-600 dark:text-gray-400 text-xs font-medium">Released</div>
+                    <div class="text-green-700 dark:text-green-400 text-2xl font-bold">{{ inventoryStats.released }}</div>
+                    <div class="text-gray-500 dark:text-gray-500 text-xs">SKU</div>
                   </div>
-                  <div class="bg-white rounded p-3 border border-orange-200">
-                    <div class="text-gray-600 text-xs font-medium">Karantina</div>
-                    <div class="text-orange-700 text-2xl font-bold">{{ inventoryStats.karantina }}</div>
-                    <div class="text-gray-500 text-xs">SKU</div>
+                  <div class="bg-white dark:bg-gray-800 rounded p-3 border border-orange-200 dark:border-orange-900">
+                    <div class="text-gray-600 dark:text-gray-400 text-xs font-medium">Karantina</div>
+                    <div class="text-orange-700 dark:text-orange-400 text-2xl font-bold">{{ inventoryStats.karantina }}</div>
+                    <div class="text-gray-500 dark:text-gray-500 text-xs">SKU</div>
                   </div>
-                  <div class="bg-white rounded p-3 border border-red-200">
-                    <div class="text-gray-600 text-xs font-medium">Rejected</div>
-                    <div class="text-red-700 text-2xl font-bold">{{ inventoryStats.rejected }}</div>
-                    <div class="text-gray-500 text-xs">SKU</div>
+                  <div class="bg-white dark:bg-gray-800 rounded p-3 border border-red-200 dark:border-red-900">
+                    <div class="text-gray-600 dark:text-gray-400 text-xs font-medium">Rejected</div>
+                    <div class="text-red-700 dark:text-red-400 text-2xl font-bold">{{ inventoryStats.rejected }}</div>
+                    <div class="text-gray-500 dark:text-gray-500 text-xs">SKU</div>
                   </div>
-                  <div class="bg-white rounded p-3 border border-yellow-200" v-if="inventoryStats.expired > 0">
-                    <div class="text-gray-600 text-xs font-medium">Expired</div>
-                    <div class="text-yellow-700 text-2xl font-bold">{{ inventoryStats.expired }}</div>
-                    <div class="text-gray-500 text-xs">SKU</div>
+                  <div class="bg-white dark:bg-gray-800 rounded p-3 border border-yellow-200 dark:border-yellow-900" v-if="inventoryStats.expired > 0">
+                    <div class="text-gray-600 dark:text-gray-400 text-xs font-medium">Expired</div>
+                    <div class="text-yellow-700 dark:text-yellow-400 text-2xl font-bold">{{ inventoryStats.expired }}</div>
+                    <div class="text-gray-500 dark:text-gray-500 text-xs">SKU</div>
                   </div>
                 </div>
               </div>
 
-              <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+              <div class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-sm font-medium text-purple-900">Total QR Codes:</span>
-                  <span class="text-2xl font-bold text-purple-700">{{ formatNumber(inventoryStats.total_qr_codes) }}</span>
+                  <span class="text-sm font-medium text-purple-900 dark:text-purple-300">Total QR Codes:</span>
+                  <span class="text-2xl font-bold text-purple-700 dark:text-purple-400">{{ formatNumber(inventoryStats.total_qr_codes) }}</span>
                 </div>
-                <div class="flex items-center justify-between text-xs text-purple-700">
+                <div class="flex items-center justify-between text-xs text-purple-700 dark:text-purple-400">
                   <span>Estimasi Waktu:</span>
                   <span class="font-semibold">~{{ Math.ceil(inventoryStats.estimated_time_seconds / 60) }} menit</span>
                 </div>
               </div>
 
-              <div v-if="inventoryStats.expired > 0" class="bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+              <div v-if="inventoryStats.expired > 0" class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-300 dark:border-yellow-800 rounded-lg p-3">
                 <div class="flex items-center">
-                  <svg class="w-5 h-5 text-yellow-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
                   </svg>
                   <div class="text-sm">
-                    <span class="font-semibold text-yellow-900">Perhatian!</span>
-                    <span class="text-yellow-800"> Material expired akan tetap dicetak.</span>
+                    <span class="font-semibold text-yellow-900 dark:text-yellow-300">Perhatian!</span>
+                    <span class="text-yellow-800 dark:text-yellow-400"> Material expired akan tetap dicetak.</span>
                   </div>
                 </div>
               </div>
@@ -577,18 +573,17 @@
 
       <!-- Loading Bar for Print All QR -->
       <div v-if="showPrintAllProgress"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[10000]"
-        style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg p-8 max-w-md mx-4 w-full">
-          <h3 class="text-lg font-semibold text-gray-900 mb-4 text-center">Generating QR Codes</h3>
+        class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[10000]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg p-8 max-w-md mx-4 w-full shadow-2xl border border-gray-200 dark:border-gray-800">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 text-center">Generating QR Codes</h3>
           
           <!-- Progress Bar -->
           <div class="mb-4">
-            <div class="flex justify-between text-sm text-gray-600 mb-2">
+            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
               <span>Progress</span>
               <span>{{ printAllProgress }}%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+            <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-4 overflow-hidden">
               <div 
                 class="bg-purple-600 h-4 rounded-full transition-all duration-300 ease-out"
                 :style="{ width: printAllProgress + '%' }">
@@ -597,31 +592,30 @@
           </div>
 
           <!-- Status Text -->
-          <div class="text-center text-sm text-gray-700">
+          <div class="text-center text-sm text-gray-700 dark:text-gray-300">
             <p class="font-medium">{{ printAllStatusText }}</p>
-            <p class="text-xs text-gray-500 mt-1">Mohon tunggu, jangan tutup browser...</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Mohon tunggu, jangan tutup browser...</p>
           </div>
         </div>
       </div>
 
       <!-- Modal Form Buat Penerimaan -->
       <div v-if="showModal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-        style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-800 shadow-xl">
           <div class="p-6">
             <!-- Header Modal -->
             <div class="flex justify-between items-center mb-6">
-              <h3 class="text-lg font-semibold text-gray-900">Buat Penerimaan Baru</h3>
-              <button @click="closeModal" class="text-gray-400 hover:text-gray-600">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Buat Penerimaan Baru</h3>
+              <button @click="closeModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            <div class="border p-4 mb-6 rounded-lg bg-indigo-50 border-indigo-200">
-              <h4 class="font-bold text-indigo-700 mb-3 flex items-center">
+            <div class="border p-4 mb-6 rounded-lg bg-indigo-50 dark:bg-indigo-900/10 border-indigo-200 dark:border-indigo-900/30">
+              <h4 class="font-bold text-indigo-700 dark:text-indigo-400 mb-3 flex items-center">
                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd"
                     d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
@@ -632,9 +626,9 @@
               </h4>
               <div class="flex flex-col sm:flex-row gap-4 items-end">
                 <div class="flex-grow">
-                  <label class="block text-sm font-medium text-gray-700 mb-1">File PDF dari ERP</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">File PDF dari ERP</label>
                   <input @change="handleFileUpload" type="file" accept=".pdf"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 text-sm" />
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm" />
                 </div>
                 <button @click="processErpPdf" :disabled="!newShipment.erpPdfFile || isProcessingErp"
                   class="w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:bg-indigo-300 flex items-center justify-center transition-colors">
@@ -648,21 +642,18 @@
                   {{ isProcessingErp ? 'Memproses...' : 'Proses File ERP' }}
                 </button>
               </div>
-              <p v-if="newShipment.isErpDataLoaded" class="text-sm text-green-600 mt-2 font-medium">
+              <p v-if="newShipment.isErpDataLoaded" class="text-sm text-green-600 dark:text-green-400 mt-2 font-medium">
                 Data dari PDF ERP berhasil dimuat! Mohon cek dan lengkapi rincian di bawah.
               </p>
             </div>
 
             <!-- Wizard Stepper Section (Multi-Item-Code) -->
-            <div v-if="wizardMode && newShipment.isErpDataLoaded" class="mb-6 bg-blue-50 rounded-lg p-4 border-2 border-blue-300">
-              <h4 class="text-md font-bold text-blue-900 mb-3 flex items-center">
-                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
-                  <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
-                </svg>
+            <div v-if="wizardMode && newShipment.isErpDataLoaded" class="mb-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border-2 border-blue-300 dark:border-blue-800">
+              <h4 class="text-md font-bold text-blue-900 dark:text-blue-300 mb-3 flex items-center">
+...
                 Terdeteksi {{ itemCodeGroups.length }} Kode Item Berbeda
               </h4>
-              <p class="text-sm text-blue-700 mb-4">
+              <p class="text-sm text-blue-700 dark:text-blue-400 mb-4">
                 Sistem akan membuat <strong>{{ itemCodeGroups.length }} penerimaan terpisah</strong> 
                 (1 per kode item) untuk memudahkan cetak checklist. Gunakan tombol navigasi untuk melihat dan edit detail setiap kode item.
               </p>
@@ -672,7 +663,7 @@
                 <button 
                   @click="previousStep" 
                   :disabled="currentStepIndex === 0"
-                  class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+                  class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center transition-colors">
                   <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                   </svg>
@@ -698,7 +689,7 @@
                 <button 
                   @click="nextStep" 
                   :disabled="currentStepIndex === itemCodeGroups.length - 1"
-                  class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+                  class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center transition-colors">
                   Selanjutnya
                   <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -707,12 +698,12 @@
               </div>
               
               <!-- Current Step Info -->
-              <div class="bg-white rounded-lg p-3 border border-blue-300 shadow-sm">
-                <p class="text-sm font-semibold text-gray-800">
+              <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-blue-300 dark:border-blue-800 shadow-sm">
+                <p class="text-sm font-semibold text-gray-800 dark:text-gray-200">
                   Step {{ currentStepIndex + 1 }} dari {{ itemCodeGroups.length }}: 
-                  <span class="text-blue-700 font-mono text-base">{{ currentItemCodeGroup?.code }}</span>
+                  <span class="text-blue-700 dark:text-blue-400 font-mono text-base">{{ currentItemCodeGroup?.code }}</span>
                 </p>
-                <p class="text-xs text-gray-600 mt-1">
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
                   {{ currentItemCodeGroup?.items.length }} baris material dengan kode item ini
                 </p>
               </div>
@@ -721,15 +712,15 @@
             <!-- Form Header -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">No Incoming (ERP) <span v-if="newShipment.incomingNumber">(Otomatis)</span></label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">No Incoming (ERP) <span v-if="newShipment.incomingNumber">(Otomatis)</span></label>
                 <input v-model="newShipment.incomingNumber" type="text" placeholder="Auto dari sistem/ERP" :readonly="!!newShipment.incomingNumber"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 text-gray-900" />
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 transition-colors" />
               </div>
               
               <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     No PO *
-                    <span v-if="autoFilledFields.includes('no_po')" class="ml-2 text-xs text-yellow-600">(Auto)</span>
+                    <span v-if="autoFilledFields.includes('no_po')" class="ml-2 text-xs text-yellow-600 dark:text-yellow-400">(Auto)</span>
                   </label>
                   <div class="relative">
                     <input 
@@ -737,8 +728,8 @@
                       type="text" 
                       placeholder="Masukkan No PO" 
                       :class="[
-                        'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900',
-                        autoFilledFields.includes('no_po') ? 'bg-yellow-50' : 'bg-white'
+                        'w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100 transition-colors',
+                        autoFilledFields.includes('no_po') ? 'bg-yellow-50 dark:bg-yellow-900/10' : 'bg-white dark:bg-gray-800'
                  ]" 
                     />
                     <button 
@@ -753,13 +744,13 @@
                   </div>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">No Surat Jalan *</label>
-                <input v-model="newShipment.noSuratJalan" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">No Surat Jalan *</label>
+                <input v-model="newShipment.noSuratJalan" type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Supplier *
-                  <span v-if="autoFilledFields.includes('supplier')" class="ml-2 text-xs text-yellow-600">(Auto)</span>
+                  <span v-if="autoFilledFields.includes('supplier')" class="ml-2 text-xs text-yellow-600 dark:text-yellow-400">(Auto)</span>
                 </label>
                 <div class="relative">
                   <input 
@@ -768,8 +759,8 @@
                     type="text"
                     placeholder="Ketik untuk mencari Supplier..."
                     :class="[
-                      'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900',
-                      autoFilledFields.includes('supplier') ? 'bg-yellow-50' : 'bg-white'
+                      'w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100 transition-colors',
+                      autoFilledFields.includes('supplier') ? 'bg-yellow-50 dark:bg-yellow-900/10' : 'bg-white dark:bg-gray-800'
                     ]" 
                   />
                   <button 
@@ -782,49 +773,49 @@
                     ✕
                   </button>
                   <div v-if="filteredSuppliers.length > 0 && supplierSearchQuery"
-                    class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                    class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-y-auto">
                     <div v-for="supplier in filteredSuppliers" :key="supplier.id" @click="selectSupplier(supplier)"
-                      class="px-3 py-2 cursor-pointer hover:bg-blue-50 text-gray-900">
+                      class="px-3 py-2 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/30 text-gray-900 dark:text-gray-100 transition-colors">
                       {{ supplier.nama_supplier }}
                     </div>
                   </div>
                 </div>
-                <p v-if="newShipment.supplierName" class="text-xs text-gray-500 mt-1">
+                <p v-if="newShipment.supplierName" class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   **Dipilih:** {{ newShipment.supplierName }}
                 </p>
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">No Kendaraan *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">No Kendaraan *</label>
                 <input v-model="newShipment.noKendaraan" type="text"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Driver *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Driver *</label>
                 <input v-model="newShipment.namaDriver" type="text"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal & Waktu Terima</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal & Waktu Terima</label>
                 <input v-model="newShipment.tanggalTerima" type="datetime-local"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"
                   :lang="'id-ID'"
                   step="60">
-                <p class="text-xs text-gray-500 mt-1">Format: DD/MM/YYYY, Waktu 24 jam</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Format: DD/MM/YYYY, Waktu 24 jam</p>
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Kategori <span v-if="newShipment.kategori">(Otomatis)</span></label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kategori <span v-if="newShipment.kategori">(Otomatis)</span></label>
                 <input v-model="newShipment.kategori" type="text" readonly placeholder="Auto dari Material"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-900 focus:outline-none">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-100 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Sub Kategori <span v-if="newShipment.subCategory">(Otomatis)</span></label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sub Kategori <span v-if="newShipment.subCategory">(Otomatis)</span></label>
                 <input v-model="newShipment.subCategory" type="text" readonly placeholder="Auto dari Material"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-900 focus:outline-none">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-100 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none">
               </div>
             </div>
 
@@ -838,9 +829,9 @@
               </div>
               
               <div class="flex justify-between items-center mb-4">
-                <h4 class="text-lg font-medium text-gray-900">Detail Material</h4>
+                <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100">Detail Material</h4>
                 <button @click="addNewItem"
-                  class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">
+                  class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition-colors">
                   + Tambah Baris
                 </button>
               </div>
@@ -849,54 +840,54 @@
                 <table class="min-w-full divide-y divide-gray-200" style="min-width: 1400px;">
                   <thead class="bg-gray-50">
                     <tr>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Halal/Non-Halal
                       </th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Bin Karantina Tujuan
                       </th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Kode
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Kode
                         Item</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Nama
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Nama
                         Material</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Batch/Mfg Lot</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Exp
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Exp
                         Date</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Qty
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Qty
                         Wadah</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Qty
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Qty
                         Unit</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Kondisi</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">CoA
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">CoA
                       </th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Label Mfg</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Label & CoA Sesuai</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Pabrik Pembuat</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">
                         Status QC</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Aksi
+                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Aksi
                       </th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-gray-200 bg-white">
+                  <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-gray-900">
                     <tr v-for="(item, index) in newShipment.items" :key="index">
                       <td class="px-3 py-2 whitespace-nowrap">
                         <div class="flex gap-1">
                           <button @click="toggleCheckbox(item, 'isHalal')"
-                            :class="[item.isHalal ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700', 'px-2 py-1 text-xs rounded']">Halal</button>
+                            :class="[item.isHalal ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300', 'px-2 py-1 text-xs rounded']">Halal</button>
                           <button @click="toggleCheckbox(item, 'isNonHalal')"
-                            :class="[item.isNonHalal ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700', 'px-2 py-1 text-xs rounded']">Non-Halal</button>
+                            :class="[item.isNonHalal ? 'bg-red-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300', 'px-2 py-1 text-xs rounded']">Non-Halal</button>
                         </div>
                       </td>
 
                       <td class="px-3 py-2 whitespace-nowrap">
                         <select v-model="item.binTarget"
-                          class="w-32 text-sm border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
+                          class="w-32 text-sm border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
                           <option value="">Pilih Bin QRT</option>
                           <option v-for="bin in qrtBins" :key="bin.code" :value="bin.code">
                             {{ bin.code }}
@@ -909,86 +900,86 @@
                             @focus="item.showSuggestions = true"
                             @blur="setTimeout(() => { item.showSuggestions = false }, 200)" type="text"
                             placeholder="Cari Kode/Nama SKU"
-                            class="w-32 text-sm border border-gray-300 rounded px-2 py-1 bg-white text-gray-900"
-                            :class="{'border-red-500 ring-1 ring-red-500 bg-red-50': !item.kodeItem && item.skuSearch}" />
+                            class="w-32 text-sm border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"
+                            :class="{'border-red-500 ring-1 ring-red-500 bg-red-50 dark:bg-red-900/10': !item.kodeItem && item.skuSearch}" />
                         </div>
                         <div v-if="item.showSuggestions && item.filteredMaterials.length > 0"
-                          class="absolute z-20 w-80 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+                          class="absolute z-20 w-80 mt-1 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-y-auto"
                           style="z-index: 99999;">
                           <div v-for="material in item.filteredMaterials" :key="material.id"
                             @mousedown.prevent="selectMaterial(index, material)"
-                            class="px-3 py-2 cursor-pointer hover:bg-blue-50 text-xs text-gray-900">
+                            class="px-3 py-2 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/30 text-xs text-gray-900 dark:text-gray-100 transition-colors transition-colors">
                             **[{{ material.code }}]** - {{ material.name }}
                           </div>
                         </div>
-                        <p v-if="item.kodeItem" class="text-xs text-gray-500 mt-1">
+                        <p v-if="item.kodeItem" class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                           **Dipilih:** {{ item.kodeItemDisplay }}
                         </p>
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <input v-model="item.namaMaterial" type="text" readonly
-                          class="w-40 text-sm border border-gray-300 rounded px-2 py-1 bg-gray-50 text-gray-900">
+                          class="w-40 text-sm border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 transition-colors">
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <input v-model="item.batchLot" type="text"
-                          class="w-28 text-sm border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
+                          class="w-28 text-sm border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <input v-model="item.expDate" type="date"
-                          class="w-36 text-sm border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
+                          class="w-36 text-sm border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <input v-model="item.qtyWadah" type="number"
-                          class="w-24 text-sm border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
+                          class="w-24 text-sm border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <input v-model="item.qtyUnit" type="number"
-                          class="w-24 text-sm border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
+                          class="w-24 text-sm border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <div class="flex gap-1">
                           <button @click="toggleCheckbox(item, 'kondisiBaik')"
-                            :class="[item.kondisiBaik ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700', 'px-2 py-1 text-xs rounded']">Baik</button>
+                            :class="[item.kondisiBaik ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300', 'px-2 py-1 text-xs rounded']">Baik</button>
                           <button @click="toggleCheckbox(item, 'kondisiTidakBaik')"
-                            :class="[item.kondisiTidakBaik ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700', 'px-2 py-1 text-xs rounded']">Tidak
+                            :class="[item.kondisiTidakBaik ? 'bg-red-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300', 'px-2 py-1 text-xs rounded']">Tidak
                             Baik</button>
                         </div>
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <div class="flex gap-1">
                           <button @click="toggleCheckbox(item, 'coaAda')"
-                            :class="[item.coaAda ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700', 'px-2 py-1 text-xs rounded']">Ada</button>
+                            :class="[item.coaAda ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300', 'px-2 py-1 text-xs rounded']">Ada</button>
                           <button @click="toggleCheckbox(item, 'coaTidakAda')"
-                            :class="[item.coaTidakAda ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700', 'px-2 py-1 text-xs rounded']">Tidak</button>
+                            :class="[item.coaTidakAda ? 'bg-red-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300', 'px-2 py-1 text-xs rounded']">Tidak</button>
                         </div>
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <div class="flex gap-1">
                           <button @click="toggleCheckbox(item, 'labelMfgAda')"
-                            :class="[item.labelMfgAda ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700', 'px-2 py-1 text-xs rounded']">Ada</button>
+                            :class="[item.labelMfgAda ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300', 'px-2 py-1 text-xs rounded']">Ada</button>
                           <button @click="toggleCheckbox(item, 'labelMfgTidakAda')"
-                            :class="[item.labelMfgTidakAda ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700', 'px-2 py-1 text-xs rounded']">Tidak</button>
+                            :class="[item.labelMfgTidakAda ? 'bg-red-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300', 'px-2 py-1 text-xs rounded']">Tidak</button>
                         </div>
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <div class="flex gap-1">
                           <button @click="toggleCheckbox(item, 'labelCoaSesuai')"
-                            :class="[item.labelCoaSesuai ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700', 'px-2 py-1 text-xs rounded']">Ada</button>
+                            :class="[item.labelCoaSesuai ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300', 'px-2 py-1 text-xs rounded']">Ada</button>
                           <button @click="toggleCheckbox(item, 'labelCoaTidakSesuai')"
-                            :class="[item.labelCoaTidakSesuai ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700', 'px-2 py-1 text-xs rounded']">Tidak</button>
+                            :class="[item.labelCoaTidakSesuai ? 'bg-red-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300', 'px-2 py-1 text-xs rounded']">Tidak</button>
                         </div>
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <input v-model="item.pabrikPembuat" type="text"
-                          class="w-32 text-sm border border-gray-300 rounded px-2 py-1 bg-white text-gray-900"
+                          class="w-32 text-sm border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"
                           placeholder="Nama pabrik">
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
-                        <span class="text-sm text-gray-600">{{ item.statusQC }}</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ item.statusQC }}</span>
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap">
                         <button @click="removeItem(index)"
-                          class="bg-red-100 text-red-700 hover:bg-red-200 px-2 py-1 rounded text-xs">Hapus</button>
+                          class="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/50 px-2 py-1 rounded text-xs transition-colors">Hapus</button>
                       </td>
                     </tr>
                   </tbody>
@@ -997,16 +988,16 @@
             </div>
 
             <div v-if="totalStockByMaterial.length > 0"
-              class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-              <h4 class="text-md font-bold text-yellow-800 mb-3">
+              class="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/10 rounded-lg border border-yellow-200 dark:border-yellow-900/30">
+              <h4 class="text-md font-bold text-yellow-800 dark:text-yellow-400 mb-3">
                 <span class="inline-block align-middle mr-2">⚠️</span> Ringkasan Total Stok Masuk (Kalkulasi)
               </h4>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div v-for="(stock, index) in totalStockByMaterial" :key="index"
-                  class="bg-white p-3 rounded-md border border-yellow-300">
-                  <p class="text-sm text-gray-600 truncate">Material:</p>
-                  <p class="font-bold text-gray-900 truncate">{{ stock.materialName }}</p>
-                  <p class="text-md font-extrabold text-blue-600 mt-1">
+                  class="bg-white dark:bg-gray-800 p-3 rounded-md border border-yellow-300 dark:border-yellow-900 shadow-sm">
+                  <p class="text-sm text-gray-600 dark:text-gray-400 truncate">Material:</p>
+                  <p class="font-bold text-gray-900 dark:text-gray-100 truncate">{{ stock.materialName }}</p>
+                  <p class="text-md font-extrabold text-blue-600 dark:text-blue-400 mt-1">
                     {{ stock.totalQty }} {{ stock.satuan }}
                   </p>
                 </div>
@@ -1017,12 +1008,12 @@
             <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
 
               <!-- Footer Modal -->
-              <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
-                <button @click="closeModal" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+              <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
+                <button @click="closeModal" class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
                   Batal
                 </button>
                 <button @click="saveShipment" :disabled="!isFormValid || isSaving"
-                  class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 flex items-center justify-center">
+                  class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 dark:disabled:bg-gray-700 disabled:text-gray-300 flex items-center justify-center transition-colors">
                   <svg v-if="isSaving" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -1031,7 +1022,7 @@
                     </path>
                   </svg>
                   {{ isSaving ? 'Menyimpan...' : 'Simpan' }}
-                                  </button>
+                </button>
               </div>
             </div>
           </div>
@@ -1039,15 +1030,14 @@
 
         <!-- Modal QR Code -->
         <div v-if="showQRCodeModal"
-          class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-          style="background-color: rgba(43, 51, 63, 0.67);">
-          <div class="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+          class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+          <div class="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto border border-gray-200 dark:border-gray-800 shadow-xl">
             <div class="p-6">
               <!-- Header Modal QR -->
               <div class="flex justify-between items-center mb-6">
-                <h3 class="text-lg font-semibold text-gray-900">Label QR Code - {{ selectedShipment?.noSuratJalan }}
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Label QR Code - {{ selectedShipment?.noSuratJalan }}
                 </h3>
-                <button @click="closeQRModal" class="text-gray-400 hover:text-gray-600">
+                <button @click="closeQRModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
@@ -1055,23 +1045,23 @@
               </div>
 
               <!-- Info Shipment -->
-              <div class="bg-gray-50 rounded-lg p-4 mb-6">
+              <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 mb-6">
                 <div class="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span class="font-medium text-gray-700">No PO:</span>
-                    <span class="ml-2 text-gray-900">{{ selectedShipment?.noPo }}</span>
+                    <span class="font-medium text-gray-700 dark:text-gray-400">No PO:</span>
+                    <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.noPo }}</span>
                   </div>
                   <div>
-                    <span class="font-medium text-gray-700">Supplier:</span>
-                    <span class="ml-2 text-gray-900">{{ selectedShipment?.supplier }}</span>
+                    <span class="font-medium text-gray-700 dark:text-gray-400">Supplier:</span>
+                    <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.supplier }}</span>
                   </div>
                   <div>
-                    <span class="font-medium text-gray-700">No Kendaraan:</span>
-                    <span class="ml-2 text-gray-900">{{ selectedShipment?.noKendaraan }}</span>
+                    <span class="font-medium text-gray-700 dark:text-gray-400">No Kendaraan:</span>
+                    <span class="ml-2 text-gray-900 dark:text-gray-100">{{ selectedShipment?.noKendaraan }}</span>
                   </div>
                   <div>
-                    <span class="font-medium text-gray-700">Tanggal:</span>
-                    <span class="ml-2 text-gray-900">{{ formatDate(selectedShipment?.tanggalTerima) }}</span>
+                    <span class="font-medium text-gray-700 dark:text-gray-400">Tanggal:</span>
+                    <span class="ml-2 text-gray-900 dark:text-gray-100">{{ formatDate(selectedShipment?.tanggalTerima) }}</span>
                   </div>
                 </div>
               </div>
@@ -1139,33 +1129,32 @@
       </div>
       <!-- Modal Missing Materials Alert -->
       
-      <div v-if="showMissingMaterialsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-          style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 border-l-4 border-yellow-500">
-          <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+      <div v-if="showMissingMaterialsModal" class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-lg w-full p-6 border-l-4 border-yellow-500 border border-gray-200 dark:border-gray-800">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
             <svg class="w-6 h-6 text-yellow-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             Material Tidak Ditemukan
           </h3>
-          <p class="text-gray-600 mb-4">
-            Sistem mendeteksi <strong>{{ missingMaterialsList.length }}</strong> kode material dari PDF yang belum terdaftar di Master Data. Mohon tambahkan agar dapat diproses.
+          <p class="text-gray-600 dark:text-gray-400 mb-4">
+            Sistem mendeteksi <strong class="text-gray-900 dark:text-gray-100">{{ missingMaterialsList.length }}</strong> kode material dari PDF yang belum terdaftar di Master Data. Mohon tambahkan agar dapat diproses.
           </p>
           
           <div class="space-y-3 max-h-60 overflow-y-auto mb-6 pr-2">
-            <div v-for="code in missingMaterialsList" :key="code" class="flex items-center justify-between bg-gray-50 p-3 rounded border border-gray-200">
-              <span class="font-mono font-bold text-gray-800">{{ code }}</span>
-              <button @click="openAddMaterialModal(code)" class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200 font-medium">
+            <div v-for="code in missingMaterialsList" :key="code" class="flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 p-3 rounded border border-gray-200 dark:border-gray-700">
+              <span class="font-mono font-bold text-gray-800 dark:text-gray-200">{{ code }}</span>
+              <button @click="openAddMaterialModal(code)" class="text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-3 py-1 rounded hover:bg-blue-200 dark:hover:bg-blue-800/50 font-medium transition-colors">
                 + Tambah Data
               </button>
             </div>
           </div>
           
           <div class="flex justify-end">
-            <button @click="showMissingMaterialsModal = false" class="text-gray-500 hover:text-gray-700 text-sm underline mr-4">
+            <button @click="showMissingMaterialsModal = false" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-sm underline mr-4 transition-colors">
               Abaikan (Data akan kosong)
             </button>
-            <button @click="showMissingMaterialsModal = false" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 font-medium">
+            <button @click="showMissingMaterialsModal = false" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 font-medium transition-colors">
               Tutup
             </button>
           </div>
@@ -1173,29 +1162,28 @@
       </div>
 
       <!-- Modal Quick Add Material -->
-      <div v-if="showAddMaterialModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-          style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div v-if="showAddMaterialModal" class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-800">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-bold text-gray-900">Tambah Material Baru</h3>
-                    <button @click="closeAddMaterialModal" class="text-gray-400 hover:text-gray-600">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Tambah Material Baru</h3>
+                    <button @click="closeAddMaterialModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Kode Item</label>
-                        <input v-model="newMaterialForm.code" type="text" readonly class="w-full px-3 py-2 border border-gray-300 rounded bg-gray-100 text-gray-900 font-mono" />
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kode Item</label>
+                        <input v-model="newMaterialForm.code" type="text" readonly class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-100 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 font-mono" />
                     </div>
                      <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Material *</label>
-                        <input v-model="newMaterialForm.name" type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500" placeholder="Nama lengkap material" />
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Material *</label>
+                        <input v-model="newMaterialForm.name" type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" placeholder="Nama lengkap material" />
                     </div>
                      <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">UoM *</label>
-                         <select v-model="newMaterialForm.uom" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">UoM *</label>
+                         <select v-model="newMaterialForm.uom" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
                             <option value="">Pilih UoM</option>
                             <option value="PCS">PCS</option>
                             <option value="KG">KG</option>
@@ -1205,8 +1193,8 @@
                          </select>
                     </div>
                      <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Kategori *</label>
-                        <select v-model="newMaterialForm.category" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kategori *</label>
+                        <select v-model="newMaterialForm.category" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
                             <option value="">Pilih Kategori</option>
                             <option value="Raw Material">Raw Material</option>
                             <option value="Packaging">Packaging</option>
@@ -1214,12 +1202,12 @@
                          </select>
                     </div>
                      <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Sub Kategori</label>
-                        <input v-model="newMaterialForm.subCategory" type="text" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500" placeholder="Opsional" />
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sub Kategori</label>
+                        <input v-model="newMaterialForm.subCategory" type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" placeholder="Opsional" />
                     </div>
                      <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Status Halal</label>
-                        <select v-model="newMaterialForm.halalStatus" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status Halal</label>
+                        <select v-model="newMaterialForm.halalStatus" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
                             <option value="">Pilih Status</option>
                             <option value="Halal">Halal</option>
                             <option value="Non Halal">Non Halal</option>
@@ -1227,9 +1215,9 @@
                     </div>
                 </div>
 
-                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-                    <button @click="closeAddMaterialModal" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Batal</button>
-                    <button @click="saveNewMaterial" :disabled="isSavingMaterial" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-400 flex items-center">
+                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-800">
+                    <button @click="closeAddMaterialModal" class="px-4 py-2 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">Batal</button>
+                    <button @click="saveNewMaterial" :disabled="isSavingMaterial" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-400 dark:disabled:bg-gray-700 transition-colors flex items-center">
                         <svg v-if="isSavingMaterial" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         {{ isSavingMaterial ? 'Menyimpan...' : 'Simpan Material' }}
                     </button>
@@ -1239,38 +1227,37 @@
       </div>
 
       <!-- Modal Confirmation for Multiple Shipments -->
-      <div v-if="showConfirmMultipleModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-          style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full p-6 border-t-4 border-blue-600">
-          <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+      <div v-if="showConfirmMultipleModal" class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg shadow-2xl max-w-md w-full p-6 border-t-4 border-blue-600 border border-gray-200 dark:border-gray-800">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
             <svg class="w-6 h-6 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
             Konfirmasi Pembuatan Penerimaan
           </h3>
           <div class="mb-6">
-            <p class="text-gray-700 mb-3">
-              Sistem akan membuat <strong class="text-blue-700 text-lg">{{ itemCodeGroups.length }} penerimaan terpisah</strong> 
+            <p class="text-gray-700 dark:text-gray-300 mb-3">
+              Sistem akan membuat <strong class="text-blue-700 dark:text-blue-400 text-lg">{{ itemCodeGroups.length }} penerimaan terpisah</strong> 
               dengan data sebagai berikut:
             </p>
-            <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+            <div class="bg-blue-50 dark:bg-blue-900/10 rounded-lg p-4 border border-blue-200 dark:border-blue-900/30">
               <div class="text-sm space-y-2">
                 <div class="flex justify-between">
-                  <span class="text-gray-600">Incoming Number:</span>
-                  <span class="font-mono font-bold text-blue-700">{{ newShipment.incomingNumber }}</span>
+                  <span class="text-gray-600 dark:text-gray-400">Incoming Number:</span>
+                  <span class="font-mono font-bold text-blue-700 dark:text-blue-400">{{ newShipment.incomingNumber }}</span>
                 </div>
                 <div class="flex justify-between">
-                  <span class="text-gray-600">No PO:</span>
-                  <span class="font-semibold">{{ newShipment.noPo }}</span>
+                  <span class="text-gray-600 dark:text-gray-400">No PO:</span>
+                  <span class="font-semibold text-gray-900 dark:text-gray-100">{{ newShipment.noPo }}</span>
                 </div>
                 <div class="flex justify-between">
-                  <span class="text-gray-600">No Surat Jalan:</span>
-                  <span class="font-semibold">{{ newShipment.noSuratJalan }}</span>
+                  <span class="text-gray-600 dark:text-gray-400">No Surat Jalan:</span>
+                  <span class="font-semibold text-gray-900 dark:text-gray-100">{{ newShipment.noSuratJalan }}</span>
                 </div>
               </div>
             </div>
-            <div class="mt-4 bg-yellow-50 border border-yellow-200 rounded p-3">
-              <p class="text-xs text-yellow-800">
+            <div class="mt-4 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-900/30 rounded p-3">
+              <p class="text-xs text-yellow-800 dark:text-yellow-400">
                 <strong>⚠️ Catatan:</strong> Setiap penerimaan akan dipisah berdasarkan kode item untuk memudahkan cetak checklist.
               </p>
             </div>
@@ -1278,12 +1265,12 @@
           <div class="flex justify-end space-x-3">
             <button 
               @click="showConfirmMultipleModal = false" 
-              class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 font-medium">
+              class="px-4 py-2 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 font-medium transition-colors">
               Batal
             </button>
             <button 
               @click="confirmAndSaveMultiple" 
-              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium flex items-center">
+              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-500 font-medium flex items-center transition-colors">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>

@@ -1,23 +1,23 @@
 <template>
   <AppLayout title="Riwayat Aktivitas">
-    <div class="space-y-6">
+    <div class="space-y-6 min-h-screen bg-gray-50 dark:bg-gray-950 p-6 transition-colors duration-300">
       <!-- Header -->
       <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-gray-800">Reservation Requests</h2>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Reservation Requests</h2>
       </div>
 
       <!-- Main Content -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 transition-colors">
         <!-- Header dengan Search dan Filter -->
-        <div class="p-6 border-b border-gray-200">
+        <div class="p-6 border-b border-gray-200 dark:border-gray-800">
           <div class="flex flex-col lg:flex-row gap-4 mb-4">
             <!-- Search Box -->
             <div class="flex-1">
               <div class="relative">
                 <input v-model="searchQuery" type="text"
                   placeholder="Cari berdasarkan No Reservasi, Kategori, atau Detail Info..."
-                  class="w-full px-4 py-2.5 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700">
-                <svg class="w-5 h-5 absolute left-3 top-3 text-gray-400" fill="none" stroke="currentColor"
+                  class="w-full px-4 py-2.5 pl-10 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 transition-colors">
+                <svg class="w-5 h-5 absolute left-3 top-3 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor"
                   viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -27,7 +27,7 @@
 
             <!-- Filter Button -->
             <button @click="showFilterPanel = !showFilterPanel"
-              class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center gap-2 transition-colors border border-gray-300">
+              class="px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg flex items-center gap-2 transition-colors border border-gray-300 dark:border-gray-700">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -48,13 +48,13 @@
           </div>
 
           <!-- Filter Panel -->
-          <div v-if="showFilterPanel" class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div v-if="showFilterPanel" class="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 transition-colors">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <!-- Filter by Category -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Kategori</label>
                 <select v-model="filters.category"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 bg-white">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 transition-colors">
                   <option value="">Semua Kategori</option>
                   <option value="foh-rs">FOH & RS</option>
                   <option value="packaging">Request Packaging Material</option>
@@ -62,12 +62,12 @@
                   <option value="add">ADD (Additional Request)</option>
                 </select>
               </div>
-
+ 
               <!-- Filter by Status -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>
                 <select v-model="filters.status"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 bg-white">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 transition-colors">
                   <option value="">Semua Status</option>
                   <option value="Draft">Draft</option>
                   <option value="Submitted">Submitted</option>
@@ -77,30 +77,30 @@
                   <option value="Done">Done</option>
                 </select>
               </div>
-
+ 
               <!-- Filter by Date Range -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Rentang Tanggal</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Rentang Tanggal</label>
                 <div class="flex gap-2">
                   <input v-model="filters.dateFrom" type="date"
-                    class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 bg-white text-sm">
+                    class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 text-sm transition-colors">
                   <input v-model="filters.dateTo" type="date"
-                    class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 bg-white text-sm">
+                    class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 text-sm transition-colors">
                 </div>
               </div>
             </div>
-
+ 
             <!-- Filter Actions -->
             <div class="flex justify-between items-center">
-              <div class="text-sm text-gray-600">
+              <div class="text-sm text-gray-600 dark:text-gray-400">
                 Total hasil: {{ filteredRequests.length }} dari {{ requests.length }} requests
               </div>
               <div class="flex gap-2">
-                <button @click="resetFilters" class="px-4 py-2 text-gray-600 hover:text-gray-800 text-sm">
+                <button @click="resetFilters" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 text-sm transition-colors">
                   Reset Filter
                 </button>
                 <button @click="showFilterPanel = false"
-                  class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">
+                  class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors shadow-sm">
                   Terapkan
                 </button>
               </div>
@@ -111,45 +111,45 @@
         <!-- Tabel Requests -->
         <div class="p-6">
           <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+              <thead class="bg-gray-50 dark:bg-gray-800 transition-colors">
                 <tr>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">No
                     Reservasi</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kategori
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Kategori
                   </th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tanggal
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Tanggal
                     Permintaan</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Batch Record (MO)</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Detail
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Batch Record (MO)</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Detail
                     Info</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Status
                   </th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
+              <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
                 <tr v-if="filteredRequests.length === 0">
-                  <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                  <td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                     Tidak ada data yang ditemukan
                   </td>
                 </tr>
 
-                <tr v-for="request in filteredRequests" :key="request.id" class="hover:bg-gray-50 transition-colors">
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ request.noReservasi }}
+                <tr v-for="request in filteredRequests" :key="request.id" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">{{ request.noReservasi }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm">
                     <span class="px-2 py-1 text-xs font-medium rounded-full" :class="getCategoryClass(request.type)">
                       {{ getCategoryName(request.type) }}
                     </span>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">{{
                     formatDateTime(request.tanggalPermintaan) }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                     {{ request.type === 'raw-material' ? (request.noBets || '-') : ((request.type === 'packaging' || request.type === 'add') ? (request.noBetsFilling || '-') : '-') }}
                   </td>
 
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ getDisplayText(request) }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">{{ getDisplayText(request) }}</td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <span :class="getStatusClass(request.status)"
                       class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
@@ -159,11 +159,11 @@
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div class="flex space-x-2">
                       <button @click="viewDetail(request)"
-                        class="bg-blue-50 text-blue-700 hover:bg-blue-100 px-3 py-1.5 rounded text-xs font-medium transition-colors">
+                        class="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 px-3 py-1.5 rounded text-xs font-medium transition-colors border border-blue-200 dark:border-blue-800">
                         Detail
                       </button>
                       <button @click="printForm(request)"
-                        class="bg-green-50 text-green-700 hover:bg-green-100 px-3 py-1.5 rounded text-xs font-medium transition-colors">
+                        class="bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/50 px-3 py-1.5 rounded text-xs font-medium transition-colors border border-green-200 dark:border-green-800">
                         Cetak
                       </button>
                     </div>
@@ -177,16 +177,16 @@
 
       <!-- Modal Create Request -->
       <div v-if="showModal"
-        class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
+        class="fixed inset-0 bg-gray-900/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-[9999]"
         style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg w-full max-w-7xl mx-4 max-h-[90vh] overflow-y-auto shadow-xl">
+        <div class="bg-white dark:bg-gray-900 rounded-lg w-full max-w-7xl mx-4 max-h-[90vh] overflow-y-auto shadow-xl border border-gray-200 dark:border-gray-800 transition-colors">
           <div class="p-6">
             <!-- Header Modal -->
             <div class="flex justify-between items-center mb-6">
-              <h3 class="text-lg font-semibold text-gray-800">
+              <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                 Buat Request Reservasi Baru
               </h3>
-              <button @click="closeModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+              <button @click="closeModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -194,15 +194,15 @@
             </div>
 
             <!-- Category Selection -->
-            <div class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <label class="block text-sm font-medium text-gray-700 mb-3">Pilih Kategori Request:</label>
+            <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 transition-colors">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Pilih Kategori Request:</label>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <button v-for="category in categories" :key="category.id" @click="selectedCategory = category.id"
                   :class="[
                     'p-4 rounded-lg border-2 text-sm font-medium transition-all',
                     selectedCategory === category.id
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-gray-300 bg-white text-gray-700 hover:border-blue-300 hover:bg-blue-50'
+                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+                      : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20'
                   ]">
                   {{ category.name }}
                 </button>
@@ -215,27 +215,27 @@
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- No Reservasi (always) -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">No Reservasi</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">No Reservasi</label>
                   <input v-model="formData.noReservasi" type="text" readonly
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700">
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-200 transition-colors">
                 </div>
 
                 <!-- Tanggal Permintaan (always) -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     {{ selectedCategory === 'packaging' || selectedCategory === 'add' ? 'Tanggal & Jam Permintaan' :
                       'Tanggal Permintaan' }}
                   </label>
                   <input v-model="formData.tanggalPermintaan" type="datetime-local"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700">
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 transition-colors">
                 </div>
 
                 <!-- FOH: Alasan Reservasi -->
                 <div v-if="selectedCategory === 'foh-rs'">
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Alasan Reservasi <span
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Alasan Reservasi <span
                       class="text-red-500">*</span></label>
                   <textarea v-model="formData.alasanReservasi" rows="2"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 transition-colors"
                     placeholder="Jelaskan alasan reservasi..."></textarea>
                 </div>
               </div>
@@ -244,10 +244,10 @@
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- FOH & RS: Departemen -->
                 <div v-if="selectedCategory === 'foh-rs'">
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Departemen <span
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Departemen <span
                       class="text-red-500">*</span></label>
                   <select v-model="formData.departemen"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700">
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 transition-colors">
                     <option value="">Pilih Departemen</option>
                     <option value="Marketing">Marketing</option>
                     <option value="Produksi">Produksi</option>
@@ -258,18 +258,18 @@
 
                 <!-- Packaging & ADD: Nama Produk -->
                 <div v-if="selectedCategory === 'packaging' || selectedCategory === 'add'">
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Nama Produk <span
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Produk <span
                       class="text-red-500">*</span></label>
                   <input v-model="formData.namaProduk" type="text"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700">
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 transition-colors">
                 </div>
 
                 <!-- Raw Material: Kode Produk -->
                 <div v-if="selectedCategory === 'raw-material'">
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Nama Produk <span
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Produk <span
                       class="text-red-500">*</span></label>
                   <input v-model="formData.kodeProduk" type="text"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700">
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 transition-colors">
                 </div>
 
                 <!-- Packaging & ADD: No Bets Filling -->
@@ -298,8 +298,8 @@
               </div>
 
               <!-- File Upload Section (Available for ALL categories) -->
-              <div class="mb-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+              <div class="mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800 transition-colors">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Import dari PDF (Otomatisisi Daftar Material)
                   <span v-if="selectedCategory === 'raw-material'">(Mengambil bahan-bahan)</span>
                   <span v-else-if="selectedCategory === 'packaging'">(Mengambil material packaging)</span>
@@ -337,9 +337,9 @@
                   </button>
                 </div>
 
-                <div class="overflow-x-auto border border-gray-200 rounded-lg">
-                  <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+                <div class="overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-lg transition-colors">
+                  <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+                    <thead class="bg-gray-50 dark:bg-gray-800 transition-colors">
                       <tr>
                         <th
                           class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap w-16">
@@ -348,26 +348,26 @@
                         <!-- FOH & RS Headers -->
                         <template v-if="selectedCategory === 'foh-rs'">
                           <th
-                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap">
+                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase whitespace-nowrap">
                             Kode Item</th>
                           <th
-                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap">
+                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase whitespace-nowrap">
                             Keterangan</th>
                           <th
                             class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap min-w-[120px]">
                             Qty & Stok Tersedia</th>
                           <th
-                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap">
+                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase whitespace-nowrap">
                             UoM</th>
                         </template>
 
                         <!-- Packaging Headers -->
                         <template v-if="selectedCategory === 'packaging'">
                           <th
-                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap">
+                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase whitespace-nowrap">
                             Kode PM</th>
                           <th
-                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap">
+                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase whitespace-nowrap">
                             Nama Material</th>
 
                           <th
@@ -378,10 +378,10 @@
                         <!-- Raw Material Headers -->
                         <template v-if="selectedCategory === 'raw-material'">
                           <th
-                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap">
+                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase whitespace-nowrap">
                             Kode Bahan</th>
                           <th
-                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap">
+                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase whitespace-nowrap">
                             Nama Bahan</th>
                           <th
                             class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap min-w-[150px]">
@@ -391,13 +391,13 @@
                         <!-- ADD Headers -->
                         <template v-if="selectedCategory === 'add'">
                           <th
-                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap">
+                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase whitespace-nowrap">
                             Kode PM</th>
                           <th
-                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap">
+                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase whitespace-nowrap">
                             Nama Material</th>
                           <th
-                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap">
+                            class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase whitespace-nowrap">
                             Alasan Penambahan</th>
                           <th
                             class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap min-w-[150px]">
@@ -409,9 +409,9 @@
                           Aksi</th>
                       </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-gray-900 transition-colors">
                       <tr v-for="(item, index) in formData.items" :key="index">
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{{ index + 1 }}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ index + 1 }}</td>
 
                         <!-- FOH & RS Row -->
                         <template v-if="selectedCategory === 'foh-rs'">
@@ -419,14 +419,14 @@
                             <input v-model="item.kodeItem" type="text"
                               @input="debounceSearch(item.kodeItem, index, 'kodeItem')"
                               @focus="startSearch(index, 'kodeItem')" @blur="endSearch()"
-                              class="w-full min-w-[120px] text-sm border border-gray-300 rounded px-2 py-1 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                              class="w-full min-w-[120px] text-sm border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                             <ul v-if="isSearching(index, 'kodeItem') && materialSuggestions.length > 0"
-                              class="absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-white border border-gray-300 rounded-md shadow-lg z-20">
+                              class="absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg z-20 transition-colors">
                               <li v-for="material in materialSuggestions" :key="material.id"
                                 @mousedown.prevent="selectMaterial(material, index, 'kodeItem')"
-                                class="p-2 text-sm cursor-pointer hover:bg-blue-100 flex justify-between">
-                                <span>{{ material.kodeItem }}</span>
-                                <span class="text-gray-500 text-xs truncate ml-2">{{ material.keterangan ||
+                                class="p-2 text-sm cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/50 flex justify-between transition-colors">
+                                <span class="dark:text-gray-200">{{ material.kodeItem }}</span>
+                                <span class="text-gray-500 dark:text-gray-400 text-xs truncate ml-2">{{ material.keterangan ||
                                   material.namaMaterial }} (Stok: {{ material.stokAvailable }})</span>
                               </li>
                               
@@ -434,13 +434,13 @@
                           </td>
                           <td class="px-4 py-3 whitespace-nowrap">
                             <input v-model="item.keterangan" type="text"
-                              class="w-full min-w-[150px] text-sm border border-gray-300 rounded px-2 py-1 bg-gray-50 text-gray-700"
+                              class="w-full min-w-[150px] text-sm border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-200 transition-colors"
                               readonly>
                           </td>
                           <td class="px-4 py-3 whitespace-nowrap">
                             <input v-model.number="item.qty" type="number" step="any" min="0"
                               :class="{ 'border-red-500 ring-red-500': isQtyExceeded(item, 'qty') }"
-                              class="w-full min-w-[80px] text-sm border border-gray-300 rounded px-2 py-1 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                              class="w-full min-w-[80px] text-sm border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                             <p v-if="item.stokAvailable !== undefined"
                               :class="['text-xs mt-1', item.stokAvailable <= 0 ? 'text-red-600' : 'text-green-600']">
                               Tersedia: {{ item.stokAvailable || 0 }} {{ item.uom || '' }}
@@ -578,10 +578,10 @@
                           </td>
                         </template>
 
-                        <td class="px-4 py-3 whitespace-nowrap">
-                          <button @click="removeItem(index)"
-                            class="bg-red-50 text-red-700 hover:bg-red-100 px-2 py-1 rounded text-xs font-medium transition-colors">Hapus</button>
-                        </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <button @click="removeItem(index)"
+                              class="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 px-2 py-1 rounded text-xs font-medium transition-colors border border-red-200 dark:border-red-800">Hapus</button>
+                          </td>
                       </tr>
                     </tbody>
                   </table>
@@ -589,13 +589,13 @@
               </div>
 
               <!-- Footer Modal -->
-              <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+              <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-800 transition-colors">
                 <button @click="closeModal"
-                  class="px-6 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                  class="px-6 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                   Batal
                 </button>
                 <button @click="submitRequest" :disabled="!isFormValid || hasStockExceededItems"
-                  class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
+                  class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:bg-gray-400 dark:disabled:bg-gray-700 disabled:cursor-not-allowed transition-colors shadow-sm">
                   Simpan & Submit
                 </button>
               </div>
@@ -605,34 +605,34 @@
       </div>
       <!-- Modal Detail Request (TIDAK BERUBAH) -->
       <div v-if="showDetailModal && selectedRequest"
-        class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
+        class="fixed inset-0 bg-gray-900/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-[9999]"
         style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg w-full max-w-7xl mx-4 max-h-[90vh] overflow-y-auto shadow-xl">
+        <div class="bg-white dark:bg-gray-900 rounded-lg w-full max-w-7xl mx-4 max-h-[90vh] overflow-y-auto shadow-xl border border-gray-200 dark:border-gray-800 transition-colors">
           <div class="p-6">
-            <div class="flex justify-between items-center mb-6 border-b pb-4">
-              <h3 class="text-xl font-bold text-gray-800">
+            <div class="flex justify-between items-center mb-6 border-b dark:border-gray-800 pb-4">
+              <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">
                 Detail Reservasi: {{ selectedRequest.noReservasi }}
               </h3>
-              <button @click="closeDetailModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+              <button @click="closeDetailModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 bg-gray-50 p-4 rounded-lg">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-100 dark:border-gray-800 transition-colors">
               <div class="space-y-1">
-                <p class="text-sm font-medium text-gray-600">Kategori Request</p>
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Kategori Request</p>
                 <span class="px-3 py-1 text-xs font-semibold rounded-full" :class="getCategoryClass(selectedRequest.type)">
                   {{ getCategoryName(selectedRequest.type) }}
                 </span>
               </div>
               <div class="space-y-1">
-                <p class="text-sm font-medium text-gray-600">Tanggal Permintaan</p>
-                <p class="font-medium text-gray-800">{{ formatDateTime(selectedRequest.tanggalPermintaan) }}</p>
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Tanggal Permintaan</p>
+                <p class="font-medium text-gray-800 dark:text-gray-200">{{ formatDateTime(selectedRequest.tanggalPermintaan) }}</p>
               </div>
               <div class="space-y-1">
-                <p class="text-sm font-medium text-gray-600">Status</p>
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Status</p>
                 <span :class="getStatusClass(selectedRequest.status)" class="px-3 py-1 text-xs font-semibold rounded-full">
                   {{ selectedRequest.status }}
                 </span>
@@ -640,114 +640,114 @@
 
               <template v-if="selectedRequest.type === 'foh-rs'">
                 <div class="space-y-1">
-                  <p class="text-sm font-medium text-gray-600">Departemen</p>
-                  <p class="text-gray-800">{{ selectedRequest.departemen }}</p>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Departemen</p>
+                  <p class="text-gray-800 dark:text-gray-200">{{ selectedRequest.departemen }}</p>
                 </div>
                 <div class="space-y-1 md:col-span-2">
-                  <p class="text-sm font-medium text-gray-600">Alasan Reservasi</p>
-                  <p class="text-gray-800">{{ selectedRequest.alasanReservasi || '-' }}</p>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Alasan Reservasi</p>
+                  <p class="text-gray-800 dark:text-gray-200">{{ selectedRequest.alasanReservasi || '-' }}</p>
                 </div>
               </template>
 
               <template v-else-if="selectedRequest.type === 'packaging' || selectedRequest.type === 'add'">
                 <div class="space-y-1">
-                  <p class="text-sm font-medium text-gray-600">Nama Produk</p>
-                  <p class="text-gray-800">{{ selectedRequest.namaProduk }}</p>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Nama Produk</p>
+                  <p class="text-gray-800 dark:text-gray-200">{{ selectedRequest.namaProduk }}</p>
                 </div>
                 <div class="space-y-1">
-                  <p class="text-sm font-medium text-gray-600">No Bets Filling/Mixing</p>
-                  <p class="text-gray-800">{{ selectedRequest.noBetsFilling }}</p>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">No Bets Filling/Mixing</p>
+                  <p class="text-gray-800 dark:text-gray-200">{{ selectedRequest.noBetsFilling }}</p>
                 </div>
               </template>
 
               <template v-else-if="selectedRequest.type === 'raw-material'">
                 <div class="space-y-1">
-                  <p class="text-sm font-medium text-gray-600">Kode Produk</p>
-                  <p class="text-gray-800">{{ selectedRequest.kodeProduk }}</p>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Kode Produk</p>
+                  <p class="text-gray-800 dark:text-gray-200">{{ selectedRequest.kodeProduk }}</p>
                 </div>
                 <div class="space-y-1">
-                  <p class="text-sm font-medium text-gray-600">No Bets Ekstrak/Mixing</p>
-                  <p class="text-gray-800">{{ selectedRequest.noBets }}</p>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">No Bets Ekstrak/Mixing</p>
+                  <p class="text-gray-800 dark:text-gray-200">{{ selectedRequest.noBets }}</p>
                 </div>
                 <div class="space-y-1">
-                  <p class="text-sm font-medium text-gray-600">Besar Bets (Kg)</p>
-                  <p class="text-gray-800">{{ selectedRequest.besarBets }} Kg</p>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Besar Bets (Kg)</p>
+                  <p class="text-gray-800 dark:text-gray-200">{{ selectedRequest.besarBets }} Kg</p>
                 </div>
               </template>
             </div>
 
-            <h4 class="text-lg font-semibold text-gray-800 mb-4">Daftar Item yang Diminta</h4>
+            <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 font-mono">Daftar Item yang Diminta</h4>
 
             <div v-if="!selectedRequest.items || selectedRequest.items.length === 0"
-              class="p-4 bg-yellow-50 text-yellow-700 rounded-lg">
+              class="p-4 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 rounded-lg border border-yellow-200 dark:border-yellow-800 transition-colors">
               Tidak ada detail item yang tercatat.
             </div>
 
-            <div v-else class="overflow-x-auto border border-gray-200 rounded-lg">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <div v-else class="overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-lg transition-colors">
+              <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+                <thead class="bg-gray-50 dark:bg-gray-800 transition-colors">
                   <tr>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase w-16">No</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase w-16">No</th>
                     <template v-if="selectedRequest.type === 'foh-rs'">
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Kode Item</th>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Keterangan</th>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Qty</th>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">UoM</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Kode Item</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Keterangan</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Qty</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">UoM</th>
                     </template>
                     <template v-else-if="selectedRequest.type === 'raw-material'">
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Kode Bahan</th>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Nama Bahan</th>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Jumlah Kebutuhan</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Kode Bahan</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Nama Bahan</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Jumlah Kebutuhan</th>
                     </template>
                     <template v-else-if="selectedRequest.type === 'packaging'">
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Nama Material</th>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Kode PM</th>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Jumlah Permintaan</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Nama Material</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Kode PM</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Jumlah Permintaan</th>
                     </template>
                     <template v-else-if="selectedRequest.type === 'add'">
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Nama Material</th>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Kode PM</th>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Alasan Tambahan</th>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Jumlah Permintaan</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Nama Material</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Kode PM</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Alasan Tambahan</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">Jumlah Permintaan</th>
                     </template>
 
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200 bg-white">
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-gray-900 transition-colors">
                   <!-- Gunakan selectedRequest.items yang sudah dijamin camelCase oleh Controller -->
-                  <tr v-for="(item, index) in selectedRequest.items" :key="index">
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{{ index + 1 }}</td>
+                  <tr v-for="(item, index) in selectedRequest.items" :key="index" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ index + 1 }}</td>
                     <template v-if="selectedRequest.type === 'foh-rs'">
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.kodeItem }}</td>
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.keterangan }}</td>
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.qty }}</td>
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.uom }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.kodeItem }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.keterangan }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.qty }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.uom }}</td>
                     </template>
                     <template v-else-if="selectedRequest.type === 'packaging'">
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.namaMaterial }}</td>
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.kodePM }}</td>
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.jumlahPermintaan }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.namaMaterial }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.kodePM }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.jumlahPermintaan }}</td>
                     </template>
                     <template v-else-if="selectedRequest.type === 'raw-material'">
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.kodeBahan }}</td>
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.namaBahan }}</td>
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ formatQty(item.jumlahKebutuhan) }}</td>
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.jumlahKirim }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.kodeBahan }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.namaBahan }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ formatQty(item.jumlahKebutuhan) }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.jumlahKirim }}</td>
                     </template>
                     <template v-else-if="selectedRequest.type === 'add'">
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.namaMaterial }}</td>
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.kodePM }}</td>
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.alasanPenambahan }}</td>
-                      <td class="px-4 py-3 text-sm text-gray-700">{{ item.jumlahPermintaan }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.namaMaterial }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.kodePM }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.alasanPenambahan }}</td>
+                      <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ item.jumlahPermintaan }}</td>
                     </template>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <div class="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200">
+            <div class="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-800 transition-colors">
               <button @click="closeDetailModal"
-                class="px-6 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                class="px-6 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                 Tutup
               </button>
             </div>
@@ -758,14 +758,14 @@
 
     <!-- Modal Konfirmasi (ganti alert/confirm) -->
     <div v-if="showConfirmationModal"
-      class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
+      class="fixed inset-0 bg-gray-900/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-[9999]"
       style="background-color: rgba(43, 51, 63, 0.67);">
-      <div class="bg-white rounded-lg p-6 w-full max-w-sm shadow-xl">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">Peringatan Input</h3>
-        <p class="text-sm text-gray-600 mb-6">{{ confirmationMessage }}</p>
+      <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-sm shadow-xl border border-gray-200 dark:border-gray-800 transition-colors">
+        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">Peringatan Input</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">{{ confirmationMessage }}</p>
         <div class="flex justify-end space-x-3">
           <button @click="showConfirmationModal = false"
-            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm">
+            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors text-sm shadow-sm">
             Oke
           </button>
         </div>
@@ -775,23 +775,23 @@
     <!-- Category Mismatch Warning Modal -->
     <div v-if="showCategoryMismatchModal"
       class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999]">
-      <div class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden shadow-2xl">
+      <div class="bg-white dark:bg-gray-900 rounded-lg max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-800 transition-colors">
         <div class="p-6">
           <!-- Header -->
           <div class="flex items-center gap-3 mb-6">
-            <div class="bg-yellow-100 p-3 rounded-full">
-              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-yellow-100 dark:bg-yellow-900/30 p-3 rounded-full transition-colors">
+              <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                   d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
             <div class="flex-1">
-              <h3 class="text-xl font-bold text-gray-900">Material Kategori Tidak Sesuai</h3>
-              <p class="text-sm text-gray-600 mt-1">
+              <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">Material Kategori Tidak Sesuai</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                 {{ categoryMismatchItems.length }} item dilewati karena kategori tidak cocok
               </p>
             </div>
-            <button @click="showCategoryMismatchModal = false" class="text-gray-400 hover:text-gray-600 transition">
+            <button @click="showCategoryMismatchModal = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -799,12 +799,12 @@
           </div>
 
           <!-- Alert Info -->
-          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+          <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4 transition-colors">
             <div class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
               </svg>
-              <p class="text-sm text-blue-800">
+              <p class="text-sm text-blue-800 dark:text-blue-300">
                 <strong>ℹ️ Informasi:</strong> Item-item berikut <strong>TIDAK</strong> dimasukkan ke reservasi 
                 karena kategorinya berbeda dengan yang dipilih (<strong>{{ expectedCategory }}</strong>).
               </p>
@@ -812,28 +812,28 @@
           </div>
 
           <!-- Table of Skipped Items -->
-          <div class="overflow-hidden border border-gray-200 rounded-lg">
+          <div class="overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg transition-colors">
             <div class="overflow-y-auto max-h-[50vh]">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50 sticky top-0">
+              <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+                <thead class="bg-gray-50 dark:bg-gray-800 sticky top-0 transition-colors">
                   <tr>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kode</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Material</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori Actual</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expected</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Kode</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Nama Material</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Kategori Actual</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Expected</th>
                   </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="(item, index) in categoryMismatchItems" :key="index" class="hover:bg-gray-50 transition">
-                    <td class="px-4 py-3 text-sm font-mono text-gray-900">{{ item.kode }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-900">{{ item.nama }}</td>
+                <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
+                  <tr v-for="(item, index) in categoryMismatchItems" :key="index" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-200">{{ item.kode }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-200">{{ item.nama }}</td>
                     <td class="px-4 py-3 text-sm">
-                      <span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-full">
+                      <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 text-xs font-semibold rounded-full">
                         {{ item.kategori }}
                       </span>
                     </td>
                     <td class="px-4 py-3 text-sm">
-                      <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
+                      <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs font-semibold rounded-full">
                         {{ item.expectedKategori }}
                       </span>
                     </td>
@@ -844,7 +844,7 @@
           </div>
 
           <!-- Footer -->
-          <div class="flex justify-end mt-6 pt-4 border-t border-gray-200">
+          <div class="flex justify-end mt-6 pt-4 border-t border-gray-200 dark:border-gray-800 transition-colors">
             <button @click="showCategoryMismatchModal = false"
               class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium shadow-sm">
               OK, Saya Mengerti

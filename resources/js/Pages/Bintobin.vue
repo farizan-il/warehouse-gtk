@@ -1,28 +1,28 @@
 <template>
     <AppLayout title="Bin to Bin Transfer">
-        <div class="py-8 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 min-h-screen">
+        <div class="py-8 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 min-h-screen transition-colors">
             <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
 
                 <!-- Header Section with Sidebar Toggle -->
                 <div class="mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div>
                         <h1
-                            class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+                            class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent mb-2">
                             Sistem Bin to Bin Transfer
                         </h1>
-                        <p class="text-gray-600 text-base md:text-lg">Real-time warehouse material movement tracking system</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-base md:text-lg">Real-time warehouse material movement tracking system</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-4 w-full md:w-auto">
                         <!-- Toggle Sidebar Button -->
                         <button @click="toggleSidebar"
-                            class="relative flex-1 md:flex-none px-6 py-3 bg-white rounded-xl shadow-lg border border-gray-200 hover:bg-gray-50 transition-all flex items-center justify-center space-x-2 group">
-                            <svg class="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" fill="none"
+                            class="relative flex-1 md:flex-none px-6 py-3 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all flex items-center justify-center space-x-2 group">
+                            <svg class="w-6 h-6 text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
                                 </path>
                             </svg>
-                            <span class="font-semibold text-gray-700 group-hover:text-blue-600">Dashboard</span>
+                            <span class="font-semibold text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">Dashboard</span>
                             <!-- Notification Badge -->
                             <span v-if="transferHistory.length > 0"
                                 class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
@@ -30,12 +30,12 @@
                             </span>
                         </button>
 
-                        <div class="hidden md:block bg-white px-6 py-3 rounded-xl shadow-lg border border-gray-200">
-                            <div class="text-xs text-gray-500 mb-1">Tanggal</div>
-                            <div class="font-semibold text-gray-900">{{ currentDate }}</div>
+                        <div class="hidden md:block bg-white dark:bg-gray-900 px-6 py-3 rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 transition-colors">
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Tanggal</div>
+                            <div class="font-semibold text-gray-900 dark:text-gray-100">{{ currentDate }}</div>
                         </div>
                         <div
-                            class="hidden md:block bg-gradient-to-r from-green-500 to-emerald-500 px-6 py-3 rounded-xl shadow-lg text-white">
+                            class="hidden md:block bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 px-6 py-3 rounded-xl shadow-lg text-white">
                             <div class="text-xs opacity-90 mb-1">Status Sistem</div>
                             <div class="font-bold flex items-center">
                                 <span class="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
@@ -49,14 +49,14 @@
                 <div class="space-y-6">
 
                     <!-- Progress Steps -->
-                    <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-800 transition-colors">
                         <!-- Progress steps content sama seperti sebelumnya -->
                         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
                             <div class="flex flex-col md:flex-row items-start md:items-center flex-1 w-full">
                                 <div class="flex items-center w-full md:w-auto mb-4 md:mb-0"
-                                    :class="currentStep === 'scan_material' || currentStep === 'scan_destination' || currentStep === 'complete' ? 'text-blue-600' : 'text-gray-400'">
-                                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border-2 shrink-0"
-                                        :class="currentStep === 'scan_material' || currentStep === 'scan_destination' || currentStep === 'complete' ? 'bg-blue-600 text-white border-blue-600' : 'bg-gray-200 text-gray-400 border-gray-300'">
+                                    :class="currentStep === 'scan_material' || currentStep === 'scan_destination' || currentStep === 'complete' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-600'">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border-2 shrink-0 transition-colors"
+                                        :class="currentStep === 'scan_material' || currentStep === 'scan_destination' || currentStep === 'complete' ? 'bg-blue-600 text-white border-blue-600 dark:bg-blue-500 dark:border-blue-500' : 'bg-gray-200 text-gray-400 border-gray-300 dark:bg-gray-800 dark:text-gray-600 dark:border-gray-700'">
                                         <span v-if="currentStep === 'scan_material'">1</span>
                                         <svg v-else class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
@@ -66,21 +66,21 @@
                                     </div>
                                     <div class="ml-3">
                                         <p class="font-bold">Scan Material</p>
-                                        <p class="text-xs">Scan kode material</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Scan kode material</p>
                                     </div>
                                 </div>
 
-                                <div class="hidden md:block flex-1 h-1 mx-4"
-                                    :class="currentStep === 'scan_destination' || currentStep === 'complete' ? 'bg-blue-600' : 'bg-gray-300'">
+                                <div class="hidden md:block flex-1 h-1 mx-4 transition-colors"
+                                    :class="currentStep === 'scan_destination' || currentStep === 'complete' ? 'bg-blue-600 dark:bg-blue-500' : 'bg-gray-300 dark:bg-gray-800'">
                                 </div>
-                                <div class="md:hidden w-1 h-8 ml-5"
-                                    :class="currentStep === 'scan_destination' || currentStep === 'complete' ? 'bg-blue-600' : 'bg-gray-300'">
+                                <div class="md:hidden w-1 h-8 ml-5 transition-colors"
+                                    :class="currentStep === 'scan_destination' || currentStep === 'complete' ? 'bg-blue-600 dark:bg-blue-500' : 'bg-gray-300 dark:bg-gray-800'">
                                 </div>
 
                                 <div class="flex items-center w-full md:w-auto mb-4 md:mb-0"
-                                    :class="currentStep === 'scan_destination' || currentStep === 'complete' ? 'text-blue-600' : 'text-gray-400'">
-                                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border-2 shrink-0"
-                                        :class="currentStep === 'scan_destination' || currentStep === 'complete' ? 'bg-blue-600 text-white border-blue-600' : 'bg-gray-200 text-gray-400 border-gray-300'">
+                                    :class="currentStep === 'scan_destination' || currentStep === 'complete' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-600'">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border-2 shrink-0 transition-colors"
+                                        :class="currentStep === 'scan_destination' || currentStep === 'complete' ? 'bg-blue-600 text-white border-blue-600 dark:bg-blue-500 dark:border-blue-500' : 'bg-gray-200 text-gray-400 border-gray-300 dark:bg-gray-800 dark:text-gray-600 dark:border-gray-700'">
                                         <span v-if="currentStep !== 'complete'">2</span>
                                         <svg v-else class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
@@ -90,24 +90,24 @@
                                     </div>
                                     <div class="ml-3">
                                         <p class="font-bold">Scan Bin Tujuan</p>
-                                        <p class="text-xs">Scan lokasi tujuan</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Scan lokasi tujuan</p>
                                     </div>
                                 </div>
 
-                                <div class="hidden md:block flex-1 h-1 mx-4"
-                                    :class="currentStep === 'complete' ? 'bg-green-600' : 'bg-gray-300'"></div>
-                                <div class="md:hidden w-1 h-8 ml-5"
-                                    :class="currentStep === 'complete' ? 'bg-green-600' : 'bg-gray-300'"></div>
+                                <div class="hidden md:block flex-1 h-1 mx-4 transition-colors"
+                                    :class="currentStep === 'complete' ? 'bg-green-600 dark:bg-green-500' : 'bg-gray-300 dark:bg-gray-800'"></div>
+                                <div class="md:hidden w-1 h-8 ml-5 transition-colors"
+                                    :class="currentStep === 'complete' ? 'bg-green-600 dark:bg-green-500' : 'bg-gray-300 dark:bg-gray-800'"></div>
 
                                 <div class="flex items-center w-full md:w-auto"
-                                    :class="currentStep === 'complete' ? 'text-green-600' : 'text-gray-400'">
-                                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border-2 shrink-0"
-                                        :class="currentStep === 'complete' ? 'bg-green-600 text-white border-green-600' : 'bg-gray-200 text-gray-400 border-gray-300'">
+                                    :class="currentStep === 'complete' ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-600'">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border-2 shrink-0 transition-colors"
+                                        :class="currentStep === 'complete' ? 'bg-green-600 text-white border-green-600 dark:bg-green-500 dark:border-green-500' : 'bg-gray-200 text-gray-400 border-gray-300 dark:bg-gray-800 dark:text-gray-600 dark:border-gray-700'">
                                         ✓
                                     </div>
                                     <div class="ml-3">
                                         <p class="font-bold">Konfirmasi</p>
-                                        <p class="text-xs">Selesaikan transfer</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Selesaikan transfer</p>
                                     </div>
                                 </div>
                             </div>
@@ -116,14 +116,14 @@
 
                     <!-- Scanner Card -->
                     <div
-                        class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-2xl p-4 md:p-8 border-2 border-blue-200">
+                        class="bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-gray-950 rounded-2xl shadow-2xl p-4 md:p-8 border-2 border-blue-200 dark:border-blue-900/50 transition-colors">
                         <div class="flex items-center justify-between mb-6">
                             <div>
-                                <h2 class="text-2xl font-bold text-gray-900 mb-1">
+                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                                     {{ currentStep === 'scan_material' ? '📦 Scan Material' : currentStep ===
                                         'scan_destination' ? '📍 Scan Bin Tujuan' : '✅ Siap Konfirmasi' }}
                                 </h2>
-                                <p class="text-gray-600">
+                                <p class="text-gray-600 dark:text-gray-400">
                                     {{ currentStep === 'scan_material' ? 'Pilih metode scanning untuk material' :
                                         currentStep === 'scan_destination' ? 'Pilih metode scanning untuk bin tujuan' :
                                             'Klik tombol konfirmasi untuk menyelesaikan' }}
@@ -195,19 +195,19 @@
 
                         <!-- Manual Input -->
                         <div v-if="!showCamera" class="mb-6">
-                            <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 transition-colors">
                                 💡 Input Manual - Ketik kode barcode
                             </label>
                             <div class="relative">
                                 <input v-model="barcodeInput" @keyup.enter="handleManualScan" type="text"
                                     :placeholder="currentStep === 'scan_material' ? 'Contoh: MAT001, MAT002, MAT003...' : 'Contoh: A1, B2, C3...'"
-                                    class="w-full px-6 py-5 bg-white border-3 border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500 focus:border-blue-500 text-gray-900 text-xl font-mono placeholder-gray-400 transition-all shadow-inner"
+                                    class="w-full px-6 py-5 bg-white dark:bg-gray-800 border-3 border-gray-300 dark:border-gray-700 rounded-xl focus:ring-4 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-gray-100 text-xl font-mono placeholder-gray-400 dark:placeholder-gray-500 transition-all shadow-inner"
                                     :disabled="currentStep === 'complete' || isScanning" ref="barcodeInputRef" />
                                 <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
                                     <div v-if="isScanning"
                                         class="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin">
                                     </div>
-                                    <svg v-else class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor"
+                                    <svg v-else class="w-8 h-8 text-gray-400 dark:text-gray-500 transition-colors" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
@@ -219,14 +219,14 @@
 
                         <!-- Action Buttons -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <!-- Camera Button -->
-                            <button @click="toggleCamera" :disabled="currentStep === 'complete'"
-                                class="py-5 px-6 rounded-xl font-bold text-lg transition-all duration-200 shadow-lg flex items-center justify-center"
-                                :class="currentStep === 'complete'
-                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                    : showCamera
-                                        ? 'bg-red-600 hover:bg-red-700 text-white transform hover:scale-105'
-                                        : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white transform hover:scale-105'">
+                             <!-- Camera Button -->
+                             <button @click="toggleCamera" :disabled="currentStep === 'complete'"
+                                 class="py-5 px-6 rounded-xl font-bold text-lg transition-all duration-200 shadow-lg flex items-center justify-center"
+                                 :class="currentStep === 'complete'
+                                     ? 'bg-gray-300 dark:bg-gray-800 text-gray-500 dark:text-gray-600 cursor-not-allowed'
+                                     : showCamera
+                                         ? 'bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 text-white transform hover:scale-105'
+                                         : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 dark:from-purple-700 dark:to-indigo-700 dark:hover:from-purple-800 dark:hover:to-indigo-800 text-white transform hover:scale-105'">
                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z">
@@ -237,13 +237,13 @@
                                 {{ showCamera ? 'Stop Kamera' : 'Buka Kamera' }}
                             </button>
 
-                            <!-- Manual Scan Button -->
-                            <button @click="handleManualScan"
-                                :disabled="!barcodeInput || currentStep === 'complete' || isScanning || showCamera"
-                                class="py-5 px-6 rounded-xl font-bold text-lg transition-all duration-200 shadow-lg flex items-center justify-center"
-                                :class="!barcodeInput || currentStep === 'complete' || isScanning || showCamera
-                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                    : 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white transform hover:scale-105'">
+                             <!-- Manual Scan Button -->
+                             <button @click="handleManualScan"
+                                 :disabled="!barcodeInput || currentStep === 'complete' || isScanning || showCamera"
+                                 class="py-5 px-6 rounded-xl font-bold text-lg transition-all duration-200 shadow-lg flex items-center justify-center"
+                                 :class="!barcodeInput || currentStep === 'complete' || isScanning || showCamera
+                                     ? 'bg-gray-300 dark:bg-gray-800 text-gray-500 dark:text-gray-600 cursor-not-allowed'
+                                     : 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 dark:from-blue-700 dark:to-cyan-700 dark:hover:from-blue-800 dark:hover:to-cyan-800 text-white transform hover:scale-105'">
                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -255,7 +255,7 @@
 
                         <!-- Reset Button -->
                         <button v-if="scannedMaterial && currentStep !== 'complete'" @click="resetTransfer"
-                            class="w-full mt-4 py-4 px-6 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-xl transition-all transform hover:scale-105 shadow-lg flex items-center justify-center">
+                            class="w-full mt-4 py-4 px-6 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 dark:from-orange-600 dark:to-red-700 dark:hover:from-orange-700 dark:hover:to-red-800 text-white font-bold rounded-xl transition-all transform hover:scale-105 shadow-lg flex items-center justify-center">
                             <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
@@ -285,8 +285,8 @@
                     <!-- Material Details Card -->
                     <transition name="scale-fade">
                         <div v-if="scannedMaterial"
-                            class="bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-gray-200">
-                            <div class="bg-gradient-to-r from-indigo-600 to-blue-600 p-6">
+                            class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border-2 border-gray-200 dark:border-gray-800 transition-colors">
+                            <div class="bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-700 dark:to-blue-700 p-6">
                                 <h3 class="text-2xl font-bold text-white flex items-center">
                                     <span
                                         class="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center mr-3 text-3xl">📦</span>
@@ -298,16 +298,16 @@
                                 <!-- Material Header -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div
-                                        class="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-2xl border-2 border-blue-300 shadow-lg">
-                                        <p class="text-sm text-blue-700 mb-2 font-bold uppercase tracking-wide">Kode
+                                        class="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-2xl border-2 border-blue-300 dark:border-blue-800 shadow-lg transition-colors">
+                                        <p class="text-sm text-blue-700 dark:text-blue-400 mb-2 font-bold uppercase tracking-wide">Kode
                                             Material</p>
-                                        <p class="text-4xl font-black text-blue-600">{{ scannedMaterial.code }}</p>
+                                        <p class="text-4xl font-black text-blue-600 dark:text-blue-500">{{ scannedMaterial.code }}</p>
                                     </div>
                                     <div
-                                        class="bg-gradient-to-br from-green-50 to-emerald-100 p-6 rounded-2xl border-2 border-green-300 shadow-lg">
-                                        <p class="text-sm text-green-700 mb-2 font-bold uppercase tracking-wide">Jumlah
+                                        class="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-2xl border-2 border-green-300 dark:border-green-800 shadow-lg transition-colors">
+                                        <p class="text-sm text-green-700 dark:text-green-400 mb-2 font-bold uppercase tracking-wide">Jumlah
                                         </p>
-                                        <p class="text-4xl font-black text-green-600">{{ scannedMaterial.quantity }}
+                                        <p class="text-4xl font-black text-green-600 dark:text-green-500">{{ scannedMaterial.quantity }}
                                             <span class="text-2xl">{{ scannedMaterial.unit }}</span>
                                         </p>
                                     </div>
@@ -316,20 +316,20 @@
                                 <!-- Material Info Grid -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div
-                                        class="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-xl border-2 border-gray-200 shadow">
+                                        class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 p-5 rounded-xl border-2 border-gray-200 dark:border-gray-800 shadow transition-colors">
                                         <div class="flex items-center mb-2">
                                             <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
-                                            <p class="text-xs text-gray-600 font-bold uppercase tracking-wide">Nama
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 font-bold uppercase tracking-wide">Nama
                                                 Material</p>
                                         </div>
-                                        <p class="font-bold text-gray-900 text-lg">{{ scannedMaterial.name }}</p>
+                                        <p class="font-bold text-gray-900 dark:text-gray-100 text-lg">{{ scannedMaterial.name }}</p>
                                     </div>
 
                                     <div
-                                        class="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-xl border-2 border-gray-200 shadow">
+                                        class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 p-5 rounded-xl border-2 border-gray-200 dark:border-gray-800 shadow transition-colors">
                                         <div class="flex items-center mb-2">
                                             <span class="w-3 h-3 bg-pink-500 rounded-full mr-2"></span>
-                                            <p class="text-xs text-gray-600 font-bold uppercase tracking-wide">Kategori
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 font-bold uppercase tracking-wide">Kategori
                                             </p>
                                         </div>
                                         <span
@@ -339,31 +339,31 @@
                                     </div>
 
                                     <div
-                                        class="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-xl border-2 border-gray-200 shadow">
+                                        class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 p-5 rounded-xl border-2 border-gray-200 dark:border-gray-800 shadow transition-colors">
                                         <div class="flex items-center mb-2">
                                             <span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
-                                            <p class="text-xs text-gray-600 font-bold uppercase tracking-wide">Batch
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 font-bold uppercase tracking-wide">Batch
                                                 Number</p>
                                         </div>
-                                        <p class="font-bold text-gray-900 text-lg">{{ scannedMaterial.batchNo }}</p>
+                                        <p class="font-bold text-gray-900 dark:text-gray-100 text-lg">{{ scannedMaterial.batchNo }}</p>
                                     </div>
 
                                     <div
-                                        class="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-xl border-2 border-gray-200 shadow">
+                                        class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 p-5 rounded-xl border-2 border-gray-200 dark:border-gray-800 shadow transition-colors">
                                         <div class="flex items-center mb-2">
                                             <span class="w-3 h-3 bg-orange-500 rounded-full mr-2"></span>
-                                            <p class="text-xs text-gray-600 font-bold uppercase tracking-wide">Tanggal
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 font-bold uppercase tracking-wide">Tanggal
                                                 Kadaluarsa</p>
                                         </div>
-                                        <p class="font-bold text-gray-900 text-lg">{{ scannedMaterial.expiryDate }}</p>
+                                        <p class="font-bold text-gray-900 dark:text-gray-100 text-lg">{{ scannedMaterial.expiryDate }}</p>
                                     </div>
                                 </div>
 
                                 <!-- Transfer Route -->
                                 <div
-                                    class="bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 p-8 rounded-2xl border-3 border-amber-300 shadow-xl">
+                                    class="bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-900/20 dark:via-yellow-900/20 dark:to-orange-900/20 p-8 rounded-2xl border-3 border-amber-300 dark:border-amber-800 shadow-xl transition-colors">
                                     <p
-                                        class="text-sm font-bold text-amber-900 mb-6 uppercase tracking-wider flex items-center">
+                                        class="text-sm font-bold text-amber-900 dark:text-amber-400 mb-6 uppercase tracking-wider flex items-center">
                                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -372,29 +372,29 @@
                                     </p>
                                     <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0">
                                         <div class="flex-1 w-full text-center md:text-left">
-                                            <p class="text-xs text-amber-700 mb-3 font-semibold uppercase">Dari Bin</p>
+                                            <p class="text-xs text-amber-700 dark:text-amber-500 mb-3 font-semibold uppercase">Dari Bin</p>
                                             <div
-                                                class="bg-white px-8 py-6 rounded-2xl shadow-lg border-3 border-amber-400">
-                                                <p class="text-4xl font-black text-amber-600">{{
+                                                class="bg-white dark:bg-gray-800 px-8 py-6 rounded-2xl shadow-lg border-3 border-amber-400 dark:border-amber-700 transition-colors">
+                                                <p class="text-4xl font-black text-amber-600 dark:text-amber-500">{{
                                                     scannedMaterial.currentBin }}</p>
                                             </div>
                                         </div>
                                         <div class="px-6 transform rotate-90 md:rotate-0">
-                                            <svg class="w-16 h-16 text-amber-400" fill="none" stroke="currentColor"
+                                            <svg class="w-16 h-16 text-amber-400 dark:text-amber-700 transition-colors" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                                                     d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                                             </svg>
                                         </div>
                                         <div class="flex-1 w-full text-center md:text-left">
-                                            <p class="text-xs text-amber-700 mb-3 font-semibold uppercase">Ke Bin</p>
+                                            <p class="text-xs text-amber-700 dark:text-amber-500 mb-3 font-semibold uppercase">Ke Bin</p>
                                             <div v-if="destinationBin"
-                                                class="bg-white px-8 py-6 rounded-2xl shadow-lg border-3 border-green-400">
-                                                <p class="text-4xl font-black text-green-600">{{ destinationBin.code }}</p>
+                                                class="bg-white dark:bg-gray-800 px-8 py-6 rounded-2xl shadow-lg border-3 border-green-400 dark:border-green-700 transition-colors">
+                                                <p class="text-4xl font-black text-green-600 dark:text-green-500">{{ destinationBin.code }}</p>
                                             </div>
                                             <div v-else
-                                                class="bg-gray-100 px-8 py-6 rounded-2xl shadow-lg border-3 border-gray-300">
-                                                <p class="text-4xl font-black text-gray-400">???</p>
+                                                class="bg-gray-100 dark:bg-gray-800/50 px-8 py-6 rounded-2xl shadow-lg border-3 border-gray-300 dark:border-gray-700 transition-colors">
+                                                <p class="text-4xl font-black text-gray-400 dark:text-gray-600">???</p>
                                             </div>
                                         </div>
                                     </div>
@@ -403,7 +403,7 @@
                                 <!-- Confirm Button -->
                                 <div v-if="destinationBin && currentStep === 'complete'" class="pt-2">
                                     <button @click="completeTransfer"
-                                        class="w-full py-6 px-8 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 hover:from-green-700 hover:via-emerald-700 hover:to-teal-700 text-white font-black text-2xl rounded-2xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-2xl flex items-center justify-center">
+                                        class="w-full py-6 px-8 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 hover:from-green-700 hover:via-emerald-700 hover:to-teal-700 dark:from-green-700 dark:via-emerald-700 dark:to-teal-700 dark:hover:from-green-800 dark:hover:via-emerald-800 dark:hover:to-teal-800 text-white font-black text-2xl rounded-2xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-2xl flex items-center justify-center">
                                         <svg class="w-10 h-10 mr-3" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
@@ -417,9 +417,9 @@
                     </transition>
 
                     <div
-                        class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-2xl p-8 border-2 border-blue-200">
+                        class="bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-gray-950 rounded-2xl shadow-2xl p-8 border-2 border-blue-200 dark:border-blue-900/50 transition-colors">
                         <div class="text-center py-12">
-                            <p class="text-gray-500">Scanner Card Content - Gunakan kode yang sudah ada</p>
+                            <p class="text-gray-500 dark:text-gray-400">Scanner Card Content - Gunakan kode yang sudah ada</p>
                         </div>
                     </div>
                 </div>
@@ -429,32 +429,32 @@
         <!-- Blur Overlay -->
         <transition name="fade">
             <div v-if="sidebarOpen" @click="closeSidebar"
-                class="fixed inset-0 bg-opacity-50 backdrop-blur-sm z-40 transition-all duration-300" style="background-color: #00000054;"></div>
+                class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm z-40 transition-all duration-300"></div>
         </transition>
 
         <!-- Off-Canvas Sidebar -->
         <transition name="slide"> 
             <div v-if="sidebarOpen"
-                class="fixed top-0 right-0 h-full w-full md:w-[600px] lg:w-[800px] bg-white shadow-2xl z-50 overflow-y-auto">
+                class="fixed top-0 right-0 h-full w-full md:w-[600px] lg:w-[800px] bg-white dark:bg-gray-900 shadow-2xl z-50 overflow-y-auto border-l border-gray-200 dark:border-gray-800 transition-colors">
                 <!-- Sidebar Header -->
                 <div
-                    class="sticky top-0  p-6 flex items-center justify-between z-10 shadow-lg">
+                    class="sticky top-0 p-6 flex items-center justify-between z-10 shadow-lg bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 transition-colors">
                     <div class="flex items-center space-x-3">
-                        <div class="w-12 h-12 bg-green bg-opacity-20 rounded-xl flex items-center justify-center">
-                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-12 h-12 bg-green-500 dark:bg-green-600 bg-opacity-20 rounded-xl flex items-center justify-center transition-colors">
+                            <svg class="w-7 h-7 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
                                 </path>
                             </svg>
                         </div>
                         <div>
-                            <h2 class="text-2xl font-bold">Dashboard</h2>
-                            <p class="text-black-100 text-sm">Real-time Statistics</p>
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Dashboard</h2>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Real-time Statistics</p>
                         </div>
                     </div>
                     <button @click="closeSidebar"
-                        class="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg flex items-center justify-center transition-all">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="w-10 h-10 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg flex items-center justify-center transition-all">
+                        <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
@@ -464,64 +464,64 @@
                 <!-- Sidebar Content -->
                 <div class="grid gap-6">
                     <!-- Transfer History -->
-                    <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-6 border border-gray-200 dark:border-gray-800 transition-colors">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center">
                                 <span
-                                    class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-2">📜</span>
+                                    class="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mr-2 transition-colors">📜</span>
                                 Riwayat Transfer
                             </h3>
-                            <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm font-semibold text-gray-600">
+                            <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm font-semibold text-gray-600 dark:text-gray-400 transition-colors">
                                 {{ transferHistory.length }}
                             </span>
                         </div>
 
                         <div v-if="transferHistory.length === 0" class="text-center py-12">
                             <div
-                                class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor"
+                                class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors">
+                                <svg class="w-10 h-10 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                     </path>
                                 </svg>
                             </div>
-                            <p class="text-gray-400 font-semibold">Belum ada transfer</p>
-                            <p class="text-gray-400 text-sm mt-1">Mulai scan untuk membuat transfer</p>
+                            <p class="text-gray-400 dark:text-gray-500 font-semibold">Belum ada transfer</p>
+                            <p class="text-gray-400 dark:text-gray-600 text-sm mt-1">Mulai scan untuk membuat transfer</p>
                         </div>
 
                         <div v-else class="space-y-3 max-h-[800px] overflow-y-auto custom-scrollbar">
                             <transition-group name="list">
                                 <div v-for="(transfer, index) in transferHistory.slice().reverse()" :key="index"
-                                    class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border-2 border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-200">
+                                    class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 hover:shadow-lg transition-all duration-200">
                                     <div class="flex justify-between items-start mb-3">
                                         <div class="flex-1">
-                                            <p class="font-bold text-gray-900 mb-1">{{ transfer.materialName }}</p>
-                                            <p class="text-xs text-gray-500 font-mono">{{ transfer.materialCode }}</p>
+                                            <p class="font-bold text-gray-900 dark:text-gray-100 mb-1">{{ transfer.materialName }}</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 font-mono">{{ transfer.materialCode }}</p>
                                         </div>
-                                        <span class="text-xs text-gray-500 bg-white px-2 py-1 rounded-lg">{{
+                                        <span class="text-xs text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 px-2 py-1 rounded-lg transition-colors border border-transparent dark:border-gray-700">{{
                                             transfer.timestamp }}</span>
                                     </div>
 
-                                    <div class="flex items-center justify-between bg-white p-3 rounded-lg mb-2">
+                                    <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-3 rounded-lg mb-2 transition-colors border border-transparent dark:border-gray-700">
                                         <span
-                                            class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-sm font-bold">
+                                            class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 rounded-lg text-sm font-bold transition-colors">
                                             {{ transfer.fromBin }}
                                         </span>
-                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        <svg class="w-5 h-5 text-gray-400 dark:text-gray-600 transition-colors" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                                         </svg>
                                         <span
-                                            class="px-3 py-1 bg-green-100 text-green-800 rounded-lg text-sm font-bold">
+                                            class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded-lg text-sm font-bold transition-colors">
                                             {{ transfer.toBin }}
                                         </span>
                                     </div>
 
                                     <div class="flex items-center justify-between text-sm">
-                                        <span class="text-gray-600">Qty:</span>
-                                        <span class="font-bold text-gray-900">{{ transfer.quantity }} {{ transfer.unit
+                                        <span class="text-gray-600 dark:text-gray-400">Qty:</span>
+                                        <span class="font-bold text-gray-900 dark:text-gray-100">{{ transfer.quantity }} {{ transfer.unit
                                             }}</span>
                                     </div>
                                 </div>
@@ -972,13 +972,25 @@
     border-radius: 10px;
 }
 
+:is(.dark) .custom-scrollbar::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #94a3b8;
     border-radius: 10px;
 }
 
+:is(.dark) .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #64748b;
+}
+
+:is(.dark) .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }
 
 /* Transitions */
@@ -1075,13 +1087,25 @@
   border-radius: 10px;
 }
 
+:is(.dark) .custom-scrollbar::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: #94a3b8;
   border-radius: 10px;
 }
 
+:is(.dark) .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #64748b;
+}
+
+:is(.dark) .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* List Transitions */

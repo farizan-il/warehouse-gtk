@@ -46,6 +46,8 @@ Route::get('/transaction/return/material/{code}', [\App\Http\Controllers\Transac
     // Re-QC for expired materials
     Route::post('/dashboard/reqc/initiate', [DashboardController::class, 'initiateReqcForExpiredMaterials'])
         ->name('dashboard.reqc.initiate');
+    Route::post('/dashboard/export', [DashboardController::class, 'exportCustom'])
+        ->name('dashboard.export');
 
     Route::get('/activity-log', [ActivityLogController::class, 'index'])
         ->middleware('permission:activity_log.view_all,activity_log.view_self')
@@ -360,6 +362,12 @@ Route::get('/transaction/return/material/{code}', [\App\Http\Controllers\Transac
         //     Route::post('/{id}/finalize', [CycleCountController::class, 'finalize'])->name('finalize');
         // });
     });
+
+    // Settings Routes
+    Route::get('/settings', [\App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
+    Route::get('/api/settings', [\App\Http\Controllers\SettingsController::class, 'show'])->name('settings.show');
+    Route::put('/api/settings', [\App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
+    Route::post('/api/settings/reset', [\App\Http\Controllers\SettingsController::class, 'reset'])->name('settings.reset');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -7,5 +8,97 @@
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Dark Mode Transitions */
+* {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 200ms;
+}
+
+/* Compact Mode Support */
+.compact-mode .p-6 {
+    padding: 1rem !important;
+}
+
+.compact-mode .p-4 {
+    padding: 0.75rem !important;
+}
+
+.compact-mode .mb-6 {
+    margin-bottom: 1rem !important;
+}
+
+.compact-mode .gap-6 {
+    gap: 1rem !important;
+}
+
+.compact-mode .space-y-6> :not([hidden])~ :not([hidden]) {
+    margin-top: 1rem !important;
+}
+
+.compact-mode .py-3 {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
+.compact-mode h2 {
+    font-size: 1.25rem !important;
+}
+
+.compact-mode h3 {
+    font-size: 1.1rem !important;
+}
+
+/* Density Support */
+[data-density="compact"] .p-4,
+[data-density="compact"] .px-4 {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
+
+[data-density="compact"] .p-2 {
+    padding: 0.25rem !important;
+}
+
+[data-density="spacious"] .p-6 {
+    padding: 2rem !important;
+}
+
+[data-density="spacious"] .space-y-6> :not([hidden])~ :not([hidden]) {
+    margin-top: 2rem !important;
+}
+
+/* High Contrast Support */
+.high-contrast {
+    --contrast-border: #000;
+}
+
+.dark.high-contrast {
+    --contrast-border: #fff;
+}
+
+.high-contrast * {
+    border-color: var(--contrast-border) !important;
+    font-weight: 500 !important;
+}
+
+/* Custom Scrollbar for Dark Mode */
+.dark ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="h-screen flex bg-gray-100 overflow-hidden">
+    <div class="h-screen flex bg-gray-100 dark:bg-gray-950 overflow-hidden text-gray-800 dark:text-gray-200">
         <!-- Mobile Overlay -->
         <div 
             v-if="mobileMenuOpen" 
@@ -10,26 +10,26 @@
         <!-- Sidebar -->
         <aside 
             :class="[
-                'bg-white text-gray-800 shadow-lg',
+                'bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 shadow-lg',
                 'transition-all duration-300 flex flex-col',
-                'border-r border-gray-200',
+                'border-r border-gray-200 dark:border-gray-800',
                 // Desktop styles
                 'hidden lg:flex',
                 sidebarOpen ? 'lg:w-64' : 'lg:w-20'
             ]"
         >
             <!-- Logo / Header -->
-            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
                 <div v-show="sidebarOpen" class="flex items-center space-x-2">
                     <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                     </svg>
-                    <span class="text-xl font-bold text-gray-800">WMS</span>
+                    <span class="text-xl font-bold text-gray-800 dark:text-gray-100">WMS</span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <button 
                         @click="sidebarOpen = !sidebarOpen"
-                        class="p-2 rounded hover:bg-gray-100 transition"
+                        class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                     >
                         <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -104,7 +104,7 @@
 
                     <!-- DIVIDER / SEPARATOR - hanya tampil jika ada menu transaksi -->
                     <div v-if="hasAnyTransactionPermission" class="my-4 px-2">
-                        <div class="border-t border-gray-200"></div>
+                        <div class="border-t border-gray-200 dark:border-gray-800"></div>
                         <div v-show="sidebarOpen" class="mt-3 mb-2 px-2">
                             <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                 Transaksi
@@ -230,7 +230,7 @@
 
                     <!-- DIVIDER / SEPARATOR - hanya tampil jika ada menu transaksi -->
                     <div v-if="hasAnyTransactionPermission" class="my-4 px-2">
-                        <div class="border-t border-gray-200"></div>
+                        <div class="border-t border-gray-200 dark:border-gray-800"></div>
                         <div v-show="sidebarOpen" class="mt-3 mb-2 px-2">
                             <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                 Kelola
@@ -262,11 +262,23 @@
                         </svg>
                         <span v-show="sidebarOpen" class="font-medium">Role Permission</span>
                     </Link>
+
+                    <!-- Settings -->
+                    <Link 
+                        href="/settings"
+                        :class="navLinkClass('/settings')"
+                    >
+                        <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span v-show="sidebarOpen" class="font-medium">Pengaturan</span>
+                    </Link>
                 </div>
             </nav>
 
             <!-- User Profile Section -->
-            <div class="border-t border-gray-200 p-4">
+            <div class="border-t border-gray-200 dark:border-gray-800 p-4">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
                         <span class="text-white font-semibold text-sm">
@@ -274,10 +286,10 @@
                         </span>
                     </div>
                     <div v-show="sidebarOpen" class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-800 truncate">
+                        <p class="text-sm font-medium text-gray-800 dark:text-gray-100 truncate">
                             {{ $page.props.auth.user.name }}
                         </p>
-                        <p class="text-xs text-gray-500 truncate">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
                             {{ $page.props.auth.user.role?.name || 'Staff' }}
                         </p>
                     </div>
@@ -298,23 +310,23 @@
         <!-- Mobile Offcanvas Sidebar -->
         <aside 
             :class="[
-                'fixed inset-y-0 left-0 z-50 w-72 bg-white shadow-xl',
+                'fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-gray-900 shadow-xl',
                 'transform transition-transform duration-300 ease-in-out',
                 'lg:hidden flex flex-col',
                 mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
             ]"
         >
             <!-- Mobile Sidebar Header -->
-            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                     </svg>
-                    <span class="text-xl font-bold text-gray-800">WMS</span>
+                    <span class="text-xl font-bold text-gray-800 dark:text-gray-100">WMS</span>
                 </div>
                 <button 
                     @click="mobileMenuOpen = false"
-                    class="p-2 rounded-lg hover:bg-gray-100 transition"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                 >
                     <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -391,7 +403,7 @@
 
                     <!-- Transaksi Divider -->
                     <div v-if="hasAnyTransactionPermission" class="my-4 px-2">
-                        <div class="border-t border-gray-200"></div>
+                        <div class="border-t border-gray-200 dark:border-gray-800"></div>
                         <div class="mt-3 mb-2 px-2">
                             <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                 Transaksi
@@ -521,7 +533,7 @@
 
                     <!-- Kelola Divider -->
                     <div v-if="hasAnyTransactionPermission" class="my-4 px-2">
-                        <div class="border-t border-gray-200"></div>
+                        <div class="border-t border-gray-200 dark:border-gray-800"></div>
                         <div class="mt-3 mb-2 px-2">
                             <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                 Kelola
@@ -555,11 +567,24 @@
                         </svg>
                         <span class="font-medium">Role Permission</span>
                     </Link>
+
+                    <!-- Settings -->
+                    <Link 
+                        href="/settings"
+                        :class="mobileNavLinkClass('/settings')"
+                        @click="mobileMenuOpen = false"
+                    >
+                        <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span class="font-medium">Pengaturan</span>
+                    </Link>
                 </div>
             </nav>
 
             <!-- Mobile User Profile Section -->
-            <div class="border-t border-gray-200 p-4">
+            <div class="border-t border-gray-200 dark:border-gray-800 p-4">
                 <div class="flex items-center space-x-3 mb-3">
                     <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
                         <span class="text-white font-semibold text-sm">
@@ -567,10 +592,10 @@
                         </span>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-800 truncate">
+                        <p class="text-sm font-medium text-gray-800 dark:text-gray-100 truncate">
                             {{ $page.props.auth.user.name }}
                         </p>
-                        <p class="text-xs text-gray-500 truncate">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
                             {{ $page.props.auth.user.role?.name || 'Staff' }}
                         </p>
                     </div>
@@ -588,26 +613,26 @@
         </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-w-0">
+        <div class="flex-1 flex flex-col min-w-0 bg-gray-50 dark:bg-gray-950">
             <!-- Top Navbar -->
-            <header class="bg-white shadow-sm">
+            <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm">
                 <div class="px-4 lg:px-6 py-3 lg:py-4 flex items-center justify-between">
                     <!-- Mobile Menu Button + Title -->
                     <div class="flex items-center gap-3">
                         <!-- Mobile Burger Button -->
                         <button 
                             @click="mobileMenuOpen = true"
-                            class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100 transition"
+                            class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                         >
                             <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                             </svg>
                         </button>
                         <div>
-                            <h1 class="text-lg lg:text-2xl font-bold text-gray-800">
+                            <h1 class="text-lg lg:text-2xl font-bold text-gray-800 dark:text-gray-100">
                                 {{ pageTitle }}
                             </h1>
-                            <p class="text-xs lg:text-sm text-gray-500 mt-0.5 lg:mt-1 hidden sm:block">
+                            <p class="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mt-0.5 lg:mt-1 hidden sm:block">
                                 {{ pageDescription }}
                             </p>
                         </div>
@@ -632,25 +657,18 @@
                             </span>
                         </div>
                         
-                        <!-- Notification
-                        <button class="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">
-                            <svg class="w-5 lg:w-6 h-5 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                            </svg>
-                            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </button> -->
                         <!-- User Info - Hidden on mobile -->
-                        <div class="hidden lg:flex items-center space-x-2 px-3 py-2 bg-gray-50 rounded-lg">
+                        <div class="hidden lg:flex items-center space-x-2 px-3 py-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
                             <div class="text-right">
-                                <p class="text-sm font-medium text-gray-800">{{ $page.props.auth.user.name }}</p>
-                                <p class="text-xs text-gray-500">{{ $page.props.auth.user.nik }}</p>
+                                <p class="text-sm font-medium text-gray-800 dark:text-gray-100">{{ $page.props.auth.user.name }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">{{ $page.props.auth.user.nik }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </header>
             <!-- Page Content -->
-            <main class="flex-1 overflow-y-auto p-4 lg:p-6 bg-gray-50">
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6 bg-gray-50 dark:bg-gray-950">
                 <slot />
             </main>
         </div>
@@ -658,9 +676,10 @@
 </template>
 
 <script setup>
-    import { ref, computed } from 'vue';
+    import { ref, computed, onMounted, watch, onUnmounted } from 'vue';
     import { Link, router, usePage } from '@inertiajs/vue3';
     import { usePermissions } from '@/Composables/usePermissions';
+    import { useSettings } from '@/Composables/useSettings';
 
     const props = defineProps({
         pageTitle: {
@@ -675,6 +694,7 @@
 
     const page = usePage();
     const { hasPermission, hasAnyPermission } = usePermissions();
+    const { applySettings, initializeSettings, settings } = useSettings();
     
     // DEBUG: Check permissions
     console.log('DEBUG: User Role:', page.props.auth.user?.role?.name);
@@ -682,6 +702,67 @@
 
     const sidebarOpen = ref(true);
     const mobileMenuOpen = ref(false);
+
+    // Initial settings application
+    onMounted(() => {
+        initializeSettings(page.props, true);
+        
+        if (settings.value) {
+            applySettings(settings.value);
+            
+            // Handle initial sidebar state based on mode
+            updateSidebarFromMode(settings.value.layout?.sidebar_mode || 'auto');
+        }
+
+        // Add resize listener for auto mode
+        window.addEventListener('resize', handleResize);
+    });
+
+    // Cleanup listener on unmount
+    onUnmounted(() => {
+        window.removeEventListener('resize', handleResize);
+    });
+
+    const handleResize = () => {
+        const sidebarMode = settings.value?.layout?.sidebar_mode || 'auto';
+        if (sidebarMode === 'auto') {
+            sidebarOpen.value = window.innerWidth >= 1024;
+        }
+    };
+
+    // Helper to update sidebar state based on mode
+    const updateSidebarFromMode = (mode) => {
+        if (mode === 'always_open') {
+            sidebarOpen.value = true;
+        } else if (mode === 'always_collapsed') {
+            sidebarOpen.value = false;
+        } else { // auto
+            sidebarOpen.value = window.innerWidth >= 1024;
+        }
+    };
+
+    // Watch for shared settings changes
+    watch(settings, (newSettings) => {
+        if (newSettings) {
+            applySettings(newSettings);
+
+            // React to sidebar mode changes
+            if (newSettings.layout?.sidebar_mode) {
+                updateSidebarFromMode(newSettings.layout.sidebar_mode);
+            }
+        }
+    }, { deep: true });
+
+    // Watch for window resize if mode is auto
+    onMounted(() => {
+        const handleResize = () => {
+            if (settings.value.layout?.sidebar_mode === 'auto') {
+                updateSidebarFromMode('auto');
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    });
 
     // Check if user has any transaction permissions
     const hasAnyTransactionPermission = computed(() => {
@@ -725,10 +806,10 @@
         const baseClasses = 'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200'
 
         if (isActive) {
-            return `${baseClasses} bg-[#157347] text-white shadow-lg` 
+            return `${baseClasses} bg-[#157347] dark:bg-[#1a8e58] text-white shadow-lg` 
         }
 
-        return `${baseClasses} text-gray-700 hover:bg-gray-100`
+        return `${baseClasses} text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`
     }
 
     const mobileNavLinkClass = (path) => {
@@ -739,9 +820,9 @@
         const baseClasses = 'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200'
 
         if (isActive) {
-            return `${baseClasses} bg-[#157347] text-white shadow-lg` 
+            return `${baseClasses} bg-[#157347] dark:bg-[#1a8e58] text-white shadow-lg` 
         }
 
-        return `${baseClasses} text-gray-700 hover:bg-gray-100`
+        return `${baseClasses} text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`
     }
 </script>

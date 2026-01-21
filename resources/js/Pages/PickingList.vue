@@ -1,23 +1,23 @@
 <template>
     <AppLayout title="Riwayat Aktivitas">
-        <div class="space-y-6">
+    <div class="space-y-6 bg-gray-50 dark:bg-gray-950 min-h-screen p-6 transition-colors duration-300">
     <!-- Header -->
-    <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-bold text-gray-900">Picking List (Transfer Order)</h2>
-      <div class="text-sm text-gray-600">
+    <div class="flex justify-between items-center bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Picking List (Transfer Order)</h2>
+      <div class="text-sm text-gray-600 dark:text-gray-400">
         Total picking tasks: {{ pickingTasks.length }}
       </div>
     </div>
 
     <!-- Pending TO Generation Section -->
-    <div v-if="pendingToGeneration.length > 0" class="bg-yellow-50 rounded-lg shadow-sm border-2 border-yellow-200 mb-6">
-      <div class="p-4 border-b border-yellow-200 bg-yellow-100">
+    <div v-if="pendingToGeneration.length > 0" class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg shadow-sm border-2 border-yellow-200 dark:border-yellow-800/50 mb-6 overflow-hidden transition-colors">
+      <div class="p-4 border-b border-yellow-200 dark:border-yellow-800/50 bg-yellow-100 dark:bg-yellow-900/40">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-            <h3 class="text-lg font-semibold text-yellow-900">
+            <h3 class="text-lg font-semibold text-yellow-900 dark:text-yellow-100">
               Reservasi Menunggu Generate TO Number ({{ pendingToGeneration.length }})
             </h3>
           </div>
@@ -25,25 +25,25 @@
       </div>
       
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-yellow-200">
-          <thead class="bg-yellow-100">
+        <table class="min-w-full divide-y divide-yellow-200 dark:divide-yellow-800/50">
+          <thead class="bg-yellow-100 dark:bg-yellow-900/30">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 uppercase tracking-wider">No Reservasi</th>
-              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 uppercase tracking-wider">Batch Record (MO)</th>
-              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 uppercase tracking-wider">Tanggal Dibuat</th>
-              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 uppercase tracking-wider">Requester</th>
-              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 uppercase tracking-wider">Status</th>
-              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 uppercase tracking-wider">Aksi</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 dark:text-yellow-400 uppercase tracking-wider">No Reservasi</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 dark:text-yellow-400 uppercase tracking-wider">Batch Record (MO)</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 dark:text-yellow-400 uppercase tracking-wider">Tanggal Dibuat</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 dark:text-yellow-400 uppercase tracking-wider">Requester</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 dark:text-yellow-400 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-yellow-900 dark:text-yellow-400 uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-yellow-100">
-            <tr v-for="task in pendingToGeneration" :key="task.id" class="hover:bg-yellow-50">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ task.noReservasi }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ task.batchRecord || '-' }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatDateTime(task.tanggalDibuat) }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ task.requester }}</td>
+          <tbody class="bg-white dark:bg-gray-900 divide-y divide-yellow-100 dark:divide-yellow-800/30 transition-colors">
+            <tr v-for="task in pendingToGeneration" :key="task.id" class="hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ task.noReservasi }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ task.batchRecord || '-' }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ formatDateTime(task.tanggalDibuat) }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ task.requester }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-400">
                   Pending TO
                 </span>
               </td>
@@ -63,23 +63,23 @@
     </div>
 
     <!-- Filter Status -->
-    <div class="bg-white rounded-lg p-4 shadow">
+    <div class="bg-white dark:bg-gray-900 rounded-lg p-4 shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 items-end">
         <div class="md:col-span-3 lg:col-span-3">
-            <span class="text-sm font-medium text-gray-700 block mb-2">Filter Status:</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 block mb-2">Filter Status:</span>
             <div class="flex flex-wrap gap-2">
-                <button @click="filterStatus = 'ALL'" :class="filterStatus === 'ALL' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-3 py-1 rounded text-sm hover:bg-blue-500 hover:text-white">
+                <button @click="filterStatus = 'ALL'" :class="filterStatus === 'ALL' ? 'bg-blue-600 dark:bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-3 py-1 rounded text-sm hover:bg-blue-500 dark:hover:bg-blue-700 hover:text-white transition-colors">
                   Semua
                 </button>
                 
-                <button @click="filterStatus = 'Ready to Pick'" :class="filterStatus === 'Ready to Pick' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-3 py-1 rounded text-sm hover:bg-purple-500 hover:text-white">
+                <button @click="filterStatus = 'Ready to Pick'" :class="filterStatus === 'Ready to Pick' ? 'bg-purple-600 dark:bg-purple-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-3 py-1 rounded text-sm hover:bg-purple-500 dark:hover:bg-purple-700 hover:text-white transition-colors">
                   Ready to Pick
                 </button>
                 
-                <button @click="filterStatus = 'In Progress'" :class="filterStatus === 'In Progress' ? 'bg-yellow-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-3 py-1 rounded text-sm hover:bg-yellow-500 hover:text-white">
+                <button @click="filterStatus = 'In Progress'" :class="filterStatus === 'In Progress' ? 'bg-yellow-600 dark:bg-yellow-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-3 py-1 rounded text-sm hover:bg-yellow-500 dark:hover:bg-yellow-700 hover:text-white transition-colors">
                   Dalam Proses
                 </button>
-                <button @click="filterStatus = 'Completed'" :class="filterStatus === 'Completed' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-3 py-1 rounded text-sm hover:bg-green-500 hover:text-white">
+                <button @click="filterStatus = 'Completed'" :class="filterStatus === 'Completed' ? 'bg-green-600 dark:bg-green-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-3 py-1 rounded text-sm hover:bg-green-500 dark:hover:bg-green-700 hover:text-white transition-colors">
                   Selesai
                 </button>
                 
@@ -87,68 +87,68 @@
         </div>
 
         <div class="md:col-span-1 lg:col-span-1">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Cari Batch Record</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cari Batch Record</label>
             <input v-model="filterBatch" type="text" placeholder="Cari No Bets..."
-                class="w-full px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                class="w-full px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 transition-colors">
         </div>
       </div>
     </div>
 
     <!-- Tabel Picking Tasks -->
-    <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-800 transition-colors">
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+          <thead class="bg-gray-50 dark:bg-gray-800 transition-colors">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">TO Number</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No Reservasi</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Batch Record (MO)</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Dibuat</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requester / Departemen</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">TO Number</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">No Reservasi</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Batch Record (MO)</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tanggal Dibuat</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Requester / Departemen</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Durasi</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
 
-          <tbody class="bg-white divide-y divide-gray-200">
+          <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
             <tr v-if="filteredTasks.length === 0">
-              <td colspan="8" class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">
+              <td colspan="8" class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500 dark:text-gray-400">
                 Tidak ada Picking Task yang ditemukan untuk status {{ filterStatus === 'ALL' ? 'apapun' : filterStatus }}.
               </td>
             </tr>
-            <tr v-for="task in filteredTasks" :key="task.id" class="hover:bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ task.toNumber }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:underline cursor-pointer" @click="viewReservation(task.noReservasi)">
+            <tr v-for="task in filteredTasks" :key="task.id" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ task.toNumber }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 dark:text-blue-400 hover:underline cursor-pointer transition-colors" @click="viewReservation(task.noReservasi)">
                 {{ task.noReservasi }}
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                  {{ task.batchRecord || 'N/A' }}
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatDateTime(task.tanggalDibuat) }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ task.requester }} / {{ task.departemen }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ formatDateTime(task.tanggalDibuat) }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ task.requester }} / {{ task.departemen }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span :class="getStatusClass(task.status)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
                   {{ task.status }}
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                 {{ getDuration(task) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex space-x-2">
-                  <button @click="viewDetail(task)" class="bg-blue-100 text-blue-700 hover:bg-blue-200 px-2 py-1 rounded text-xs">
+                  <button @click="viewDetail(task)" class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50 px-2 py-1 rounded text-xs transition-colors border border-blue-200 dark:border-blue-800">
                     Detail
                   </button>
                   <button v-if="task.toGenerated && (task.status === 'Pending' || task.status === 'Reserved' || task.status === 'In Progress' || task.status === 'Ready to Pick')" 
                           @click="startPicking(task)" 
-                          class="bg-green-100 text-green-700 hover:bg-green-200 px-2 py-1 rounded text-xs">
+                          class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50 px-2 py-1 rounded text-xs transition-colors border border-green-200 dark:border-green-800">
                     Kerjakan
                   </button>
-                  <span v-else-if="!task.toGenerated" class="text-xs text-gray-400 italic">
+                  <span v-else-if="!task.toGenerated" class="text-xs text-gray-400 dark:text-gray-500 italic">
                     (TO belum digenerate)
                   </span>
-                  <button @click="printPickingList(task)" class="bg-purple-100 text-purple-700 hover:bg-purple-200 px-2 py-1 rounded text-xs">
+                  <button @click="printPickingList(task)" class="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 hover:bg-purple-200 dark:hover:bg-purple-900/50 px-2 py-1 rounded text-xs transition-colors border border-purple-200 dark:border-purple-800">
                     Cetak Picking List
                   </button>
                 </div>
@@ -161,12 +161,12 @@
 
     <!-- Modal Detail Picking Task (Work Modal) -->
     <div v-if="showPickingModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]" style="background-color: rgba(43, 51, 63, 0.67);">
-      <div class="bg-white rounded-lg max-w-7xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+      <div class="bg-white dark:bg-gray-900 rounded-lg max-w-7xl w-full mx-4 max-h-[90vh] overflow-y-auto transition-colors">
         <div class="p-6">
           <!-- Header Modal -->
           <div class="flex justify-between items-center mb-6">
-            <h3 class="text-lg font-semibold text-gray-900">Detail Picking Task - {{ selectedTask?.toNumber }}</h3>
-            <button @click="closePickingModal" class="text-gray-400 hover:text-gray-600">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Detail Picking Task - {{ selectedTask?.toNumber }}</h3>
+            <button @click="closePickingModal" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
               </svg>
@@ -174,80 +174,77 @@
           </div>
 
           <!-- Header Info -->
-          <div v-if="selectedTask" class="bg-gray-50 rounded-lg p-4 mb-6">
+          <div v-if="selectedTask" class="bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-lg p-4 mb-6 transition-colors">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <span class="text-sm font-medium text-gray-700">TO Number:</span>
-                <div class="text-gray-900 font-medium">{{ selectedTask.toNumber }}</div>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">TO Number:</span>
+                <div class="text-gray-900 dark:text-gray-100 font-medium">{{ selectedTask.toNumber }}</div>
               </div>
               <div>
-                <span class="text-sm font-medium text-gray-700">No Reservasi:</span>
-                <div class="text-blue-600 cursor-pointer hover:underline" @click="viewReservation(selectedTask.noReservasi)">{{ selectedTask.noReservasi }}</div>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">No Reservasi:</span>
+                <div class="text-blue-600 dark:text-blue-400 cursor-pointer hover:underline" @click="viewReservation(selectedTask.noReservasi)">{{ selectedTask.noReservasi }}</div>
               </div>
               <div>
-                <span class="text-sm font-medium text-gray-700">Tanggal Dibuat:</span>
-                <div class="text-gray-900">{{ formatDateTime(selectedTask.tanggalDibuat) }}</div>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Tanggal Dibuat:</span>
+                <div class="text-gray-900 dark:text-gray-100">{{ formatDateTime(selectedTask.tanggalDibuat) }}</div>
               </div>
               <div>
-                <span class="text-sm font-medium text-gray-700">Requester:</span>
-                <div class="text-gray-900">{{ selectedTask.requester }} / {{ selectedTask.departemen }}</div>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Requester:</span>
+                <div class="text-gray-900 dark:text-gray-100">{{ selectedTask.requester }} / {{ selectedTask.departemen }}</div>
               </div>
             </div>
           </div>
 
           <!-- Summary Progress -->
-          <div class="bg-blue-50 rounded-lg p-4 mb-6">
+          <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg p-4 mb-6 transition-colors">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div class="text-center">
-                <div class="text-2xl font-bold text-blue-600">{{ getTotalItemsCount }}</div>
-                <div class="text-sm text-blue-700">Total Alokasi Batch</div>
+                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ getTotalItemsCount }}</div>
+                <div class="text-sm text-blue-700 dark:text-blue-300">Total Alokasi Batch</div>
               </div>
               <div class="text-center">
-                <div class="text-2xl font-bold text-green-600">{{ getPickedItemsCount }}</div>
-                <div class="text-sm text-green-700">Picked Complete</div>
+                <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ getPickedItemsCount }}</div>
+                <div class="text-sm text-green-700 dark:text-green-300">Picked Complete</div>
               </div>
-              <!-- <div class="text-center">
-                <div class="text-2xl font-bold text-orange-600">{{ getShortPickItemsCount }}</div>
-                <div class="text-sm text-orange-700">Short-Pick</div>
-              </div> -->
+              
               <div class="text-center">
-                <div class="text-2xl font-bold text-gray-600">{{ getPendingItemsCount }}</div>
-                <div class="text-sm text-gray-700">Pending</div>
+                <div class="text-2xl font-bold text-gray-600 dark:text-gray-400">{{ getPendingItemsCount }}</div>
+                <div class="text-sm text-gray-700 dark:text-gray-300">Pending</div>
               </div>
             </div>
             <div class="mt-4">
-              <div class="flex justify-between text-sm mb-1">
-                <span class="text-blue-700">Progress Picking</span>
-                <span class="text-blue-700">{{ Math.round(getPickingProgress) }}%</span>
+              <div class="flex justify-between text-sm mb-1 transition-colors">
+                <span class="text-blue-700 dark:text-blue-300">Progress Picking</span>
+                <span class="text-blue-700 dark:text-blue-300">{{ Math.round(getPickingProgress) }}%</span>
               </div>
-              <div class="w-full bg-blue-200 rounded-full h-2">
-                <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" :style="{ width: getPickingProgress + '%' }"></div>
+              <div class="w-full bg-blue-200 dark:bg-blue-900/40 rounded-full h-2">
+                <div class="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-300" :style="{ width: getPickingProgress + '%' }"></div>
               </div>
             </div>
           </div>
 
           <!-- Items Table (Sekarang menampilkan detail Batch Alokasi) -->
-          <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <div class="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden transition-colors">
             <div class="overflow-x-auto">
               <!-- PERUBAHAN UTAMA DI SINI -->
-              <table class="min-w-full divide-y divide-gray-200" style="min-width: 1400px;">
-                <thead class="bg-gray-50">
+              <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800" style="min-width: 1400px;">
+                <thead class="bg-gray-50 dark:bg-gray-800 transition-colors">
                   <tr>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Aksi</th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">No</th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap min-w-[120px]">Kode Item / Nama Material</th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap min-w-[120px]">Lot/Batch</th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap min-w-[150px]">Source Bin</th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Exp Date</th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Qty Dialokasikan</th>
-                    <!-- <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Qty Picked</th> -->
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">UoM</th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Status</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Aksi</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">No</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap min-w-[120px]">Kode Item / Nama Material</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap min-w-[120px]">Lot/Batch</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap min-w-[150px]">Source Bin</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Exp Date</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Qty Dialokasikan</th>
+                    
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">UoM</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap">Status</th>
                     
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200 bg-white">
-                  <tr v-for="(item, index) in selectedTask?.items || []" :key="index" :class="item.status === 'Picked' ? 'bg-green-50' : item.status === 'Short-Pick' ? 'bg-orange-50' : ''">
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-gray-900 transition-colors">
+                  <tr v-for="(item, index) in selectedTask?.items || []" :key="index" :class="item.status === 'Picked' ? 'bg-green-50 dark:bg-green-900/10' : item.status === 'Short-Pick' ? 'bg-orange-50 dark:bg-orange-900/10' : ''" class="transition-colors">
                     <!-- Aksi -->
                     <td class="px-3 py-2 whitespace-nowrap">
                       <button 
@@ -262,29 +259,29 @@
                         {{ item.status === 'Picked' ? 'Done' : 'Scan QR' }}
                       </button>
                     </td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ index + 1 }}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ index + 1 }}</td>
                     
                     <!-- Kode Item / Nama Material -->
-                    <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                       {{ item.kodeItem }} <br>
-                      <span class="text-xs text-gray-600 font-normal">{{ item.namaMaterial }}</span>
+                      <span class="text-xs text-gray-600 dark:text-gray-400 font-normal">{{ item.namaMaterial }}</span>
                     </td>
                     
                     <!-- Lot/Batch -->
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ item.lotSerial }}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.lotSerial }}</td>
                     
                     <!-- Source Bin / WH -->
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                       {{ item.sourceBin }}
                     </td>
                     
                     <!-- Exp Date -->
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                       {{ item.expDate ? new Date(item.expDate).toLocaleDateString('id-ID') : '-' }}
                     </td>
                     
                     <!-- Qty Dialokasikan -->
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 font-medium">{{ formatQty(item.qtyDiminta) }}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 font-medium">{{ formatQty(item.qtyDiminta) }}</td>
                     
                     <!-- Qty Picked (Input) -->
                     <!-- <td class="px-3 py-2 whitespace-nowrap">
@@ -292,7 +289,7 @@
                     </td> -->
                     
                     <!-- UoM -->
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{{ item.uom }}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.uom }}</td>
                     
                     <!-- Status -->
                     <td class="px-3 py-2 whitespace-nowrap">
@@ -307,15 +304,15 @@
           </div>
 
           <!-- Footer Modal -->
-          <div class="flex justify-between items-center mt-6 pt-6 border-t border-gray-200">
-            <div class="text-sm text-gray-600">
+          <div class="flex justify-between items-center mt-6 pt-6 border-t border-gray-200 dark:border-gray-800 transition-colors">
+            <div class="text-sm text-gray-600 dark:text-gray-400">
               Progress: {{ getCompletedItemsCount }}/{{ selectedTask?.items?.length || 0 }} batch allocations completed
             </div>
             <div class="flex space-x-3">
-              <button @click="closePickingModal" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+              <button @click="closePickingModal" class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
                 Batal
               </button>
-              <button @click="finishPicking" :disabled="!canFinishPicking" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-400">
+              <button @click="finishPicking" :disabled="!canFinishPicking" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md disabled:bg-gray-400 dark:disabled:bg-gray-800 dark:disabled:text-gray-600 transition-colors">
                 Selesai Picking
               </button>
             </div>
@@ -326,10 +323,10 @@
     
     <!-- Modal QR Scanner dengan Camera (Perlu update logic scan) -->
     <div v-if="showQRScannerModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]" style="background-color: rgba(43, 51, 63, 0.67);">
-      <div class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+      <div class="bg-white dark:bg-gray-900 rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto transition-colors">
         <div class="p-6">
           <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold text-gray-900">QR Scanner - Batch Item #{{ currentItemIndex + 1 }}</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">QR Scanner - Batch Item #{{ currentItemIndex + 1 }}</h3>
             <button @click="closeQRScanner" class="text-gray-400 hover:text-gray-600">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -338,20 +335,20 @@
           </div>
 
           <!-- Item Info -->
-          <div v-if="currentScanItem" class="bg-gray-50 p-3 rounded-lg mb-4">
+          <div v-if="currentScanItem" class="bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 p-3 rounded-lg mb-4 transition-colors">
             <div class="text-sm">
-              <div class="font-medium text-gray-900">{{ currentScanItem.kodeItem }} - {{ currentScanItem.namaMaterial }}</div>
+              <div class="font-medium text-gray-900 dark:text-gray-100">{{ currentScanItem.kodeItem }} - {{ currentScanItem.namaMaterial }}</div>
               <!-- Qty Diminta -> Qty Dialokasikan -->
-              <div class="text-gray-600">Batch: {{ currentScanItem.lotSerial }} | Qty Alokasi: {{ currentScanItem.qtyDiminta }} {{ currentScanItem.uom }}</div>
-              <div class="text-gray-600">Source: {{ currentScanItem.sourceBin }} ({{ currentScanItem.sourceWarehouse }})</div>
+              <div class="text-gray-600 dark:text-gray-400">Batch: {{ currentScanItem.lotSerial }} | Qty Alokasi: {{ currentScanItem.qtyDiminta }} {{ currentScanItem.uom }}</div>
+              <div class="text-gray-600 dark:text-gray-400">Source: {{ currentScanItem.sourceBin }} ({{ currentScanItem.sourceWarehouse }})</div>
             </div>
           </div>
           
           <div class="space-y-4">
             <!-- Current Scan Step -->
-            <div class="bg-blue-50 p-3 rounded-lg">
-              <div class="text-sm font-medium text-blue-900">Step {{ scanStep }}/4</div>
-              <div class="text-xs text-blue-700">{{ getScanStepText }}</div>
+            <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800/50 p-3 rounded-lg transition-colors">
+              <div class="text-sm font-medium text-blue-900 dark:text-blue-100">Step {{ scanStep }}/4</div>
+              <div class="text-xs text-blue-700 dark:text-blue-300">{{ getScanStepText }}</div>
             </div>
 
             <!-- Camera Preview -->
@@ -401,7 +398,7 @@
             
             <!-- Manual Qty Input (when scanning box) -->
             <div v-if="scanStep === 3" class="space-y-2">
-              <label class="block text-sm font-medium text-gray-700">Qty yang Dipick (Max: {{ formatQty(currentScanItem?.qtyDiminta) }} {{ currentScanItem?.uom || '' }}):</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Qty yang Dipick (Max: {{ formatQty(currentScanItem?.qtyDiminta) }} {{ currentScanItem?.uom || '' }}):</label>
               <input 
                 v-model.number="manualQty" 
                 type="number" 
@@ -410,8 +407,8 @@
                 :max="currentScanItem?.qtyDiminta" 
                 @input="validateQuantityInput"
                 placeholder="Masukkan quantity..." 
-                :class="showQtyError ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'"
-                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 bg-white text-gray-900">
+                :class="showQtyError ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'"
+                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
               <p v-if="showQtyError" class="text-sm text-red-600 font-medium mt-1 flex items-center">
                 <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
@@ -435,10 +432,10 @@
 
     <!-- Modal Summary Detail (Tidak diubah) -->
     <div v-if="showSummaryModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]" style="background-color: rgba(43, 51, 63, 0.67);">
-      <div class="bg-white rounded-lg max-w-7xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+      <div class="bg-white dark:bg-gray-900 rounded-lg max-w-7xl w-full mx-4 max-h-[90vh] overflow-y-auto transition-colors">
         <div class="p-6">
           <div class="flex justify-between items-center mb-6">
-            <h3 class="text-lg font-semibold text-gray-900">Summary Detail - {{ selectedSummaryTask?.toNumber }}</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Summary Detail - {{ selectedSummaryTask?.toNumber }}</h3>
             <button @click="closeSummaryModal" class="text-gray-400 hover:text-gray-600">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -452,53 +449,45 @@
               <div class="text-2xl font-bold text-blue-600">{{ getSummaryTotalItems }}</div>
               <div class="text-sm text-blue-700">Total Alokasi Batch</div>
             </div>
-            <div class="bg-green-50 p-4 rounded-lg">
-              <div class="text-2xl font-bold text-green-600">{{ getSummaryPickedItems }}</div>
-              <div class="text-sm text-green-700">Batch Picked Complete</div>
+            <div class="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/50 p-4 rounded-lg transition-colors">
+              <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ getSummaryPickedItems }}</div>
+              <div class="text-sm text-green-700 dark:text-green-300">Batch Picked Complete</div>
             </div>
-            <!-- <div class="bg-orange-50 p-4 rounded-lg">
-              <div class="text-2xl font-bold text-orange-600">{{ getSummaryShortPickItems }}</div>
-              <div class="text-sm text-orange-700">Short-Pick</div>
-            </div> -->
-            <div class="bg-gray-50 p-4 rounded-lg">
-              <div class="text-2xl font-bold text-gray-600">{{ getSummaryPendingItems }}</div>
-              <div class="text-sm text-gray-700">Pending</div>
+            
+            <div class="bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 p-4 rounded-lg transition-colors">
+              <div class="text-2xl font-bold text-gray-600 dark:text-gray-400">{{ getSummaryPendingItems }}</div>
+              <div class="text-sm text-gray-700 dark:text-gray-300">Pending</div>
             </div>
           </div>
 
           <!-- Detailed breakdown (Sekarang menampilkan detail Batch Alokasi) -->
-          <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
-            <div class="px-4 py-3 bg-gray-50 border-b border-gray-200">
-              <h4 class="text-sm font-medium text-gray-900">Detail Alokasi Batch</h4>
+          <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden transition-colors">
+            <div class="px-4 py-3 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+              <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100">Detail Alokasi Batch</h4>
             </div>
             <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+              <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+                <thead class="bg-gray-50 dark:bg-gray-800">
                   <tr>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kode Item</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Material</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Batch/Lot</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Qty Alokasi</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Qty Picked</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">UoM</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Source Bin</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Kode Item</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Nama Material</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Batch/Lot</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Qty Alokasi</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Qty Picked</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">UoM</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Status</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Source Bin</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200">
-                  <tr v-for="(item, index) in selectedSummaryTask?.items || []" :key="index" :class="getItemRowClass(item.status)">
-                    <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ item.kodeItem }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-900">{{ item.namaMaterial }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-900">{{ item.lotSerial }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-900">{{ formatQty(item.qtyDiminta) }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-900">{{ item.qtyPicked || 0 }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-900">{{ item.uom }}</td>
-                    <td class="px-4 py-3">
-                      <span :class="getItemStatusClass(item.status)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
-                        {{ item.status }}
-                      </span>
-                    </td>
-                    <td class="px-4 py-3 text-sm text-gray-900">
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-gray-900 transition-colors">
+                  <tr v-for="(item, index) in selectedSummaryTask?.items || []" :key="index" :class="getItemRowClass(item.status)" class="transition-colors">
+                    <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">{{ item.kodeItem }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-300">{{ item.namaMaterial }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-300 font-mono">{{ item.lotSerial }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-300">{{ formatQty(item.qtyDiminta) }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-300">{{ item.qtyPicked || 0 }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-300">{{ item.uom }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-300">
                       {{ item.sourceBin }}
                     </td>
                   </tr>
@@ -518,10 +507,10 @@
 
     <!-- Modal: Expiry Analysis -->
     <div v-if="showExpiryModal" class="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]" style="background-color: rgba(43, 51, 63, 0.67);">
-      <div class="bg-white rounded-lg w-full max-w-6xl mx-4 max-h-[90vh] overflow-y-auto shadow-xl">
+      <div class="bg-white dark:bg-gray-900 rounded-lg w-full max-w-6xl mx-4 max-h-[90vh] overflow-y-auto shadow-xl transition-colors">
         <div class="p-6">
-          <div class="flex justify-between items-center mb-6 border-b pb-4">
-            <h3 class="text-xl font-bold text-gray-900">
+          <div class="flex justify-between items-center mb-6 border-b dark:border-gray-800 pb-4">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">
               Analisis Material - {{ selectedTaskForGeneration?.noReservasi }}
             </h3>
             <button @click="closeExpiryModal" class="text-gray-400 hover:text-gray-600 transition-colors">
@@ -532,68 +521,68 @@
           </div>
           
           <!-- Warning if has issues -->
-          <div v-if="expiryAnalysis.hasIssues" class="bg-red-50 border-2 border-red-200 rounded-lg p-4 mb-6">
+          <div v-if="expiryAnalysis.hasIssues" class="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800/50 rounded-lg p-4 mb-6 transition-colors">
             <div class="flex items-start space-x-3">
-              <svg class="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-6 h-6 text-red-600 dark:text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <div>
-                <p class="text-red-800 font-semibold text-lg">⚠️ Ditemukan material expired atau mendekati expired!</p>
-                <p class="text-red-700 text-sm mt-1">
+                <p class="text-red-800 dark:text-red-300 font-semibold text-lg">⚠️ Ditemukan material expired atau mendekati expired!</p>
+                <p class="text-red-700 dark:text-red-400 text-sm mt-1">
                   Silakan review material di bawah. Anda bisa centang dan hapus material yang bermasalah sebelum generate TO Number.
                 </p>
               </div>
             </div>
           </div>
           
-          <div v-else class="bg-green-50 border-2 border-green-200 rounded-lg p-4 mb-6">
+          <div v-else class="bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800/50 rounded-lg p-4 mb-6 transition-colors">
             <div class="flex items-center space-x-3">
-              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-6 h-6 text-green-600 dark:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <p class="text-green-800 font-semibold">✓ Semua material dalam kondisi baik!</p>
+              <p class="text-green-800 dark:text-green-300 font-semibold">✓ Semua material dalam kondisi baik!</p>
             </div>
           </div>
           
           <!-- Materials Table -->
-          <div class="border rounded-lg overflow-hidden shadow-sm">
+          <div class="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden shadow-sm transition-colors">
             <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+              <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+                <thead class="bg-gray-50 dark:bg-gray-800">
                   <tr>
                     <th class="px-4 py-3 text-left">
                       <input type="checkbox" @change="toggleSelectAll" v-model="selectAllMaterials"
-                             class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                             class="rounded border-gray-300 dark:border-gray-700 text-blue-600 focus:ring-blue-500 bg-white dark:bg-gray-800" />
                     </th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kode Material</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama Material</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Batch/Lot</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Exp Date</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Qty</th>
-                    <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Kode Material</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Nama Material</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Batch/Lot</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Exp Date</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Qty</th>
+                    <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
                   </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
                   <tr v-for="material in expiryAnalysis.materials" :key="material.reservationId"
-                      :class="getRowClass(material.status)" class="hover:bg-gray-100">
+                      :class="getRowClass(material.status)" class="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <td class="px-4 py-3">
                       <input type="checkbox" 
                              v-model="selectedMaterialsToRemove"
                              :value="material.reservationId"
                              @change="startCountdownTimer"
-                             class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                             class="rounded border-gray-300 dark:border-gray-700 text-blue-600 focus:ring-blue-500 bg-white dark:bg-gray-800" />
                     </td>
-                    <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ material.materialCode }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-700">{{ material.materialName }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-700 font-mono">{{ material.batchLot }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-700">{{ material.expiryDate ? formatDate(material.expiryDate) : '-' }}</td>
+                    <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">{{ material.materialCode }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ material.materialName }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 font-mono">{{ material.batchLot }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ material.expiryDate ? formatDate(material.expiryDate) : '-' }}</td>
                     <td class="px-4 py-3">
                       <span :class="getStatusBadge(material.status)" class="px-2 py-1 rounded-full text-xs font-semibold">
                         {{ getStatusText(material) }}
                       </span>
                     </td>
-                    <td class="px-4 py-3 text-sm text-gray-700 font-medium">{{ formatQty(material.qtyAllocated) }} {{ material.uom }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 font-medium">{{ formatQty(material.qtyAllocated) }} {{ material.uom }}</td>
                     <td class="px-4 py-3 text-center">
                       <button v-if="material.status === 'expired'" 
                               @click="findReplacement(material)"
@@ -646,16 +635,16 @@
 
     <!-- Modal: Confirm Replacement -->
     <div v-if="showReplacementModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[10000]">
-      <div class="bg-white rounded-lg max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div class="bg-white dark:bg-gray-900 rounded-lg max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto shadow-2xl transition-colors">
         <div class="p-6">
-          <div class="flex justify-between items-center mb-6 border-b pb-4">
-            <h3 class="text-xl font-bold text-gray-900 flex items-center space-x-2">
-              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="flex justify-between items-center mb-6 border-b dark:border-gray-800 pb-4">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center space-x-2">
+              <svg class="w-6 h-6 text-green-600 dark:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
               <span>Konfirmasi Penggantian Material</span>
             </h3>
-            <button @click="closeReplacementModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <button @click="closeReplacementModal" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -663,41 +652,41 @@
           </div>
           
           <!--Expired Material Info -->
-          <div class="mb-6 bg-red-50 border-2 border-red-200 rounded-lg p-4">
-            <p class="text-sm text-red-600 font-semibold mb-2">Material Lama (Expired - Akan Dihapus)</p>
-            <p class="font-semibold text-gray-900">{{ replacementData.oldMaterial?.materialName }}</p>
+          <div class="mb-6 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800/50 rounded-lg p-4 transition-colors">
+            <p class="text-sm text-red-600 dark:text-red-400 font-semibold mb-2">Material Lama (Expired - Akan Dihapus)</p>
+            <p class="font-semibold text-gray-900 dark:text-gray-100">{{ replacementData.oldMaterial?.materialName }}</p>
             <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
-              <div><span class="text-gray-600">Batch:</span> <span class="font-mono">{{ replacementData.oldMaterial?.batchLot }}</span></div>
-              <div><span class="text-gray-600">Exp:</span> <span class="text-red-600">{{ formatDate(replacementData.oldMaterial?.expiryDate) }}</span></div>
+              <div><span class="text-gray-600 dark:text-gray-400">Batch:</span> <span class="font-mono dark:text-gray-300">{{ replacementData.oldMaterial?.batchLot }}</span></div>
+              <div><span class="text-gray-600 dark:text-gray-400">Exp:</span> <span class="text-red-600 dark:text-red-400">{{ formatDate(replacementData.oldMaterial?.expiryDate) }}</span></div>
             </div>
           </div>
           
           <!-- Replacements -->
           <div class="mb-4">
-            <p class="text-sm text-green-600 font-semibold mb-3">Material Pengganti ({{ replacementData.replacements?.length || 0 }} Batch)</p>
-            <div v-for="(rep, idx) in replacementData.replacements" :key="idx" class="bg-green-50 border border-green-200 rounded-lg p-4 mb-2">
+            <p class="text-sm text-green-600 dark:text-green-400 font-semibold mb-3">Material Pengganti ({{ replacementData.replacements?.length || 0 }} Batch)</p>
+            <div v-for="(rep, idx) in replacementData.replacements" :key="idx" class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/50 rounded-lg p-4 mb-2 transition-colors">
               <div class="flex justify-between">
                 <div>
-                  <p class="font-mono font-bold">{{ rep.batchLot }}</p>
-                  <p class="text-sm text-gray-600">Exp: {{ formatDate(rep.expiryDate) }} ({{ rep.daysUntilExpiry }} hari)</p>
-                  <p class="text-sm">Bin: {{ rep.binCode }}</p>
+                  <p class="font-mono font-bold dark:text-gray-100">{{ rep.batchLot }}</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Exp: {{ formatDate(rep.expiryDate) }} ({{ rep.daysUntilExpiry }} hari)</p>
+                  <p class="text-sm dark:text-gray-300">Bin: {{ rep.binCode }}</p>
                 </div>
                 <div class="text-right">
-                  <p class="text-2xl font-bold text-green-700">{{ rep.qtyToAllocate }}</p>
-                  <p class="text-xs">{{ replacementData.oldMaterial?.uom }}</p>
+                  <p class="text-2xl font-bold text-green-700 dark:text-green-400">{{ rep.qtyToAllocate }}</p>
+                  <p class="text-xs dark:text-gray-500">{{ replacementData.oldMaterial?.uom }}</p>
                 </div>
               </div>
             </div>
           </div>
           
-          <div v-if="!replacementData.fullyAllocated" class="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4">
-            <p class="text-yellow-800 font-medium">⚠️ Stock tidak mencukupi. Kurang: {{ replacementData.shortfall }} {{ replacementData.oldMaterial?.uom }}</p>
+          <div v-if="!replacementData.fullyAllocated" class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/50 rounded p-3 mb-4 transition-colors">
+            <p class="text-yellow-800 dark:text-yellow-300 font-medium">⚠️ Stock tidak mencukupi. Kurang: {{ replacementData.shortfall }} {{ replacementData.oldMaterial?.uom }}</p>
           </div>
           
-          <div class="flex justify-end space-x-3">
-            <button @click="closeReplacementModal" class="px-4 py-2 bg-gray-200 rounded">Batal</button>
+          <div class="flex justify-end space-x-3 mt-6">
+            <button @click="closeReplacementModal" class="px-4 py-2 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">Batal</button>
             <button @click="confirmReplacement" :disabled="replacingMaterial"
-                    class="px-6 py-2 bg-green-600 text-white rounded disabled:bg-gray-400">
+                    class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded disabled:bg-gray-400 dark:disabled:bg-gray-800 transition-colors">
               {{ replacingMaterial ? 'Mengganti...' : '✅ Konfirmasi Ganti' }}
             </button>
           </div>
@@ -986,33 +975,33 @@ const pendingToGeneration = computed(() => {
 
 const getStatusClass = (status) => {
     const classes = {
-        'Reserved': 'bg-gray-100 text-gray-800',
-        'Pending': 'bg-gray-100 text-gray-800',
-        'In Progress': 'bg-yellow-100 text-yellow-800',
-        'Completed': 'bg-green-100 text-green-800',
-        'Short-Pick': 'bg-orange-100 text-orange-800'
+        'Reserved': 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200',
+        'Pending': 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200',
+        'In Progress': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400',
+        'Completed': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400',
+        'Short-Pick': 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-400'
     }
-    return classes[status] || 'bg-gray-100 text-gray-800'
+    return classes[status] || 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200'
 }
 
 const getItemStatusClass = (status) => {
     const classes = {
-        'Reserved': 'bg-gray-100 text-gray-700',
-        'Pending': 'bg-gray-100 text-gray-700',
-        'Picked': 'bg-green-100 text-green-700',
-        'Short-Pick': 'bg-orange-100 text-orange-700'
+        'Reserved': 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300',
+        'Pending': 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300',
+        'Picked': 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
+        'Short-Pick': 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400'
     }
-    return classes[status] || 'bg-gray-100 text-gray-700'
+    return classes[status] || 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
 }
 
 const getItemRowClass = (status) => {
     const classes = {
-        'Picked': 'bg-green-50',
-        'Short-Pick': 'bg-orange-50',
-        'Reserved': 'bg-white',
-        'Pending': 'bg-white',
+        'Picked': 'bg-green-50 dark:bg-green-900/10',
+        'Short-Pick': 'bg-orange-50 dark:bg-orange-900/10',
+        'Reserved': 'bg-white dark:bg-gray-900',
+        'Pending': 'bg-white dark:bg-gray-900',
     }
-    return classes[status] || 'bg-white'
+    return classes[status] || 'bg-white dark:bg-gray-900'
 }
 
 const getItemAchievement = (item) => {
@@ -1487,15 +1476,15 @@ const printPickingList = (task) => {
 
 // NEW: Helper functions for TO generation workflow
 const getRowClass = (status) => {
-  if (status === 'expired') return 'bg-red-50'
-  if (status === 'near-expiry') return 'bg-yellow-50'
+  if (status === 'expired') return 'bg-red-50 dark:bg-red-900/10'
+  if (status === 'near-expiry') return 'bg-yellow-50 dark:bg-yellow-900/10'
   return ''
 }
 
 const getStatusBadge = (status) => {
-  if (status === 'expired') return 'bg-red-100 text-red-700'
-  if (status === 'near-expiry') return 'bg-yellow-100 text-yellow-700'
-  return 'bg-green-100 text-green-700'
+  if (status === 'expired') return 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+  if (status === 'near-expiry') return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+  return 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
 }
 
 const getStatusText = (material) => {

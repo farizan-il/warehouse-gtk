@@ -3,8 +3,8 @@
     <div class="space-y-6">
       <!-- Header -->
       <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-gray-900">Daftar QC (Quality Control)</h2>
-        <div class="text-sm text-gray-600">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Daftar QC (Quality Control)</h2>
+        <div class="text-sm text-gray-600 dark:text-gray-400">
           Total item menunggu QC: {{ itemsToQC.total }}
         </div>
         <button @click="openQRScanner"
@@ -18,11 +18,11 @@
       </div>
 
       <!-- Filters -->
-      <div class="bg-white p-4 rounded-lg shadow mb-6">
+      <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 mb-6">
         <div class="flex flex-col md:flex-row gap-4">
           <!-- Status Filter -->
            <div class="w-48">
-            <select v-model="status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+            <select v-model="status" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm transition-colors">
               <option value="">Semua Status</option>
               <option value="To QC">Menunggu QC</option>
               <option value="Completed">Sudah QC (Pass/Reject)</option>
@@ -34,23 +34,23 @@
           <!-- Search -->
           <div class="flex-grow">
             <input v-model="search" type="text" placeholder="Cari No Shipment, PO, Surat Jalan, Material..."
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm transition-colors">
           </div>
 
           <!-- Date Range -->
           <div class="flex gap-2">
             <input v-model="dateStart" type="date"
-              class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              class="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm transition-colors"
               title="Tanggal Mulai">
-            <span class="self-center text-gray-500">-</span>
+            <span class="self-center text-gray-500 dark:text-gray-400">-</span>
             <input v-model="dateEnd" type="date"
-              class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              class="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm transition-colors"
               title="Tanggal Akhir">
           </div>
 
           <!-- Limit -->
           <div class="w-24">
-             <select v-model="limit" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+             <select v-model="limit" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm transition-colors">
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>
@@ -62,37 +62,37 @@
       </div>
 
       <!-- Tabel Daftar QC -->
-      <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+            <thead class="bg-gray-50 dark:bg-gray-800/50">
               <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No Shipment /
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">No Shipment /
                   No PO</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No Surat
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">No Surat
                   Jalan</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item (Kode &
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Supplier</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Item (Kode &
                   Nama)</th>
                 <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Qty Datang</th> -->
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Qty Diambil</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status QC</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Qty Diambil</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status QC</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="item in itemsToQC.data" :key="item.id" class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
+              <tr v-for="item in itemsToQC.data" :key="item.id" class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                   <div>{{ item.shipmentNumber }}</div>
-                  <div class="text-xs text-gray-500">{{ item.noPo }}</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ item.noPo }}</div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.noSuratJalan }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.supplier }}</td>
-                <td class="px-6 py-4 text-sm text-gray-900">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.noSuratJalan }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ item.supplier }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                   <div class="font-medium">{{ item.kodeItem }}</div>
-                  <div class="text-xs text-gray-500">{{ item.namaMaterial }}</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ item.namaMaterial }}</div>
                   <!-- \u2b50 RE-QC BADGE -->
-                  <span v-if="item.is_reqc" class="mt-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-orange-100 text-orange-800 border border-orange-300">
+                  <span v-if="item.is_reqc" class="mt-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-400 border border-orange-300 dark:border-orange-800">
                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                     </svg>
@@ -103,8 +103,8 @@
                   {{ formatInteger(item.qtyDatangTotal) }} {{ item.uom }} 
                 </td> -->
 
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <span class="font-bold text-blue-700">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                  <span class="font-bold text-blue-700 dark:text-blue-400">
                     {{ formatQty(getDisplayQtyReceived(item)) }} {{ item.uom }}
                   </span>
                 </td>
@@ -117,13 +117,13 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div class="flex space-x-2">
                     <button v-if="item.statusQC === 'To QC' && canCreateQC" @click="showItemDetail(item)"
-                      class="bg-blue-100 text-blue-700 hover:bg-blue-200 px-3 py-1 rounded text-xs">
+                      class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/50 px-3 py-1 rounded text-xs transition-colors">
                       Periksa QC
                     </button>
 
                     <!-- Detail Button for Completed QC -->
                     <button v-if="item.statusQC === 'PASS' || item.statusQC === 'REJECTED'" @click="showQCDetailModal(item)"
-                      class="bg-gray-100 text-gray-700 hover:bg-gray-200 px-3 py-1 rounded text-xs flex items-center gap-1">
+                      class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1 rounded text-xs flex items-center gap-1 transition-colors">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
@@ -131,12 +131,12 @@
                     </button>
 
                     <button v-if="item.statusQC === 'PASS'" @click="printReleaseQRLabel(item)"
-                      class="bg-purple-100 text-purple-700 hover:bg-purple-200 px-2 py-1 rounded text-xs">
+                      class="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 hover:bg-purple-200 dark:hover:bg-purple-800/50 px-2 py-1 rounded text-xs transition-colors">
                       Cetak Label QR (RELEASED)
                     </button>
 
                     <button v-if="item.statusQC === 'REJECTED'" @click="printRejectQRLabel(item)"
-                      class="bg-red-100 text-red-700 hover:bg-red-200 px-2 py-1 rounded text-xs">
+                      class="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/50 px-2 py-1 rounded text-xs transition-colors">
                       Cetak Label QR (REJECT)
                     </button>
 
@@ -146,21 +146,20 @@
             </tbody>
           </table>
         </div>
-         <div class="px-6 py-4 border-t border-gray-200">
+         <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-800">
             <Pagination :links="itemsToQC.links" />
         </div>
       </div>
 
       <!-- Modal Detail Item (Step 1) -->
       <div v-if="showDetailModal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-        style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-800 shadow-xl">
           <div class="p-6">
             <!-- Header Modal -->
             <div class="flex justify-between items-center mb-6">
-              <h3 class="text-lg font-semibold text-gray-900">Detail Item QC - {{ selectedItem?.kodeItem }}</h3>
-              <button @click="closeDetailModal" class="text-gray-400 hover:text-gray-600">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Detail Item QC - {{ selectedItem?.kodeItem }}</h3>
+              <button @click="closeDetailModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -171,55 +170,55 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">No Shipment</label>
-                  <div class="mt-1 text-sm text-gray-900 font-medium">{{ selectedItem?.shipmentNumber }}</div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">No Shipment</label>
+                  <div class="mt-1 text-sm text-gray-900 dark:text-gray-100 font-medium">{{ selectedItem?.shipmentNumber }}</div>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">No PO</label>
-                  <div class="mt-1 text-sm text-gray-900">{{ selectedItem?.noPo }}</div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">No PO</label>
+                  <div class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ selectedItem?.noPo }}</div>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">No Surat Jalan</label>
-                  <div class="mt-1 text-sm text-gray-900">{{ selectedItem?.noSuratJalan }}</div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">No Surat Jalan</label>
+                  <div class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ selectedItem?.noSuratJalan }}</div>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Kode Item</label>
-                  <div class="mt-1 text-sm text-gray-900 font-medium">{{ selectedItem?.kodeItem }}</div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">Kode Item</label>
+                  <div class="mt-1 text-sm text-gray-900 dark:text-gray-100 font-medium">{{ selectedItem?.kodeItem }}</div>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Nama Material</label>
-                  <div class="mt-1 text-sm text-gray-900">{{ selectedItem?.namaMaterial }}</div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">Nama Material</label>
+                  <div class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ selectedItem?.namaMaterial }}</div>
                 </div>
               </div>
 
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Supplier</label>
-                  <div class="mt-1 text-sm text-gray-900">{{ selectedItem?.supplier }}</div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">Supplier</label>
+                  <div class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ selectedItem?.supplier }}</div>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Quantity Received</label>
-                  <div class="mt-1 text-sm text-gray-900 font-medium">{{ formatInteger(selectedItem?.qtyReceived) }}
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">Quantity Received</label>
+                  <div class="mt-1 text-sm text-gray-900 dark:text-gray-100 font-medium">{{ formatInteger(selectedItem?.qtyReceived) }}
                     {{ selectedItem?.uom }}</div>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">No Kendaraan</label>
-                  <div class="mt-1 text-sm text-gray-900">{{ selectedItem?.noKendaraan }}</div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">No Kendaraan</label>
+                  <div class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ selectedItem?.noKendaraan }}</div>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Nama Driver</label>
-                  <div class="mt-1 text-sm text-gray-900">{{ selectedItem?.namaDriver }}</div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">Nama Driver</label>
+                  <div class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ selectedItem?.namaDriver }}</div>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Status QC</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">Status QC</label>
                   <span :class="getQCStatusClass(selectedItem?.statusQC)"
                     class="inline-flex px-2 py-1 text-xs font-semibold rounded-full">
                     {{ selectedItem?.statusQC }}
@@ -229,12 +228,12 @@
             </div>
 
             <!-- Footer Modal -->
-            <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
+            <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
               <button @click="closeDetailModal"
-                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+                class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
                 Tutup
               </button>
-              <button v-if="canCreateQC" @click="openQCModal" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+              <button v-if="canCreateQC" @click="openQCModal" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
                 Lanjut QC
               </button>
             </div>
@@ -244,14 +243,13 @@
 
       <!-- Modal Form QC (Step 2) -->
       <div v-if="showQCModal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-        style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-800 shadow-xl">
           <div class="p-6">
             <!-- Header Modal -->
             <div class="flex justify-between items-center mb-6">
-              <h3 class="text-lg font-semibold text-gray-900">Form QC - {{ selectedItem?.kodeItem }}</h3>
-              <button @click="closeQCModal" class="text-gray-400 hover:text-gray-600">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Form QC - {{ selectedItem?.kodeItem }}</h3>
+              <button @click="closeQCModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -261,122 +259,122 @@
             <!-- Form Header Info -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">No Form Checklist</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">No Form Checklist</label>
                 <input v-model="qcForm.noFormChecklist" type="text" readonly
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Date</label>
                 <input v-model="qcForm.date" type="datetime-local"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">No PO</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">No PO</label>
                 <input v-model="qcForm.noPo" type="text" readonly
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">No Surat Jalan</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">No Surat Jalan</label>
                 <input v-model="qcForm.noSuratJalan" type="text" readonly
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Kode Item</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Kode Item</label>
                 <input v-model="qcForm.kodeItem" type="text" readonly
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Material</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Nama Material</label>
                 <input v-model="qcForm.namaMaterial" type="text" readonly
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Batch Lot</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Batch Lot</label>
                 <input v-model="qcForm.batchLot" type="text" readonly
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Supplier</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Nama Supplier</label>
                 <input v-model="qcForm.supplier" type="text" readonly
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Kategori</label>
                 <input v-model="qcForm.kategori" type="text" readonly
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">No Kendaraan</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">No Kendaraan</label>
                 <input v-model="qcForm.noKendaraan" type="text" readonly
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Driver</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Nama Driver</label>
                 <input v-model="qcForm.namaDriver" type="text" readonly
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
               </div>
             </div>
 
             <!-- Form Quantity Info -->
-            <div class="border-t border-gray-200 pt-6 mb-6">
-              <h4 class="text-md font-medium text-gray-900 mb-4">Pengambilan Sampel QC</h4>
+            <div class="border-t border-gray-200 dark:border-gray-800 pt-6 mb-6">
+              <h4 class="text-md font-medium text-gray-900 dark:text-gray-100 mb-4">Pengambilan Sampel QC</h4>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium text-gray-700 mb-1">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
                     Qty Sampel Diambil ({{ qcForm.uom }}) *
                   </label>
                   <input v-model="qcForm.qtySample" type="number" min="0" :max="qcForm.totalIncoming"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900">
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
                   <p class="text-xs text-red-500 mt-1" v-if="qcForm.qtySample > qcForm.totalIncoming">
                     Qty Sampel tidak boleh melebihi Total Incoming ({{ qcForm.totalIncoming }} {{ qcForm.uom }})
                   </p>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah Total Incoming</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Jumlah Total Incoming</label>
                   <input v-model="qcForm.totalIncoming" type="number" readonly
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">UoM</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">UoM</label>
                   <input v-model="qcForm.uom" type="text" readonly
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none transition-colors">
                 </div>
               </div>
             </div>
 
             <!-- Hasil QC -->
-            <div class="border-t border-gray-200 pt-6">
-              <h4 class="text-md font-medium text-gray-900 mb-4">Hasil QC</h4>
+            <div class="border-t border-gray-200 dark:border-gray-800 pt-6">
+              <h4 class="text-md font-medium text-gray-900 dark:text-gray-100 mb-4">Hasil QC</h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-4">
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Defect Count</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Defect Count</label>
                     <input v-model="qcForm.defectCount" type="number"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900">
+                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
                   </div>
 
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Catatan QC</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Catatan QC</label>
                     <textarea v-model="qcForm.catatanQC" rows="4"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"></textarea>
+                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"></textarea>
                   </div>
 
                   <!-- ⭐ EXPIRED DATE EDIT (ONLY FOR RE-QC PASS) -->
-                  <div v-if="selectedItem?.is_reqc && qcForm.hasilQC === 'PASS'" class="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                    <label class="block text-sm font-medium text-orange-900 mb-1">
+                  <div v-if="selectedItem?.is_reqc && qcForm.hasilQC === 'PASS'" class="bg-orange-50 dark:bg-orange-900/10 border border-orange-200 dark:border-orange-800 rounded-lg p-3">
+                    <label class="block text-sm font-medium text-orange-900 dark:text-orange-400 mb-1">
                       <span class="flex items-center gap-1">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                           <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
@@ -385,37 +383,37 @@
                       </span>
                     </label>
                     <input v-model="qcForm.newExpDate" type="date" required
-                      class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-gray-900">
-                    <p class="text-xs text-orange-700 mt-1">Masukkan tanggal expired baru untuk material yang PASS Re-QC</p>
+                      class="w-full px-3 py-2 border border-orange-300 dark:border-orange-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
+                    <p class="text-xs text-orange-700 dark:text-orange-400 mt-1">Masukkan tanggal expired baru untuk material yang PASS Re-QC</p>
                   </div>
 
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload Foto Bukti</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Upload Foto Bukti</label>
                     <input type="file" multiple accept="image/*"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900">
+                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
                   </div>
                 </div>
 
                 <div class="space-y-4">
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-3">Hasil QC *</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-3">Hasil QC *</label>
                     <div class="space-y-2">
                       <label class="flex items-center">
                         <input v-model="qcForm.hasilQC" type="radio" value="PASS"
-                          class="mr-2 text-green-600 focus:ring-green-500">
-                        <span class="text-sm text-gray-900">PASS</span>
+                          class="mr-2 text-green-600 focus:ring-green-500 transition-colors">
+                        <span class="text-sm text-gray-900 dark:text-gray-100">PASS</span>
                       </label>
                       <label class="flex items-center">
                         <input v-model="qcForm.hasilQC" type="radio" value="REJECTED"
-                          class="mr-2 text-red-600 focus:ring-red-500">
-                        <span class="text-sm text-gray-900">REJECT</span>
+                          class="mr-2 text-red-600 focus:ring-red-500 transition-colors">
+                        <span class="text-sm text-gray-900 dark:text-gray-100">REJECT</span>
                       </label>
                     </div>
                   </div>
 
                   <div v-if="qcForm.hasilQC" class="mt-4 p-4 rounded-lg"
-                    :class="qcForm.hasilQC === 'PASS' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'">
-                    <div class="text-sm" :class="qcForm.hasilQC === 'PASS' ? 'text-green-800' : 'text-red-800'">
+                    :class="qcForm.hasilQC === 'PASS' ? 'bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800/30' : 'bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30'">
+                    <div class="text-sm" :class="qcForm.hasilQC === 'PASS' ? 'text-green-800 dark:text-green-400' : 'text-red-800 dark:text-red-400'">
                       <strong>{{ qcForm.hasilQC === 'PASS' ? 'Akan digenerate:' : 'Akan digenerate:' }}</strong>
                       <ul class="mt-2 list-disc list-inside">
                         <li v-if="qcForm.hasilQC === 'PASS'">Good Receipt Slip</li>
@@ -430,12 +428,12 @@
             </div>
 
             <!-- Footer Modal -->
-            <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
-              <button @click="backToDetail" :disabled="isSubmittingQC" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
+            <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
+              <button @click="backToDetail" :disabled="isSubmittingQC" class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
                 Kembali ke Detail
               </button>
               <button v-if="canCreateQC" @click="submitQC" :disabled="!isQCFormValid || isSubmittingQC"
-                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2">
+                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 dark:disabled:bg-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed flex items-center gap-2 transition-colors">
                 <svg v-if="isSubmittingQC" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -449,13 +447,12 @@
 
       <!-- Modal QR Scanner dengan Camera -->
       <div v-if="showQRScanner"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-        style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg mx-4 max-h-[90vh] overflow-y-auto">
+        class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg mx-4 max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-800 shadow-xl">
           <div class="p-6">
             <div class="flex justify-between items-center mb-4">
-              <h3 class="text-lg font-semibold text-gray-900">Scan QR Code</h3>
-              <button @click="closeQRScanner" class="text-gray-400 hover:text-gray-600">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Scan QR Code</h3>
+              <button @click="closeQRScanner" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -477,16 +474,16 @@
               </div>
 
               <!-- Scan Result -->
-              <div v-if="scanResult" class="bg-green-50 border border-green-200 rounded-lg p-3">
-                <p class="text-sm text-green-800">
+              <div v-if="scanResult" class="bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800/30 rounded-lg p-3">
+                <p class="text-sm text-green-800 dark:text-green-400">
                   <strong>✅ QR Code terdeteksi:</strong><br>
                   {{ scanResult }}
                 </p>
               </div>
 
               <!-- Error Message -->
-              <div v-if="scanError" class="bg-red-50 border border-red-200 rounded-lg p-3">
-                <p class="text-sm text-red-800">
+              <div v-if="scanError" class="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30 rounded-lg p-3">
+                <p class="text-sm text-red-800 dark:text-red-400">
                   <strong>❌ Error:</strong><br>
                   {{ scanError }}
                 </p>
@@ -495,28 +492,28 @@
               <!-- Divider -->
               <div class="relative">
                 <div class="absolute inset-0 flex items-center">
-                  <div class="w-full border-t border-gray-300"></div>
+                  <div class="w-full border-t border-gray-300 dark:border-gray-700"></div>
                 </div>
                 <div class="relative flex justify-center text-sm">
-                  <span class="px-2 bg-white text-gray-500">atau</span>
+                  <span class="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">atau</span>
                 </div>
               </div>
 
               <!-- Manual Input -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-2">
                   Input Manual QR Code:
                 </label>
                 <div class="flex gap-2">
                   <input v-model="manualQRInput" @keyup.enter="processQRCode(manualQRInput)" type="text"
                     placeholder="Paste QR Code di sini..."
-                    class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900">
+                    class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
                   <button @click="processQRCode(manualQRInput)" :disabled="!manualQRInput"
-                    class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md">
+                    class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 dark:disabled:bg-gray-800 dark:disabled:text-gray-500 text-white px-4 py-2 rounded-md transition-colors">
                     Process
                   </button>
                 </div>
-                <p class="mt-2 text-xs text-gray-500">
+                <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                   Contoh format: IN/20250918/0001|RM-001|BATCH123|100|2027-01-01
                 </p>
               </div>
@@ -527,19 +524,18 @@
 
       <!-- Modal: QC Detail (for completed QC) -->
       <div v-if="showQCDetail"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[9999]"
-        style="background-color: rgba(43, 51, 63, 0.67);">
-        <div class="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        class="fixed inset-0 bg-gray-600/50 dark:bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-800 shadow-xl">
           <div class="p-6">
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
-              <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                 <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 Detail QC - {{ qcDetailData?.kodeItem }}
               </h3>
-              <button @click="closeQCDetailModal" class="text-gray-400 hover:text-gray-600">
+              <button @click="closeQCDetailModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -549,8 +545,8 @@
             <!-- Content -->
             <div class="space-y-6">
               <!-- Material Information -->
-              <div class="bg-gray-50 rounded-lg p-4">
-                <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+              <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 transition-colors">
+                <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-400 mb-3 flex items-center gap-2">
                   <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
@@ -558,35 +554,35 @@
                 </h4>
                 <div class="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span class="text-gray-600">Kode Item:</span>
-                    <span class="ml-2 font-medium text-gray-900">{{ qcDetailData?.kodeItem }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">Kode Item:</span>
+                    <span class="ml-2 font-medium text-gray-900 dark:text-gray-100">{{ qcDetailData?.kodeItem }}</span>
                   </div>
                   <div>
-                    <span class="text-gray-600">Nama Material:</span>
-                    <span class="ml-2 font-medium text-gray-900">{{ qcDetailData?.namaMaterial }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">Nama Material:</span>
+                    <span class="ml-2 font-medium text-gray-900 dark:text-gray-100">{{ qcDetailData?.namaMaterial }}</span>
                   </div>
                   <div>
-                    <span class="text-gray-600">Batch Lot:</span>
-                    <span class="ml-2 font-medium text-gray-900">{{ qcDetailData?.batchLot }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">Batch Lot:</span>
+                    <span class="ml-2 font-medium text-gray-900 dark:text-gray-100">{{ qcDetailData?.batchLot }}</span>
                   </div>
                   <div>
-                    <span class="text-gray-600">Supplier:</span>
-                    <span class="ml-2 font-medium text-gray-900">{{ qcDetailData?.supplier }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">Supplier:</span>
+                    <span class="ml-2 font-medium text-gray-900 dark:text-gray-100">{{ qcDetailData?.supplier }}</span>
                   </div>
                   <div>
-                    <span class="text-gray-600">No PO:</span>
-                    <span class="ml-2 font-medium text-gray-900">{{ qcDetailData?.noPo }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">No PO:</span>
+                    <span class="ml-2 font-medium text-gray-900 dark:text-gray-100">{{ qcDetailData?.noPo }}</span>
                   </div>
                   <div>
-                    <span class="text-gray-600">No Surat Jalan:</span>
-                    <span class="ml-2 font-medium text-gray-900">{{ qcDetailData?.noSuratJalan }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">No Surat Jalan:</span>
+                    <span class="ml-2 font-medium text-gray-900 dark:text-gray-100">{{ qcDetailData?.noSuratJalan }}</span>
                   </div>
                 </div>
               </div>
 
               <!-- QC Results -->
-              <div class="bg-gray-50 rounded-lg p-4">
-                <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+              <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 transition-colors">
+                <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-400 mb-3 flex items-center gap-2">
                   <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -594,22 +590,22 @@
                 </h4>
                 <div class="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span class="text-gray-600">Status QC:</span>
-                    <span :class="qcDetailData?.statusQC === 'PASS' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'" 
+                    <span class="text-gray-600 dark:text-gray-400">Status QC:</span>
+                    <span :class="qcDetailData?.statusQC === 'PASS' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'" 
                       class="ml-2 px-2 py-1 text-xs font-semibold rounded-full">
                       {{ qcDetailData?.statusQC }}
                     </span>
                   </div>
                   <div>
-                    <span class="text-gray-600">Qty Sampel Diambil:</span>
-                    <span class="ml-2 font-medium text-blue-600">{{ qcDetailData?.qcSampleQty }} {{ qcDetailData?.uom }}</span>
+                    <span class="text-gray-600 dark:text-gray-400">Qty Sampel Diambil:</span>
+                    <span class="ml-2 font-medium text-blue-600 dark:text-blue-400">{{ qcDetailData?.qcSampleQty }} {{ qcDetailData?.uom }}</span>
                   </div>
                 </div>
               </div>
 
               <!-- QC Details -->
-              <div class="bg-gray-50 rounded-lg p-4">
-                <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+              <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 transition-colors">
+                <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-400 mb-3 flex items-center gap-2">
                   <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
@@ -617,20 +613,19 @@
                 </h4>
                 <div class="space-y-3 text-sm">
                   <div v-if="qcDetailData?.catatanQC">
-                    <span class="text-gray-600 font-medium">Catatan QC:</span>
-                    <div class="mt-1 p-3 bg-white rounded border border-gray-200 text-gray-900">
+                    <span class="text-gray-600 dark:text-gray-400 font-medium">Catatan QC:</span>
+                    <div class="mt-1 p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100">
                       {{ qcDetailData?.catatanQC }}
                     </div>
                   </div>
                   <div v-else>
-                    <span class="text-gray-500 italic">Tidak ada catatan QC</span>
+                    <span class="text-gray-500 dark:text-gray-500 italic">Tidak ada catatan QC</span>
                   </div>
                 </div>
               </div>
-
-              <!-- User & Timestamp Information -->
-              <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h4 class="text-sm font-semibold text-blue-900 mb-3 flex items-center gap-2">
+ Riverside Information -->
+              <div class="bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800/30 rounded-lg p-4 transition-colors">
+                <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-400 mb-3 flex items-center gap-2">
                   <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
@@ -638,27 +633,27 @@
                 </h4>
                 <div class="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span class="text-blue-700">Diperiksa Oleh:</span>
-                    <span class="ml-2 font-semibold text-blue-900">{{ qcDetailData?.qc_by_name || 'N/A' }}</span>
+                    <span class="text-blue-700 dark:text-blue-500">Diperiksa Oleh:</span>
+                    <span class="ml-2 font-semibold text-blue-900 dark:text-blue-400">{{ qcDetailData?.qc_by_name || 'N/A' }}</span>
                   </div>
                   <div>
-                    <span class="text-blue-700">Tanggal QC:</span>
-                    <span class="ml-2 font-medium text-blue-900">{{ qcDetailData?.qc_date || 'N/A' }}</span>
+                    <span class="text-blue-700 dark:text-blue-500">Tanggal QC:</span>
+                    <span class="ml-2 font-medium text-blue-900 dark:text-blue-400">{{ qcDetailData?.qc_date || 'N/A' }}</span>
                   </div>
                   <div>
-                    <span class="text-blue-700">No Form Checklist:</span>
-                    <span class="ml-2 font-medium text-blue-900">{{ qcDetailData?.no_form_checklist || 'N/A' }}</span>
+                    <span class="text-blue-700 dark:text-blue-500">No Form Checklist:</span>
+                    <span class="ml-2 font-medium text-blue-900 dark:text-blue-400">{{ qcDetailData?.no_form_checklist || 'N/A' }}</span>
                   </div>
                   <div>
-                    <span class="text-blue-700">Kategori:</span>
-                    <span class="ml-2 font-medium text-blue-900">{{ qcDetailData?.kategori || 'N/A' }}</span>
+                    <span class="text-blue-700 dark:text-blue-500">Kategori:</span>
+                    <span class="ml-2 font-medium text-blue-900 dark:text-blue-400">{{ qcDetailData?.kategori || 'N/A' }}</span>
                   </div>
                 </div>
               </div>
 
               <!-- Re-QC Badge if applicable -->
-              <div v-if="qcDetailData?.is_reqc" class="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                <div class="flex items-center gap-2 text-orange-800">
+              <div v-if="qcDetailData?.is_reqc" class="bg-orange-50 dark:bg-orange-900/10 border border-orange-200 dark:border-orange-800/30 rounded-lg p-4 transition-colors">
+                <div class="flex items-center gap-2 text-orange-800 dark:text-orange-400">
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                   </svg>
@@ -668,9 +663,9 @@
             </div>
 
             <!-- Footer -->
-            <div class="flex justify-end mt-6 pt-6 border-t border-gray-200">
+            <div class="flex justify-end mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
               <button @click="closeQCDetailModal"
-                class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                class="px-6 py-2 bg-gray-600 dark:bg-gray-800 text-white dark:text-gray-100 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-700 transition-colors">
                 Tutup
               </button>
             </div>

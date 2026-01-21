@@ -34,5 +34,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/master-data/user/{id}', [MasterDataController::class, 'updateUser']);
     Route::delete('/master-data/user/{id}', [MasterDataController::class, 'deleteUser']);
 
+    // Settings
+    Route::get('/settings', [\App\Http\Controllers\SettingsController::class, 'show']);
+    Route::put('/settings', [\App\Http\Controllers\SettingsController::class, 'update']);
+    Route::post('/settings/reset', [\App\Http\Controllers\SettingsController::class, 'reset']);
+
 
 });

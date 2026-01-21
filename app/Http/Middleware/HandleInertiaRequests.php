@@ -41,6 +41,8 @@ class HandleInertiaRequests extends Middleware
                         'id' => $user->role->id,
                         'name' => $user->role->role_name,
                     ] : null,
+                    'settings' => $user->getSettings(),
+                    'defaultSettings' => \App\Models\User::getDefaultSettings(),
                 ] : null,
             ],
             'permissions' => $permissions,
