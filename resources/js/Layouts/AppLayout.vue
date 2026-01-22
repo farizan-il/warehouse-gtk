@@ -704,12 +704,14 @@
     const mobileMenuOpen = ref(false);
 
     // Initial settings application
+    initializeSettings(page.props, true);
+    
+    if (settings.value) {
+        applySettings(settings.value);
+    }
+
     onMounted(() => {
-        initializeSettings(page.props, true);
-        
         if (settings.value) {
-            applySettings(settings.value);
-            
             // Handle initial sidebar state based on mode
             updateSidebarFromMode(settings.value.layout?.sidebar_mode || 'auto');
         }

@@ -9,6 +9,7 @@ use App\Models\ReturnActivityLog;
 use App\Models\WarehouseActivityLog;
 use App\Models\ActivityLog;
 use App\Models\StockMovement;
+use App\Models\InventoryStock;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -112,6 +113,31 @@ class ActivityLogController extends Controller
             ->take(10)
             ->values();
 
+        // 8. Expired Materials Logic (Ported from DashboardController)
+        $validStatuses = ['KARANTINA', 'RELEASED', 'HOLD', 'REJECTED'];
+        $expiredMaterials = InventoryStock::with(['material', 'bin'])
+            ->where('qty_on_hand', '>', 0)
+            ->where('exp_date', '<=', now())
+            ->whereIn('status', $validStatuses)
+            ->get()
+            ->map(fn($item) => [
+                'id' => $item->id,
+                'name' => $item->material->nama_material ?? 'Unknown',
+                'expiry_date' => $item->exp_date ? $item->exp_date->toDateString() : 'N/A',
+            ]);
+
+        $expiredCount = $expiredMaterials->count();
+
+        // 9. Alerts Logic (Basic version for IT Dashboard)
+        $alerts = [];
+        if ($expiredCount > 0) {
+            $alerts[] = [
+                'id' => 'expired_alert',
+                'message' => "Ada {$expiredCount} item yang sudah expired. Segera cek inventori.",
+                'created_at' => now()->toDateTimeString(),
+            ];
+        }
+
         return Inertia::render('ITDashboard', [
             'stats' => $stats,
             'activeUsers' => $activeUsersCount,
@@ -120,6 +146,9 @@ class ActivityLogController extends Controller
             'hourlyStats' => array_values($chartData),
             'topUsers' => $topUsers,
             'recentActivities' => $recentLogs,
+            'expiredMaterials' => $expiredMaterials,
+            'expiredMaterialsCount' => $expiredCount,
+            'localAlerts' => $alerts,
         ]);
     }
 

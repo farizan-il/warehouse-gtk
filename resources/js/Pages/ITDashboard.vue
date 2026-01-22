@@ -169,6 +169,14 @@
             <div v-if="localAlerts.length === 0" class="text-center py-4 text-gray-500 dark:text-gray-500 text-sm">
                 {{ t('dashboard.no_new_alerts') }}
             </div>
+            <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 text-center">
+                <p class="text-[10px] text-gray-400 dark:text-gray-600 uppercase tracking-widest font-semibold flex items-center justify-center gap-2">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    SENDER: it.verif@gondowangi.com
+                </p>
+            </div>
         </div>
 
         <!-- Online Users -->
@@ -281,7 +289,10 @@ const props = defineProps({
   moduleStats: Object,
   hourlyStats: Array,
   topUsers: Array,
-  recentActivities: Array
+  recentActivities: Array,
+  expiredMaterials: Array,
+  expiredMaterialsCount: Number,
+  localAlerts: Array
 })
 
 // ... chart configs ...

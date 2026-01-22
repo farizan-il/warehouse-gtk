@@ -1,8 +1,55 @@
 import { ref, watch } from 'vue';
 import { router } from '@inertiajs/vue3';
 
+// Default settings structure
+const DEFAULT_SETTINGS = {
+    theme: {
+        mode: 'light',
+        color_scheme: 'blue',
+    },
+    language: {
+        locale: 'id',
+        timezone: 'Asia/Jakarta',
+        date_format: 'd/m/Y',
+        time_format: 'H:i',
+    },
+    notifications: {
+        email_enabled: true,
+        browser_enabled: true,
+        sound_enabled: true,
+        desktop_enabled: false,
+    },
+    display: {
+        rows_per_page: 10,
+        compact_mode: false,
+        animations_enabled: true,
+        show_tooltips: true,
+    },
+    accessibility: {
+        font_size: 'medium',
+        high_contrast: false,
+        keyboard_navigation: true,
+        screen_reader: false,
+    },
+    layout: {
+        sidebar_mode: 'auto',
+        density: 'comfortable',
+    },
+    dashboard: {
+        default_page: '/dashboard',
+        show_stats: true,
+        show_charts: true,
+        show_recent_activity: true,
+    },
+    advanced: {
+        auto_refresh: false,
+        refresh_interval: 60,
+        cache_enabled: true,
+    },
+};
+
 // Move settings to global scope to share state across components
-const settings = ref({});
+const settings = ref(JSON.parse(JSON.stringify(DEFAULT_SETTINGS)));
 const isInitialized = ref(false);
 
 export function useSettings() {
@@ -23,51 +70,7 @@ export function useSettings() {
      * Get default settings
      */
     const getDefaultSettings = () => {
-        return {
-            theme: {
-                mode: 'light',
-                color_scheme: 'blue',
-            },
-            language: {
-                locale: 'id',
-                timezone: 'Asia/Jakarta',
-                date_format: 'd/m/Y',
-                time_format: 'H:i',
-            },
-            notifications: {
-                email_enabled: true,
-                browser_enabled: true,
-                sound_enabled: true,
-                desktop_enabled: false,
-            },
-            display: {
-                rows_per_page: 10,
-                compact_mode: false,
-                animations_enabled: true,
-                show_tooltips: true,
-            },
-            accessibility: {
-                font_size: 'medium',
-                high_contrast: false,
-                keyboard_navigation: true,
-                screen_reader: false,
-            },
-            layout: {
-                sidebar_mode: 'auto',
-                density: 'comfortable',
-            },
-            dashboard: {
-                default_page: '/dashboard',
-                show_stats: true,
-                show_charts: true,
-                show_recent_activity: true,
-            },
-            advanced: {
-                auto_refresh: false,
-                refresh_interval: 60,
-                cache_enabled: true,
-            },
-        };
+        return JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
     };
 
     /**
