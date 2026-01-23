@@ -196,6 +196,10 @@
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
+            <select v-model="sortOrder" @change="performSearch" class="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors">
+              <option value="newest">Terbaru</option>
+              <option value="oldest">Terlama</option>
+            </select>
           </div>
 
           <!-- SKU Tab -->
@@ -580,8 +584,8 @@
                   <option value="PCS">PCS</option>
                   <option value="KG">KG</option>
                   <option value="LTR">LITER</option>
-                  <option value="LITER">LITER</option>
                   <option value="BOX">BOX</option>
+                  <option value="ROL">ROL</option>
                 </select>
               </div>
             </div>
@@ -1254,6 +1258,7 @@ const props = defineProps<{
     activeTab: string;
     search: string;
     status: string;
+    sort?: string;
 }>();
 
 const page = usePage();
@@ -1305,6 +1310,7 @@ const isDarkMode = ref(false)
 const activeTab = ref(props.activeTab || 'sku')
 const searchQuery = ref(props.search || '')
 const statusFilter = ref(props.status || '')
+const sortOrder = ref(props.sort || 'newest')
 const showQRModal = ref(false)
 const qrCodeData = ref<any>(null)
 const showBinDetailsModal = ref(false)
@@ -2199,6 +2205,7 @@ const performSearch = () => {
   router.get(route('master-data.index'), {
     search: searchQuery.value,
     status: statusFilter.value,
+    sort: sortOrder.value,
     activeTab: activeTab.value
   }, {
     preserveState: true,

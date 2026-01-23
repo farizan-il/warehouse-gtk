@@ -37,10 +37,14 @@ class MasterDataController extends Controller
     $search = request()->query('search', '');
     $status = request()->query('status', '');
     $activeTab = request()->query('activeTab', 'sku');
+    $sort = request()->query('sort', 'newest'); // Default to newest
 
     // Get user settings for pagination
     $userSettings = auth()->user()->getSettings();
     $perPage = $userSettings['display']['rows_per_page'] ?? self::PER_PAGE;
+
+    // Define Sort Direction
+    $sortDirection = $sort === 'oldest' ? 'asc' : 'desc';
 
     // SKU Query with Search and Filter
     $skuQuery = Material::query();
@@ -53,7 +57,7 @@ class MasterDataController extends Controller
     if ($status) {
         $skuQuery->where('status', strtolower($status));
     }
-    $skuPaginator = $skuQuery->paginate($perPage)->withQueryString();
+    $skuPaginator = $skuQuery->orderBy('created_at', $sortDirection)->paginate($perPage)->withQueryString();
 
     // Supplier Query with Search and Filter
     $supplierQuery = Supplier::query();
@@ -66,7 +70,7 @@ class MasterDataController extends Controller
     if ($status) {
         $supplierQuery->where('status', strtolower($status));
     }
-    $supplierPaginator = $supplierQuery->paginate($perPage)->withQueryString();
+    $supplierPaginator = $supplierQuery->orderBy('created_at', $sortDirection)->paginate($perPage)->withQueryString();
 
     // Bin Location Query with Search and Filter
     $binQuery = WarehouseBin::with('zone');
@@ -81,7 +85,7 @@ class MasterDataController extends Controller
     if ($status) {
         $binQuery->where('status', strtolower($status));
     }
-    $binPaginator = $binQuery->paginate($perPage)->withQueryString();
+    $binPaginator = $binQuery->orderBy('created_at', $sortDirection)->paginate($perPage)->withQueryString();
 
     // User Query with Search and Filter
     $userQuery = User::with('role');
@@ -94,7 +98,7 @@ class MasterDataController extends Controller
     if ($status) {
         $userQuery->where('status', strtolower($status));
     }
-    $userPaginator = $userQuery->paginate($perPage)->withQueryString();
+    $userPaginator = $userQuery->orderBy('created_at', $sortDirection)->paginate($perPage)->withQueryString();
 
     // Map data di setiap Paginator
     $mapPaginator = function ($paginator, $callback) {
