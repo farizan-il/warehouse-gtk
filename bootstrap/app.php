@@ -22,5 +22,17 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->report(function (\Throwable $e) {
+            try {
+                \App\Models\SystemError::create([
+                    'message' => $e->getMessage(),
+                    'type' => get_class($e),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'status' => 'pending',
+                ]);
+            } catch (\Exception $ex) {
+                // Prevent infinite loop if logging itself fails
+            }
+        });
     })->create();

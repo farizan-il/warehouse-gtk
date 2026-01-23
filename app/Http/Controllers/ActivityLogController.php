@@ -10,95 +10,162 @@ use App\Models\WarehouseActivityLog;
 use App\Models\ActivityLog;
 use App\Models\StockMovement;
 use App\Models\InventoryStock;
+use App\Models\SystemError;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class ActivityLogController extends Controller
 {
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        // 1. Total Activities (Today, Week, Month)
+        // Get date range filters from request
+        $startDate = $request->input('start_date') ? Carbon::parse($request->input('start_date'))->startOfDay() : null;
+        $endDate = $request->input('end_date') ? Carbon::parse($request->input('end_date'))->endOfDay() : null;
+        
+        // Default date references
         $today = Carbon::today();
         $startOfWeek = Carbon::now()->startOfWeek();
         $startOfMonth = Carbon::now()->startOfMonth();
 
-        // Helper to count across all log tables
-        $countLogs = function ($queryCallback) {
-            return IncomingActivityLog::where($queryCallback)->count() +
-                   QcActivityLog::where($queryCallback)->count() +
-                   ReservationActivityLog::where($queryCallback)->count() +
-                   ReturnActivityLog::where($queryCallback)->count() +
-                   WarehouseActivityLog::where($queryCallback)->count() +
-                   StockMovement::where($queryCallback)->count() +
-                   ActivityLog::where($queryCallback)->count();
+        // Helper to apply date range filter
+        $applyDateFilter = function ($query) use ($startDate, $endDate) {
+            if ($startDate && $endDate) {
+                $query->whereBetween('created_at', [$startDate, $endDate]);
+            }
+            return $query;
         };
 
-        $stats = [
-            'total_today' => $countLogs(fn($q) => $q->whereDate('created_at', $today)),
-            'total_week' => $countLogs(fn($q) => $q->where('created_at', '>=', $startOfWeek)),
-            'total_month' => $countLogs(fn($q) => $q->where('created_at', '>=', $startOfMonth)),
-        ];
+        // Helper to count across all log tables with date filter
+        $countLogs = function ($queryCallback) use ($applyDateFilter) {
+            return $applyDateFilter(IncomingActivityLog::query())->where($queryCallback)->count() +
+                   $applyDateFilter(QcActivityLog::query())->where($queryCallback)->count() +
+                   $applyDateFilter(ReservationActivityLog::query())->where($queryCallback)->count() +
+                   $applyDateFilter(ReturnActivityLog::query())->where($queryCallback)->count() +
+                   $applyDateFilter(WarehouseActivityLog::query())->where($queryCallback)->count() +
+                   $applyDateFilter(StockMovement::query())->where($queryCallback)->count() +
+                   $applyDateFilter(ActivityLog::query())->where($queryCallback)->count();
+        };
 
-        // 2. Active Users Today (Unique users who performed an action)
-        // Note: This is a bit expensive to query across all tables, so we'll approximate or use a simpler approach
-        // For now, let's just count distinct user_ids from the main ActivityLog as a proxy, or union all.
-        // Optimization: Just check ActivityLog and StockMovement for now as they cover most.
-        $activeUsersCount = ActivityLog::whereDate('created_at', $today)->distinct('user_id')->count('user_id');
-        
-        // 3. Module Distribution (Pie Chart)
-        // We can count total rows in each table for "All Time" or "This Month"
-        $moduleStats = [
-            'Incoming' => IncomingActivityLog::count(),
-            'QC' => QcActivityLog::count(),
-            'Reservation' => ReservationActivityLog::count(),
-            'Return' => ReturnActivityLog::count(),
-            'Warehouse' => WarehouseActivityLog::count(),
-            'Stock Movement' => StockMovement::count(),
-            'Master Data' => ActivityLog::count(),
-        ];
-
-        // 4. Hourly Activity (Line Chart) - Last 24 Hours
-        // We will use ActivityLog as a representative sample or union all if needed.
-        // For performance, let's use ActivityLog + StockMovement
-        $hourlyStats = ActivityLog::selectRaw('HOUR(created_at) as hour, COUNT(*) as count')
-            ->where('created_at', '>=', Carbon::now()->subHours(24))
-            ->groupBy('hour')
-            ->pluck('count', 'hour')
-            ->toArray();
-            
-        // Fill missing hours with 0
-        $chartData = [];
-        for ($i = 0; $i < 24; $i++) {
-            $chartData[$i] = $hourlyStats[$i] ?? 0;
+        // If date range is set, use that for stats, otherwise use default today/week/month
+        if ($startDate && $endDate) {
+            $totalInRange = $countLogs(fn($q) => $q);
+            $stats = [
+                'total_today' => $totalInRange,
+                'total_week' => $totalInRange,
+                'total_month' => $totalInRange,
+            ];
+        } else {
+            $stats = [
+                'total_today' => $countLogs(fn($q) => $q->whereDate('created_at', $today)),
+                'total_week' => $countLogs(fn($q) => $q->where('created_at', '>=', $startOfWeek)),
+                'total_month' => $countLogs(fn($q) => $q->where('created_at', '>=', $startOfMonth)),
+            ];
         }
 
-        // 5. Top Users (Bar Chart)
-        $topUsers = ActivityLog::select('user_id', DB::raw('count(*) as total'))
-            ->with('user')
-            ->groupBy('user_id')
+        // 2. Active Users (Unique users who performed an action)
+        $activeUsersQuery = ActivityLog::query();
+        if ($startDate && $endDate) {
+            $activeUsersQuery->whereBetween('created_at', [$startDate, $endDate]);
+        } else {
+            $activeUsersQuery->whereDate('created_at', $today);
+        }
+        $activeUsersCount = $activeUsersQuery->distinct('user_id')->count('user_id');
+        
+        // 3. Module Distribution (Pie Chart) with date filter
+        if ($startDate && $endDate) {
+            $moduleStats = [
+                'Incoming' => IncomingActivityLog::whereBetween('created_at', [$startDate, $endDate])->count(),
+                'QC' => QcActivityLog::whereBetween('created_at', [$startDate, $endDate])->count(),
+                'Reservation' => ReservationActivityLog::whereBetween('created_at', [$startDate, $endDate])->count(),
+                'Return' => ReturnActivityLog::whereBetween('created_at', [$startDate, $endDate])->count(),
+                'Warehouse' => WarehouseActivityLog::whereBetween('created_at', [$startDate, $endDate])->count(),
+                'Stock Movement' => StockMovement::whereBetween('created_at', [$startDate, $endDate])->count(),
+                'Master Data' => ActivityLog::whereBetween('created_at', [$startDate, $endDate])->count(),
+            ];
+        } else {
+            $moduleStats = [
+                'Incoming' => IncomingActivityLog::count(),
+                'QC' => QcActivityLog::count(),
+                'Reservation' => ReservationActivityLog::count(),
+                'Return' => ReturnActivityLog::count(),
+                'Warehouse' => WarehouseActivityLog::count(),
+                'Stock Movement' => StockMovement::count(),
+                'Master Data' => ActivityLog::count(),
+            ];
+        }
+
+        // 4. Time-based Activity Chart
+        // Without filter: Hourly activity (last 24 hours)
+        // With filter: Daily activity per day in the range
+        $chartMode = 'hourly'; // 'hourly' or 'daily'
+        $chartLabels = [];
+        $chartData = [];
+        
+        if ($startDate && $endDate) {
+            // Daily mode: Group by date
+            $chartMode = 'daily';
+            $dailyQuery = ActivityLog::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->groupBy('date')
+                ->orderBy('date')
+                ->pluck('count', 'date')
+                ->toArray();
+            
+            // Generate all dates in range
+            $currentDate = $startDate->copy();
+            while ($currentDate <= $endDate) {
+                $dateStr = $currentDate->toDateString();
+                $chartLabels[] = $currentDate->format('d/m');
+                $chartData[] = $dailyQuery[$dateStr] ?? 0;
+                $currentDate->addDay();
+            }
+        } else {
+            // Hourly mode: Last 24 hours
+            $hourlyStats = ActivityLog::selectRaw('HOUR(created_at) as hour, COUNT(*) as count')
+                ->where('created_at', '>=', Carbon::now()->subHours(24))
+                ->groupBy('hour')
+                ->pluck('count', 'hour')
+                ->toArray();
+            
+            // Fill missing hours with 0
+            for ($i = 0; $i < 24; $i++) {
+                $chartLabels[] = sprintf('%02d:00', $i);
+                $chartData[] = $hourlyStats[$i] ?? 0;
+            }
+        }
+
+        // 5. Top Users (Bar Chart) with date filter
+        $topUsersQuery = ActivityLog::select('activity_logs.user_id', 'users.name', DB::raw('count(*) as total'))
+            ->leftJoin('users', 'activity_logs.user_id', '=', 'users.id');
+        if ($startDate && $endDate) {
+            $topUsersQuery->whereBetween('activity_logs.created_at', [$startDate, $endDate]);
+        }
+        $topUsers = $topUsersQuery
+            ->groupBy('activity_logs.user_id', 'users.name')
             ->orderByDesc('total')
             ->limit(5)
             ->get()
             ->map(function ($log) {
                 return [
-                    'name' => $log->user->nama_lengkap ?? 'Unknown',
+                    'name' => $log->name ?? 'Unknown',
                     'count' => $log->total
                 ];
             });
 
-        // 6. Online Users (Last 5 minutes)
+        // 6. Online Users (Last 5 minutes) - not affected by date filter
         $onlineUsers = \App\Models\User::where('last_seen_at', '>=', Carbon::now()->subMinutes(5))
             ->orderByDesc('last_seen_at')
             ->get(['id', 'name', 'role_id', 'last_seen_at', 'email']);
 
-        // 7. Recent Activities Feed (Merged from all sources)
-        // Helper to fetch latest 5 from a model
-        $fetchLatest = function($model) {
-            return $model::with(['user:id,name', 'material:id,kode_item,nama_material'])
-                ->latest()
-                ->limit(5)
-                ->get();
+        // 7. Recent Activities Feed (Merged from all sources) with date filter
+        $fetchLatest = function($model) use ($startDate, $endDate) {
+            $query = $model::with(['user:id,name', 'material:id,kode_item,nama_material']);
+            if ($startDate && $endDate) {
+                $query->whereBetween('created_at', [$startDate, $endDate]);
+            }
+            return $query->latest()->limit(5)->get();
         };
 
         $recentLogs = collect()
@@ -138,12 +205,57 @@ class ActivityLogController extends Controller
             ];
         }
 
+        // 10. System Errors & Critical Alerts
+        $criticalErrors = SystemError::where('status', 'pending')
+            ->latest()
+            ->limit(5)
+            ->get();
+
+        foreach ($criticalErrors as $error) {
+            $alerts[] = [
+                'id' => 'error_' . $error->id,
+                'message' => "[{$error->type}] {$error->message}",
+                'created_at' => $error->created_at->toDateTimeString(),
+                'severity' => 'critical',
+            ];
+        }
+
+        // 11. Error Rate Chart Data (matching chartMode)
+        $errorChartData = [];
+        if ($chartMode === 'daily') {
+            $dailyErrors = SystemError::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->groupBy('date')
+                ->pluck('count', 'date')
+                ->toArray();
+            
+            $currentDate = $startDate->copy();
+            while ($currentDate <= $endDate) {
+                $dateStr = $currentDate->toDateString();
+                $errorChartData[] = $dailyErrors[$dateStr] ?? 0;
+                $currentDate->addDay();
+            }
+        } else {
+            $hourlyErrors = SystemError::selectRaw('HOUR(created_at) as hour, COUNT(*) as count')
+                ->where('created_at', '>=', Carbon::now()->subHours(24))
+                ->groupBy('hour')
+                ->pluck('count', 'hour')
+                ->toArray();
+            
+            for ($i = 0; $i < 24; $i++) {
+                $errorChartData[] = $hourlyErrors[$i] ?? 0;
+            }
+        }
+
         return Inertia::render('ITDashboard', [
             'stats' => $stats,
             'activeUsers' => $activeUsersCount,
             'onlineUsers' => $onlineUsers,
             'moduleStats' => $moduleStats,
-            'hourlyStats' => array_values($chartData),
+            'chartMode' => $chartMode,
+            'chartLabels' => $chartLabels,
+            'chartData' => $chartData,
+            'errorChartData' => $errorChartData,
             'topUsers' => $topUsers,
             'recentActivities' => $recentLogs,
             'expiredMaterials' => $expiredMaterials,
@@ -156,7 +268,7 @@ class ActivityLogController extends Controller
     {
         // Handle StockMovement which might use 'executedBy' instead of 'user'
         $user = $log->user ?? $log->executedBy ?? null;
-        $userName = $user ? ($user->name ?? $user->nama_lengkap ?? 'System') : 'System';
+        $userName = $user ? ($user->name ?? $user->name ?? 'System') : 'System';
         
         // Handle Action/Description
         $action = $log->action ?? $log->movement_type ?? 'Unknown';
@@ -262,7 +374,7 @@ class ActivityLogController extends Controller
             return [
                 'id' => $log->id,
                 'timestamp' => $log->movement_date->toDateTimeString(),
-                'user' => $log->executedBy->nama_lengkap ?? 'System',
+                'user' => $log->executedBy->name ?? 'System',
                 'role' => $log->executedBy->role->role_name ?? 'N/A',
                 'module' => 'Warehouse - Stock Movement', // Kategori yang jelas
                 'action' => $action,
@@ -304,7 +416,7 @@ class ActivityLogController extends Controller
             return [
                 'id' => $log->id,
                 'timestamp' => $log->created_at->toDateTimeString(),
-                'user' => $log->user->nama_lengkap ?? 'System',
+                'user' => $log->user->name ?? 'System',
                 'role' => $log->user->role->role_name ?? 'N/A',
                 'module' => 'Incoming Goods',
                 'action' => $log->action,
@@ -344,7 +456,7 @@ class ActivityLogController extends Controller
             return [
                 'id' => $log->id,
                 'timestamp' => $log->created_at->toDateTimeString(),
-                'user' => $log->user->nama_lengkap ?? 'System',
+                'user' => $log->user->name ?? 'System',
                 'role' => $log->user->role->role_name ?? 'N/A',
                 'module' => 'Quality Control',
                 'action' => $log->action,
@@ -384,7 +496,7 @@ class ActivityLogController extends Controller
             return [
                 'id' => $log->id,
                 'timestamp' => $log->created_at->toDateTimeString(),
-                'user' => $log->user->nama_lengkap ?? 'System',
+                'user' => $log->user->name ?? 'System',
                 'role' => $log->user->role->role_name ?? 'N/A',
                 'module' => 'Reservation',
                 'action' => $log->action,
@@ -424,7 +536,7 @@ class ActivityLogController extends Controller
             return [
                 'id' => $log->id,
                 'timestamp' => $log->created_at->toDateTimeString(),
-                'user' => $log->user->nama_lengkap ?? 'System',
+                'user' => $log->user->name ?? 'System',
                 'role' => $log->user->role->role_name ?? 'N/A',
                 'module' => 'Return',
                 'action' => $log->action,
@@ -464,7 +576,7 @@ class ActivityLogController extends Controller
             return [
                 'id' => $log->id,
                 'timestamp' => $log->created_at->toDateTimeString(),
-                'user' => $log->user->nama_lengkap ?? 'System',
+                'user' => $log->user->name ?? 'System',
                 'role' => $log->user->role->role_name ?? 'N/A',
                 'module' => 'Warehouse',
                 'action' => $log->action,
@@ -529,7 +641,7 @@ class ActivityLogController extends Controller
             return [
                 'id' => $log->id,
                 'timestamp' => $log->created_at->toDateTimeString(),
-                'user' => $log->user->nama_lengkap ?? 'System',
+                'user' => $log->user->name ?? 'System',
                 'role' => $log->user->role->role_name ?? 'N/A',
                 'module' => $module,
                 'action' => $log->action,
@@ -551,5 +663,15 @@ class ActivityLogController extends Controller
                 'new_value' => $log->new_value,
             ];
         });
+    }
+    public function resolveError($id)
+    {
+        $error = SystemError::findOrFail($id);
+        $error->update([
+            'status' => 'resolved',
+            'resolved_at' => now(),
+        ]);
+
+        return back()->with('success', 'Error berhasil ditandai sebagai selesai.');
     }
 }

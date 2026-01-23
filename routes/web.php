@@ -67,6 +67,15 @@ Route::get('/transaction/return/material/{code}', [\App\Http\Controllers\Transac
         ->middleware('permission:it_dashboard.view')
         ->name('it-dashboard');
 
+    // Debug Route for Testing Errors
+    Route::get('/debug/trigger-error', function () {
+        throw new \Exception("Ini adalah error simulasi untuk testing IT Dashboard!");
+    })->middleware('permission:it_dashboard.view'); // Only reachable by IT/Admins
+
+    Route::post('/it-dashboard/resolve-error/{id}', [ActivityLogController::class, 'resolveError'])
+        ->middleware('permission:it_dashboard.view')
+        ->name('it-dashboard.resolve-error');
+
     // Master Data Routes
     Route::get('/master-data/bin/{binId}/stocks', [MasterDataController::class, 'getBinStockDetails'])->name('bin.stocks.details');
     
