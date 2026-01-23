@@ -139,6 +139,7 @@ class MasterDataController extends Controller
         'id' => $item->id,
         'jabatan' => $item->jabatan,
         'fullName' => $item->name ?? 'N/A',
+        'nik' => $item->nik ?? 'N/A',
         'role' => $item->role->role_name ?? 'N/A',
         'department' => $item->departement,
         'status' => $item->status === 'active' ? 'Active' : 'Inactive'
@@ -911,6 +912,7 @@ class MasterDataController extends Controller
         $validated = $request->validate([
             'jabatan' => 'required|string',
             'fullName' => 'required|string',
+            'nik' => 'required|string|unique:users,nik',
             'password' => 'required|string|min:6',
             'role' => 'required|string',
             'department' => 'required|string',
@@ -921,7 +923,7 @@ class MasterDataController extends Controller
             $user = User::create([
                 'name' => $validated['fullName'],
                 'email' => strtolower(str_replace(' ', '.', $validated['fullName'])) . '@company.com',
-                'nik' => 'NIK-' . time(),
+                'nik' => $validated['nik'],
                 'password' => bcrypt($validated['password']),
                 'jabatan' => $validated['jabatan'],
                 'departement' => $validated['department'],
@@ -957,6 +959,7 @@ class MasterDataController extends Controller
         $validated = $request->validate([
             'jabatan' => 'required|string',
             'fullName' => 'required|string',
+            'nik' => 'required|string|unique:users,nik,' . $id,
             'role' => 'required|string',
             'department' => 'required|string',
             'status' => 'required|in:Active,Inactive'
@@ -964,7 +967,8 @@ class MasterDataController extends Controller
 
         try {
             $user->update([
-                'nama_lengkap' => $validated['fullName'],
+                'name' => $validated['fullName'],
+                'nik' => $validated['nik'],
                 'jabatan' => $validated['jabatan'],
                 'departement' => $validated['department'],
                 'status' => strtolower($validated['status']),

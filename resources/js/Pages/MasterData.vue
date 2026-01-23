@@ -86,7 +86,7 @@
             <p class="text-gray-600 dark:text-gray-400 mt-1">Kelola data master untuk seluruh sistem WMS</p>
           </div>
           <div>
-            <button 
+            <!-- <button 
               @click="triggerImport"
               class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-sm"
             >
@@ -94,7 +94,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
               </svg>
               Import Initial Stock
-            </button>
+            </button> -->
             <input 
               ref="fileInput" 
               type="file" 
@@ -296,9 +296,9 @@
                     <tr>
                       <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Supplier Code</th>
                       <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Supplier Name</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Address</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Contact Person</th>
-                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Phone</th>
+                      <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Address</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Contact Person</th> 
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Phone</th>-->
                       <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
                       <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
                     </tr>
@@ -311,15 +311,15 @@
                       <td class="px-6 py-4">
                         <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ supplier.name }}</div>
                       </td>
-                      <td class="px-6 py-4">
+                      <!-- <td class="px-6 py-4">
                         <div class="text-sm text-gray-900 dark:text-gray-100">{{ supplier.address }}</div>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900 dark:text-gray-100">{{ supplier.contactPerson }}</div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
+                      </td> -->
+                      <!-- <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900 dark:text-gray-100">{{ supplier.phone }}</div>
-                      </td>
+                      </td> -->
                       <td class="px-6 py-4 whitespace-nowrap">
                         <span :class="getStatusClass(supplier.status)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
                           {{ supplier.status }}
@@ -420,6 +420,7 @@
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
                   <thead class="bg-gray-50 dark:bg-gray-800 transition-colors">
                     <tr>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">NIK</th>
                       <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">jabatan</th>
                       <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Full Name</th>
                       <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Role</th>
@@ -430,6 +431,9 @@
                   </thead>
                   <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800 transition-colors">
                     <tr v-for="user in activeUserData.data" :key="user.id" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-mono text-gray-900 dark:text-gray-100">{{ user.nik }}</div>
+                      </td>
                       <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ user.jabatan }}</div>
                       </td>
@@ -791,6 +795,29 @@
           </div>
 
           <div v-if="activeTab === 'user'" class="space-y-4">
+            <!-- Row 1: Nama & NIK -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Lengkap *</label>
+                <input 
+                  v-model="formData.fullName"
+                  type="text" 
+                  placeholder="Masukkan nama lengkap"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                >
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">NIK (Nomor Karyawan) *</label>
+                <input 
+                  v-model="formData.nik"
+                  type="text" 
+                  placeholder="Masukkan NIK"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                >
+              </div>
+            </div>
+
+            <!-- Row 2: Jabatan & Password -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -808,26 +835,18 @@
                 </select>
               </div>              
               <div v-if="!showEditModal">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password *</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password Default</label>
                 <input 
                   v-model="formData.password"
-                  type="password" 
-                  placeholder="********"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  type="text" 
+                  disabled
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed transition-colors"
                 >
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Password default untuk user baru</p>
               </div>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name *</label>
-              <input 
-                v-model="formData.fullName"
-                type="text" 
-                placeholder="John Doe"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-              >
-            </div>
-
+            <!-- Row 3: Role & Department -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Role *</label>
@@ -843,20 +862,31 @@
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Department *</label>
-                <select 
-                  v-model="formData.department" 
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
-                >
-                  <option value="">Pilih Department</option>
-                  <option value="Gudang">Gudang</option>
-                  <option value="QC">Quality Control</option>
-                  <option value="Produksi">Produksi</option>
-                  <option value="PPIC">PPIC</option>
-                  <option value="IT">IT</option>
-                </select>
+                <div class="flex gap-2">
+                  <select 
+                    v-model="formData.department" 
+                    class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition-colors"
+                  >
+                    <option value="">Pilih Department</option>
+                    <option v-for="dept in departmentList" :key="dept" :value="dept">
+                      {{ dept }}
+                    </option>
+                  </select>
+                  <button 
+                    type="button"
+                    @click="showAddDepartmentModal = true"
+                    class="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center gap-1"
+                    title="Tambah Department Baru"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
 
+            <!-- Row 4: Status -->
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
               <select 
@@ -937,6 +967,45 @@
         </div>
       </div>
 
+      <!-- Add Department Modal -->
+      <div v-if="showAddDepartmentModal" class="fixed inset-0 bg-opacity-50 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[1100]" style="background-color: rgba(43, 51, 63, 0.67);">
+        <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-md border border-gray-200 dark:border-gray-800 shadow-2xl transition-colors">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Tambah Department</h3>
+            <button @click="showAddDepartmentModal = false" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Department</label>
+              <input 
+                v-model="newDepartment"
+                type="text" 
+                placeholder="Masukkan nama department baru"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                @keyup.enter="addDepartment"
+              >
+            </div>
+          </div>
+          <div class="flex justify-end gap-3 mt-6">
+            <button 
+              @click="showAddDepartmentModal = false"
+              class="px-4 py-2 text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              Batal
+            </button>
+            <button 
+              @click="addDepartment"
+              class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+            >
+              Tambah
+            </button>
+          </div>
+        </div>
+      </div>
       <!-- Bulk Edit Modal -->
       <div v-if="showBulkEditModal" class="fixed inset-0 bg-opacity-50 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[999]" style="background-color: rgba(43, 51, 63, 0.67);">
         <div class="bg-white dark:bg-gray-900 rounded-lg p-6 w-full max-w-2xl max-h-screen overflow-y-auto border border-gray-200 dark:border-gray-800 shadow-2xl transition-colors">
@@ -1248,6 +1317,9 @@ const selectedBinDetails = ref<{
 const showAddModal = ref(false)
 const showEditModal = ref(false)
 const editingItem = ref<any>(null)
+const showAddDepartmentModal = ref(false)
+const newDepartment = ref('')
+const departmentList = ref(['Gudang', 'QC', 'Produksi', 'PPIC', 'IT', 'Maintenance', 'HSE', 'HRGA', 'Finance'])
 
 // Bulk Edit states
 const showBulkEditModal = ref(false)
@@ -1320,16 +1392,13 @@ const loadBinDetails = async (binId: string, binCode: string) => {
     
     try {
         const url = route('bin.stocks.details', { binId: binId });
-        const response = await fetch(url);
+        const response = await window.axios.get(url, {
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
         
-        if (!response.ok) {
-            showMessage('error', `Gagal memuat detail Bin ${binCode}`);
-            selectedBinDetails.value = { bin_code: binCode, details: [] };
-            return;
-        }
-
-        const result = await response.json();
-        selectedBinDetails.value = result;
+        selectedBinDetails.value = response.data;
 
     } catch (error) {
         console.error('Fetch Bin Details error:', error);
@@ -1430,8 +1499,9 @@ const resetForm = () => {
         },
         user: {
             jabatan: '',
-            password: '',
+            password: 'gondowangi-123',
             fullName: '',
+            nik: '',
             role: '',
             department: '',
             status: 'Active'
@@ -1439,6 +1509,22 @@ const resetForm = () => {
     }
     
     formData.value = { ...defaultValues[activeTab.value] }
+}
+
+const addDepartment = () => {
+    if (!newDepartment.value.trim()) {
+        showMessage('error', 'Nama department tidak boleh kosong')
+        return
+    }
+    if (departmentList.value.includes(newDepartment.value.trim())) {
+        showMessage('error', 'Department sudah ada')
+        return
+    }
+    departmentList.value.push(newDepartment.value.trim())
+    formData.value.department = newDepartment.value.trim()
+    newDepartment.value = ''
+    showAddDepartmentModal.value = false
+    showMessage('success', 'Department berhasil ditambahkan')
 }
 
 const closeModal = () => {
@@ -1509,7 +1595,7 @@ const saveData = async () => {
       ? `/master-data/${activeTab.value}/${editingItem.value.id}`
       : `/master-data/${activeTab.value}`
     
-    const method = showEditModal.value ? 'PUT' : 'POST'
+    const method = showEditModal.value ? 'put' : 'post'
 
     console.log('Submit data:', {
       endpoint,
@@ -1517,23 +1603,18 @@ const saveData = async () => {
       data: formData.value
     })
 
-    const response = await fetch(endpoint, {
+    // Menggunakan axios (window.axios) karena sudah terkonfigurasi dengan CSRF handling
+    const response = await window.axios({
       method: method,
+      url: endpoint,
+      data: formData.value,
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
         'Accept': 'application/json'
-      },
-      body: JSON.stringify(formData.value)
+      }
     })
 
-    const result = await response.json()
+    const result = response.data
     console.log('Response:', result)
-
-    if (!response.ok) {
-      showMessage('error', result.message || 'Terjadi kesalahan')
-      return
-    }
 
     showMessage('success', result.message || 'Data berhasil disimpan')
     closeModal()
@@ -1541,34 +1622,41 @@ const saveData = async () => {
     // Reload page setelah 1.5 detik
     setTimeout(() => window.location.reload(), 1500)
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Save error:', error)
-    showMessage('error', 'Error: ' + (error as Error).message)
+    
+    if (error.response?.status === 419) {
+      showMessage('error', 'Sesi telah berakhir (CSRF mismatch). Halaman akan dimuat ulang.')
+      setTimeout(() => window.location.reload(), 2000)
+      return
+    }
+
+    const errorMessage = error.response?.data?.message || error.message || 'Terjadi kesalahan'
+    showMessage('error', errorMessage)
   }
 }
 
 const previewQRCode = async (binId: string) => {
   try {
-    const response = await fetch(`/master-data/bin/${binId}/qr-code/preview`, {
-      method: 'GET',
+    const response = await window.axios.get(`/master-data/bin/${binId}/qr-code/preview`, {
       headers: {
         'Accept': 'application/json'
       }
     })
 
-    const result = await response.json()
-
-    if (!response.ok) {
-      showMessage('error', result.message || 'Gagal memuat QR Code')
-      return
-    }
+    const result = response.data
 
     qrCodeData.value = result.data
     showQRModal.value = true
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Preview error:', error)
-    showMessage('error', 'Error saat memuat QR Code')
+    if (error.response?.status === 419) {
+      showMessage('error', 'Sesi telah berakhir. Halaman akan dimuat ulang.')
+      setTimeout(() => window.location.reload(), 2000)
+    } else {
+      showMessage('error', 'Gagal memuat QR Code')
+    }
   }
 }
 
