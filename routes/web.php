@@ -389,5 +389,23 @@ Route::get('/transaction/return/material/{code}', [\App\Http\Controllers\Transac
     Route::put('/api/settings', [\App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
     Route::post('/api/settings/reset', [\App\Http\Controllers\SettingsController::class, 'reset'])->name('settings.reset');
 
+    // Profile Routes
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/profile/photo', [\App\Http\Controllers\ProfileController::class, 'updatePhoto'])->name('profile.photo.update');
+
+    // Complaint Routes
+    Route::prefix('api/complaints')->name('complaints.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\ComplaintController::class, 'index'])->name('index');
+        Route::post('/', [\App\Http\Controllers\ComplaintController::class, 'store'])->name('store');
+        Route::get('/{ticket}', [\App\Http\Controllers\ComplaintController::class, 'show'])->name('show');
+        Route::post('/{ticket}/messages', [\App\Http\Controllers\ComplaintController::class, 'sendMessage'])->name('send-message');
+    });
+
+    // Admin Complaint Management
+    Route::middleware('permission:it_dashboard.view')->group(function () {
+        Route::get('/admin/complaints', [\App\Http\Controllers\ComplaintController::class, 'adminIndex'])->name('admin.complaints.index');
+        Route::patch('/api/admin/complaints/{ticket}/status', [\App\Http\Controllers\ComplaintController::class, 'updateStatus'])->name('admin.complaints.update-status');
+    });
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
